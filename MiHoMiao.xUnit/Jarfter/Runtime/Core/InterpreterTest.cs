@@ -368,14 +368,14 @@ public class InterpreterTest
         jarfterInterpreter.Run("var n 3");
         jarfterInterpreter.Run(
             """
-            $[
+            ${
                 var i 1 ,
                 var result 1 ,
                 label loop.start,
                 execute (lese @i @n) ${ 
                     let result (mul @result @i),
                     let i (add @i 1),
-                    execute (eql (mod @result 2) 0 ) -> goto loop.start,
+                    execute (eql (mod @result 2) 0 ) -> ${ goto loop.start };
                     else -> execute (lese @i @n) ${
                         let result (mul @result @i),
                         let i (add @i 1),
@@ -383,7 +383,7 @@ public class InterpreterTest
                     },
                 },
                 let n @result,
-            ]
+            }
             """
         );
     
