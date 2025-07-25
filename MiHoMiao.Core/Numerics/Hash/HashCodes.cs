@@ -14,7 +14,7 @@ namespace MiHoMiao.Core.Numerics.Hash;
 /// </summary>
 public static class HashCodes
 {
-    private const uint Seed = 1073676287;
+    public const uint Seed = 1073676287;
 
     private const uint Prime1 = 2654435761U;
     private const uint Prime2 = 2246822519U;

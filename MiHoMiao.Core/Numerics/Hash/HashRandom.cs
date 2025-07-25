@@ -18,7 +18,7 @@ public class HashRandom(int value)
     /// <summary>
     /// 获取经过哈希计算的值
     /// </summary>
-    public int Value { get => field = HashCodes.Combine(field); } = value;
+    public int Value { get => field = HashCodes.Combine(field); private set; } = value;
     
     /// <summary>
     /// 生成指定范围内的随机整数
@@ -81,4 +81,10 @@ public class HashRandom(int value)
             Unsafe.Add(ref bufferRef, i + j) = (byte)(value >> (j * 8));
         }
     }
+
+    /// <summary>
+    /// 重置随机种子至初始值.
+    /// </summary>
+    public void ResetSeed() => Value = value;
+    
 }
