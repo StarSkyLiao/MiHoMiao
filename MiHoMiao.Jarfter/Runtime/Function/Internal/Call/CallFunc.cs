@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
-using MiHoMiao.Jarfter.Core;
-using MiHoMiao.Jarfter.Core.Collection;
-using MiHoMiao.Jarfter.Core.Func;
+using MiHoMiao.Jarfter.Runtime.Collection;
+using MiHoMiao.Jarfter.Runtime.Core;
+using MiHoMiao.Jarfter.Runtime.Function.Template;
 
 namespace MiHoMiao.Jarfter.Runtime.Function.Internal.Call;
 
@@ -12,7 +12,7 @@ public class CallFunc : IJarfterFunc<CallFunc, string, JarfterArray<string>>
 
     public static void JarfterFuncImpl(JarfterContext jarfterContext, string arg0, JarfterArray<string> arg1)
     {
-        jarfterContext.CalculationStack.Push(CallHelper.Invoke(jarfterContext, arg0, arg1.Items));
+        jarfterContext.CalculationStack.Push(CallHelper.Invoke(jarfterContext, arg0, arg1.Content));
     }
 
 }

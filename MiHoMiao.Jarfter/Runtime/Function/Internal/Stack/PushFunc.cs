@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
-using MiHoMiao.Jarfter.Core;
-using MiHoMiao.Jarfter.Core.Collection;
-using MiHoMiao.Jarfter.Core.Func;
+using MiHoMiao.Jarfter.Runtime.Collection;
+using MiHoMiao.Jarfter.Runtime.Core;
+using MiHoMiao.Jarfter.Runtime.Function.Template;
 
 namespace MiHoMiao.Jarfter.Runtime.Function.Internal.Stack;
 

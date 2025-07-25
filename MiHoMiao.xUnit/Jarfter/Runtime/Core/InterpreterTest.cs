@@ -184,6 +184,10 @@ public class InterpreterTest
         
     }
     
+    /// <summary>
+    ///一个复杂的案例.
+    /// 参考字符数: 290
+    /// </summary>
     [Fact]
     public void JumpMethod()
     {
@@ -220,6 +224,10 @@ public class InterpreterTest
         
     }
     
+    /// <summary>
+    /// 现在, 使用 $[ ] 来替代 block [ ] 多语句函数.
+    /// 参考字符数: 278
+    /// </summary>
     [Fact]
     public void SimpleBlockGrammar()
     {
@@ -256,6 +264,10 @@ public class InterpreterTest
         
     }
     
+    /// <summary>
+    /// 现在, 使用 ( ) 来替代 @{ } 计算表达式.
+    /// 参考字符数: 270
+    /// </summary>
     [Fact]
     public void SimpleAtGrammar()
     {
@@ -292,6 +304,10 @@ public class InterpreterTest
         
     }
     
+    /// <summary>
+    /// 现在, 多语句函数中的子语句使用逗号分隔, 且不再需要 { } 包围.
+    /// 参考字符数: 249
+    /// </summary>
     [Fact]
     public void SimpleMultilineGrammar()
     {
@@ -327,6 +343,10 @@ public class InterpreterTest
         
     }
     
+    /// <summary>
+    /// 现在, 子语句为 { block } 时, 可以直接创建 ${ } 使用.
+    /// 参考字符数: 242
+    /// </summary>
     [Fact]
     public void MoreSimpleBlockGrammar()
     {
@@ -340,7 +360,7 @@ public class InterpreterTest
                 var i 1 ,
                 var result 1 ,
                 label loop.start,
-                execute (lese @i @n) ${ 
+                execute (lese @i @n) ${
                     let result (mul @result @i),
                     let i (add @i 1),
                     execute (eql (mod @result 2) 0 ) { goto loop.start } 
@@ -359,6 +379,11 @@ public class InterpreterTest
         
     }
     
+    /// <summary>
+    /// 现在 { } 样式的子语句, 可以替换为 -> 样式.
+    /// 但是 execute 的首条语句需要用 ; 符号做分割.
+    /// 参考字符数: 242
+    /// </summary>
     [Fact]
     public void LambdaLikeGrammar()
     {
@@ -375,7 +400,7 @@ public class InterpreterTest
                 execute (lese @i @n) ${ 
                     let result (mul @result @i),
                     let i (add @i 1),
-                    execute (eql (mod @result 2) 0 ) -> ${ goto loop.start };
+                    execute (eql (mod @result 2) 0 ) -> goto loop.start;
                     else -> execute (lese @i @n) ${
                         let result (mul @result @i),
                         let i (add @i 1),

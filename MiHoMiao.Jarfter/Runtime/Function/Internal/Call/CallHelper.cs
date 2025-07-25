@@ -1,14 +1,14 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
-using MiHoMiao.Jarfter.Core;
-using MiHoMiao.Jarfter.Core.Func;
+using MiHoMiao.Jarfter.Runtime.Core;
+using MiHoMiao.Jarfter.Runtime.Function.Template;
 
 namespace MiHoMiao.Jarfter.Runtime.Function.Internal.Call;
 
 public static class CallHelper
 {
     // ---------------- 1. 注册表 ----------------
-    private static readonly ConcurrentDictionary<string, Delegate> m_Map = [];
+    private static readonly ConcurrentDictionary<string, Delegate> s_Map = [];
 
     /// <summary>
     /// 注册一个别名为 alias 的静态方法，供后续 Invoke 使用。
@@ -25,7 +25,7 @@ public static class CallHelper
             throw new ArgumentException($"参数类型 {p.ParameterType} 未实现 IParse<> 或不是 string");
         }
         
-        m_Map[alias] = method;
+        s_Map[alias] = method;
     }
 
     // ---------------- 2. 统一调用 ----------------
@@ -35,7 +35,7 @@ public static class CallHelper
     /// </summary>
     public static object? Invoke(JarfterContext jarfterContext, string alias, params ReadOnlySpan<string> args)
     {
-        if (!m_Map.TryGetValue(alias, out var method))
+        if (!s_Map.TryGetValue(alias, out var method))
             throw new InvalidOperationException($"未注册的方法别名：{alias}");
 
         ParameterInfo[] parameterInfos = method.Method.GetParameters();
@@ -65,15 +65,15 @@ public static class CallHelper
     /// </summary>
     private static bool IsParseable(Type type)
     {
-        if (m_ParseMap.ContainsKey(type)) return true;
+        if (s_ParseMap.ContainsKey(type)) return true;
         return type.GetInterface("System.ISpanParsable`1") != null;
     }
     
-    private static readonly Dictionary<Type, MethodInfo> m_ParseMap = [];
+    private static readonly Dictionary<Type, MethodInfo> s_ParseMap = [];
 
     internal static MethodInfo? LoadParser(Type type)
     {
-        if (m_ParseMap.TryGetValue(type, out MethodInfo? parser)) return parser;
+        if (s_ParseMap.TryGetValue(type, out MethodInfo? parser)) return parser;
         if (type == typeof(string))
         {
             parser = ((Func<JarfterContext, string, string>)StringParser).Method;
@@ -86,7 +86,7 @@ public static class CallHelper
             )?.MakeGenericMethod(type);
         }
         if (parser == null) return null;
-        return m_ParseMap[type] = parser;
+        return s_ParseMap[type] = parser;
     }
         
     internal static T InvokeParser<T>(JarfterContext jarfterContext, string input) 

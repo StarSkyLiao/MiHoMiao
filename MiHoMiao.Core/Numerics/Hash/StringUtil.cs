@@ -119,10 +119,7 @@ public static class StringUtil
 
         // 处理 0 到 3 字节的小输入
         // 初始化 partialResult 为“无数据”状态
-        if (BitConverter.IsLittleEndian)
-            partialResult = 0x80u;
-        else
-            partialResult = 0x80000000u;
+        partialResult = BitConverter.IsLittleEndian ? 0x80u : 0x80000000u;
 
         if ((count & 0b_0001) != 0)
         {
