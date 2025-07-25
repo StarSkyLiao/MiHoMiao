@@ -1,7 +1,5 @@
-/MiHoMiao.xUnit/bin/
-/MiHoMiao.xUnit/obj/
-/MiHoMiao.Core/bin/
-/MiHoMiao.Core/obj/
-/MiHoMiao.Jarfter/bin/
-/MiHoMiao.Jarfter/obj/
+/.idea/
+obj/
+bin/
 /MiHoMiao.sln.DotSettings.user
+/global.json
