@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using MiHoMiao.Core.Collections.Specialized;
+using MiHoMiao.Core.Collections.Unsafe;
 
 namespace MiHoMiao.Jarfter.Runtime.Function.Template;
 

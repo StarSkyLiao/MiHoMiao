@@ -1,4 +1,4 @@
-using MiHoMiao.Core.Collections.Specialized;
+using MiHoMiao.Core.Collections.Unsafe;
 
 namespace MiHoMiao.xUnit.Core.Collections.Specialized;
 

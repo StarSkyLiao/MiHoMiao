@@ -18,10 +18,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-
 [assembly: InternalsVisibleTo("MiHoMiao.xUnit")]
 
-namespace MiHoMiao.Core.Collections.Specialized;
+namespace MiHoMiao.Core.Collections.Unsafe; 
 
 public ref struct MutableString : IDisposable
 {
@@ -119,7 +118,7 @@ public ref struct MutableString : IDisposable
         int newLength = oldLength + 1;
         if (newLength > RawStringLength) ExpandString(newLength);
         
-        Unsafe.Add(ref MemoryMarshal.GetReference(StringSpan), oldLength++) = value;
+        System.Runtime.CompilerServices.Unsafe.Add(ref MemoryMarshal.GetReference(StringSpan), oldLength++) = value;
     }
 
     /// <summary>
@@ -304,9 +303,9 @@ public ref struct MutableString : IDisposable
             StringSpan[oldLength] = MemoryMarshal.GetReference(value);
             if (valueLength is 2)
             {
-                Unsafe.Add(
+                System.Runtime.CompilerServices.Unsafe.Add(
                     ref MemoryMarshal.GetReference(StringSpan), oldLength + 1
-                ) = Unsafe.Add(
+                ) = System.Runtime.CompilerServices.Unsafe.Add(
                     ref MemoryMarshal.GetReference(value), 1
                 );
             }

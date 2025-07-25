@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiHoMiao.xUnit")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5797a6d2b781116193a2eaaca47a0257a90909be")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f97f1e8e951058a1ef14b985f4daeb433ad28a42")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiHoMiao.xUnit")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiHoMiao.xUnit")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
