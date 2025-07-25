@@ -2,14 +2,14 @@ using MiHoMiao.Core.Collections.Specialized;
 
 namespace MiHoMiao.xUnit.Core.Collections.Specialized;
 
-public class DynamicStringTests
+public class MutableStringTests
 {
     #region 扩容
 
     [Fact]
     public void ExpandString_ExpandsCorrectly()
     {
-        using DynamicString ds = new DynamicString(2);
+        using MutableString ds = new MutableString(2);
         ds.Append("123456789");
         Assert.True(ds.RawStringLength >= 9);
         Assert.Equal("123456789", ds.Read());
@@ -22,8 +22,8 @@ public class DynamicStringTests
     [Fact]
     public void Ctor_Default_InitializesCorrectly()
     {
-        using DynamicString ds = new DynamicString();
-        Assert.Equal(1 << DynamicString.MinBitLengthOfStringLength, ds.RawStringLength);
+        using MutableString ds = new MutableString();
+        Assert.Equal(1 << MutableString.MinBitLengthOfStringLength, ds.RawStringLength);
         Assert.Equal(0, ds.CurrStringLength);
     }
 
@@ -31,7 +31,7 @@ public class DynamicStringTests
     public void Ctor_WithString_InitializesCorrectly()
     {
         const string Src = "hello";
-        using DynamicString ds = new DynamicString(Src);
+        using MutableString ds = new MutableString(Src);
         int expect = Src.Length;
         int actual = ds.RawStringLength;
         Assert.Equal(expect, actual);
@@ -43,7 +43,7 @@ public class DynamicStringTests
     public void Dispose_CallsReleaseAction()
     {
         string? captured = null;
-        using (DynamicString _ = new DynamicString("abc", s => captured = s))
+        using (MutableString _ = new MutableString("abc", s => captured = s))
         {
         }
 
@@ -57,7 +57,7 @@ public class DynamicStringTests
     [Fact]
     public void Append_Char_IncreasesLength()
     {
-        using DynamicString ds = new DynamicString();
+        using MutableString ds = new MutableString();
         ds.Append('a');
         Assert.Equal("a", ds.Read());
         Assert.Equal(1, ds.CurrStringLength);
@@ -66,7 +66,7 @@ public class DynamicStringTests
     [Fact]
     public void Append_String_IncreasesLength()
     {
-        using DynamicString ds = new DynamicString();
+        using MutableString ds = new MutableString();
         ds.Append("abc");
         Assert.Equal("abc", ds.Read());
         Assert.Equal(3, ds.CurrStringLength);
@@ -75,7 +75,7 @@ public class DynamicStringTests
     [Fact]
     public void Append_Object_CallsToString()
     {
-        using DynamicString ds = new DynamicString();
+        using MutableString ds = new MutableString();
         ds.Append(123);
         Assert.Equal("123", ds.Read());
     }
@@ -83,7 +83,7 @@ public class DynamicStringTests
     [Fact]
     public void Append_Formattable_AvoidsAlloc()
     {
-        using DynamicString ds = new DynamicString();
+        using MutableString ds = new MutableString();
         ds.AppendFormattable(42);
         Assert.Equal("42", ds.Read());
     }
@@ -91,7 +91,7 @@ public class DynamicStringTests
     [Fact]
     public void AppendLine_AddsNewline()
     {
-        using DynamicString ds = new DynamicString();
+        using MutableString ds = new MutableString();
         ds.AppendLine("hi");
         Assert.Equal("hi\n", ds.Read());
     }
@@ -99,7 +99,7 @@ public class DynamicStringTests
     [Fact]
     public void AppendLine_Formattable_AddsNewline()
     {
-        using DynamicString ds = new DynamicString();
+        using MutableString ds = new MutableString();
         ds.AppendLineFormattable(3.14);
         Assert.True(ds.Read().StartsWith("3.14") && ds.Read().EndsWith("\n"));
     }
@@ -107,8 +107,8 @@ public class DynamicStringTests
     [Fact]
     public void Append_DynamicString()
     {
-        using DynamicString ds1 = new DynamicString("foo");
-        using DynamicString ds2 = new DynamicString();
+        using MutableString ds1 = new MutableString("foo");
+        using MutableString ds2 = new MutableString();
         ds2.Append(ds1);
         Assert.Equal("foo", ds2.Read());
     }
@@ -120,7 +120,7 @@ public class DynamicStringTests
     [Fact]
     public void Insert_Char_AtBeginning()
     {
-        using DynamicString ds = new DynamicString("bcd");
+        using MutableString ds = new MutableString("bcd");
         ds.Insert(0, 'a');
         Assert.Equal("abcd", ds.Read());
     }
@@ -128,7 +128,7 @@ public class DynamicStringTests
     [Fact]
     public void Insert_String_InMiddle()
     {
-        using DynamicString ds = new DynamicString("ace");
+        using MutableString ds = new MutableString("ace");
         ds.Insert(1, "bd");
         Assert.Equal("abdce", ds.Read());
     }
@@ -136,7 +136,7 @@ public class DynamicStringTests
     [Fact]
     public void Insert_ReadOnlySpan_Empty_DoesNothing()
     {
-        using DynamicString ds = new DynamicString("abc");
+        using MutableString ds = new MutableString("abc");
         ds.Insert(1, ReadOnlySpan<char>.Empty);
         Assert.Equal("abc", ds.Read());
     }
@@ -144,7 +144,7 @@ public class DynamicStringTests
     [Fact]
     public void Insert_Object_CallsToString()
     {
-        using DynamicString ds = new DynamicString("abc");
+        using MutableString ds = new MutableString("abc");
         ds.Insert(1, 123);
         Assert.Equal("a123bc", ds.Read());
     }
@@ -152,7 +152,7 @@ public class DynamicStringTests
     [Fact]
     public void Insert_Formattable_UsesSpanPath()
     {
-        using DynamicString ds = new DynamicString("abc");
+        using MutableString ds = new MutableString("abc");
         ds.InsertFormattable(1, 42);
         Assert.Equal("a42bc", ds.Read());
     }
@@ -164,7 +164,7 @@ public class DynamicStringTests
     [Fact]
     public void Clear_ResetsCurrentLength()
     {
-        using DynamicString ds = new DynamicString("hello");
+        using MutableString ds = new MutableString("hello");
         ds.Clear();
         Assert.Equal(0, ds.CurrStringLength);
         Assert.Equal("", ds.Read());
@@ -173,7 +173,7 @@ public class DynamicStringTests
     [Fact]
     public void ToString_ReturnsCopy()
     {
-        using DynamicString ds = new DynamicString("test");
+        using MutableString ds = new MutableString("test");
         string copy = ds.ToString();
         ds.Append('!');
         Assert.Equal("test", copy);
@@ -187,7 +187,7 @@ public class DynamicStringTests
     [Fact]
     public void ImplicitCast_ToSpan()
     {
-        using DynamicString ds = new DynamicString("xyz");
+        using MutableString ds = new MutableString("xyz");
         ReadOnlySpan<char> span = ds;
         Assert.Equal("xyz", span.ToString());
     }
@@ -195,7 +195,7 @@ public class DynamicStringTests
     [Fact]
     public void ExplicitCast_ToString()
     {
-        using DynamicString ds = new DynamicString("abc");
+        using MutableString ds = new MutableString("abc");
         string s = (string)ds;
         Assert.Equal("abc", s);
     }
@@ -203,7 +203,7 @@ public class DynamicStringTests
     [Fact]
     public void ImplicitCast_FromString()
     {
-        DynamicString ds = "hello";
+        MutableString ds = "hello";
         Assert.Equal("hello", ds.Read());
         ds.Dispose();
     }
@@ -215,7 +215,7 @@ public class DynamicStringTests
     [Fact]
     public void Append_EmptyString_DoesNothing()
     {
-        using DynamicString ds = new DynamicString("x");
+        using MutableString ds = new MutableString("x");
         ds.Append("");
         Assert.Equal("x", ds.Read());
     }
@@ -225,7 +225,7 @@ public class DynamicStringTests
     {
         // 构造一个 TryFormat 返回 false 的伪实现
         BadFormattable bad = new BadFormattable();
-        using DynamicString ds = new DynamicString();
+        using MutableString ds = new MutableString();
         ds.AppendFormattable(bad);
         Assert.Equal("Bad", ds.Read());
     }

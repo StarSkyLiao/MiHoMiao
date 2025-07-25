@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 
 namespace MiHoMiao.Core.Collections.Specialized;
 
-public ref struct DynamicString : IDisposable
+public ref struct MutableString : IDisposable
 {
     /// <summary>
     /// 底层字符串的长度的比特位最小值.
@@ -46,7 +46,7 @@ public ref struct DynamicString : IDisposable
     /// <summary>
     /// 创建默认的 DynamicString 对象
     /// </summary>
-    public DynamicString()
+    public MutableString()
     {
         StringValue = new string('\0', 1 << MinBitLengthOfStringLength);
         RawStringLength = 1 << MinBitLengthOfStringLength;
@@ -56,7 +56,7 @@ public ref struct DynamicString : IDisposable
     /// <summary>
     /// 使用指定的长度创建 DynamicString 对象
     /// </summary>
-    public DynamicString(int capacity, Action<string>? releaseAction = null)
+    public MutableString(int capacity, Action<string>? releaseAction = null)
     {
         StringValue = new string('\0', capacity);
         RawStringLength = capacity;
@@ -67,7 +67,7 @@ public ref struct DynamicString : IDisposable
     /// <summary>
     /// 使用指定的长度创建 DynamicString 对象
     /// </summary>
-    public DynamicString(int capacity)
+    public MutableString(int capacity)
     {
         StringValue = new string('\0', capacity);
         RawStringLength = capacity;
@@ -77,7 +77,7 @@ public ref struct DynamicString : IDisposable
     /// <summary>
     /// 使用指定的字符串创建 DynamicString 对象
     /// </summary>
-    public DynamicString(string rawString, Action<string>? releaseAction = null)
+    public MutableString(string rawString, Action<string>? releaseAction = null)
     {
         CurrStringLength = RawStringLength = rawString.Length;
         StringValue = rawString;
@@ -158,12 +158,12 @@ public ref struct DynamicString : IDisposable
     /// <summary>
     /// 在字符串的尾部插入一个 DynamicString 对象
     /// </summary>
-    public void Append(DynamicString value) => AppendString(value.StringValue);
+    public void Append(MutableString value) => AppendString(value.StringValue);
     
     /// <summary>
     /// 在字符串的尾部插入指定的内容与新的一行
     /// </summary>
-    public void AppendLine(DynamicString value)
+    public void AppendLine(MutableString value)
     {
         AppendString(value.StringValue);
         Append('\n');
@@ -330,14 +330,14 @@ public ref struct DynamicString : IDisposable
 
     #region Operators
 
-    public static implicit operator ReadOnlySpan<char>(DynamicString dynamicString) 
-        => dynamicString.StringSpan[..dynamicString.RawStringLength];
+    public static implicit operator ReadOnlySpan<char>(MutableString mutableString) 
+        => mutableString.StringSpan[..mutableString.RawStringLength];
     
-    public static explicit operator string(DynamicString dynamicString) 
-        => dynamicString.ToString();
+    public static explicit operator string(MutableString mutableString) 
+        => mutableString.ToString();
     
-    public static implicit operator DynamicString(string input) 
-        => new DynamicString(input);
+    public static implicit operator MutableString(string input) 
+        => new MutableString(input);
 
     #endregion
     

@@ -18,17 +18,17 @@ public class JarfterInterpreter()
         const string Tail = "]";
         length += Leader.Length + Tail.Length + input.Length * 3;
 
-        using DynamicString dynamicString = new DynamicString(length);
-        dynamicString.Append(Leader);
+        using MutableString mutableString = new MutableString(length);
+        mutableString.Append(Leader);
         foreach (string item in input)
         {
-            dynamicString.AppendFormattable('{');
-            dynamicString.Append(item);
-            dynamicString.AppendFormattable('}');
-            dynamicString.AppendFormattable(',');
+            mutableString.AppendFormattable('{');
+            mutableString.Append(item);
+            mutableString.AppendFormattable('}');
+            mutableString.AppendFormattable(',');
         }
-        dynamicString.Append(Tail);
-        Run(dynamicString);
+        mutableString.Append(Tail);
+        Run(mutableString);
     }
     
     public void Run(ReadOnlySpan<char> input)

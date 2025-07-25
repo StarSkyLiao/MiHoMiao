@@ -17,7 +17,7 @@ public static class JarfterCollector
     private static Dictionary<string, IJarfterFunc> JarfterFuncInitiation()
     {
         Dictionary<string, IJarfterFunc> result = [];
-        using DynamicString dynamicString = new DynamicString();
+        using MutableString mutableString = new MutableString();
         foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
         foreach (var type in assembly.GetTypes())
         {
@@ -25,13 +25,13 @@ public static class JarfterCollector
             if (type.IsAbstract || type.IsInterface) continue;
             IJarfterFunc? jarfterFunc = (IJarfterFunc?)Activator.CreateInstance(type);
             if (jarfterFunc is null) continue;
-            dynamicString.Clear();
+            mutableString.Clear();
             foreach (string name in jarfterFunc.JarfterFuncName)
             {
-                if (dynamicString.Length > 0) dynamicString.Insert(0, '.');
-                dynamicString.Insert(0, name);
-                if (ConflictNames.Contains(dynamicString.Read())) continue;
-                string readResult = dynamicString.ToString();
+                if (mutableString.Length > 0) mutableString.Insert(0, '.');
+                mutableString.Insert(0, name);
+                if (ConflictNames.Contains(mutableString.Read())) continue;
+                string readResult = mutableString.ToString();
                 if (result.TryAdd(readResult, jarfterFunc)) continue;
                 result.Remove(readResult);
                 ConflictNames.Add(readResult);
