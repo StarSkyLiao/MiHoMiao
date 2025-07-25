@@ -15,6 +15,12 @@ namespace MiHoMiao.Core.Numerics.Hash;
 /// </summary>
 public class HashRandom(int value)
 {
+
+    /// <summary>
+    /// 初始种子值
+    /// </summary>
+    public int InitialSeed { get; } = value;
+
     /// <summary>
     /// 获取经过哈希计算的值
     /// </summary>
@@ -85,6 +91,6 @@ public class HashRandom(int value)
     /// <summary>
     /// 重置随机种子至初始值.
     /// </summary>
-    public void ResetSeed() => Value = value;
+    public void ResetSeed() => Value = InitialSeed;
     
 }
