@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
 namespace MiHoMiao.Core.Numerics.GameDesign;
@@ -20,6 +21,7 @@ public class SignalController
     /// </summary>
     public void AddToSignal<T>(T signal) where T : Delegate
     {
+        Debug.Assert(Signals.ContainsKey(typeof(T)));
         if (!Signals.TryGetValue(typeof(T), out Delegate? value)) return;
         Signals[typeof(T)] = Delegate.Combine(value, signal);
     }
@@ -31,6 +33,7 @@ public class SignalController
     /// </summary>
     public void AddToSignal(Type type, Delegate signal)
     {
+        Debug.Assert(Signals.ContainsKey(type));
         if (!Signals.TryGetValue(type, out Delegate? value)) return;
         Signals[type] = Delegate.Combine(value, signal);
     }
@@ -42,6 +45,7 @@ public class SignalController
     /// </summary>
     public void RemoveSignal<T>(T signal) where T : Delegate
     {
+        Debug.Assert(Signals.ContainsKey(typeof(T)));
         if (!Signals.TryGetValue(typeof(T), out Delegate? value)) return;
         Signals[typeof(T)] = Delegate.Remove(value, signal)!;
     }
@@ -53,6 +57,7 @@ public class SignalController
     /// </summary>
     public void RemoveSignal(Type type, Delegate signal)
     {
+        Debug.Assert(Signals.ContainsKey(type));
         if (!Signals.TryGetValue(type, out Delegate? value)) return;
         Signals[type] = Delegate.Remove(value, signal)!;
     }
