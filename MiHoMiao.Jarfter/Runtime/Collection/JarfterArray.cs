@@ -7,10 +7,10 @@ using MiHoMiao.Jarfter.Runtime.Core;
 
 namespace MiHoMiao.Jarfter.Runtime.Collection;
 
-public class JarfterArray<T>(T[] elements) : JarfterObject, IJarfterParsable<JarfterArray<T>>, IEquatable<JarfterArray<T>>, IStructuralEquatable
+public class JarfterArray<T>(IList<T> elements) : JarfterObject, IJarfterParsable<JarfterArray<T>>, IEquatable<JarfterArray<T>>, IStructuralEquatable
     where T : ISpanParsable<T>
 {
-    public T[] Content => elements;
+    public IList<T> Content => elements;
 
     public override string ToString() => elements.GenericViewer();
     
@@ -67,7 +67,7 @@ public class JarfterArray<T>(T[] elements) : JarfterObject, IJarfterParsable<Jar
 
         if (ReferenceEquals(this, other)) return true;
         
-        if (Content.Length != otherContainer.Content.Length) return false;
+        if (Content.Count != otherContainer.Content.Count) return false;
         
         return !Content.Where((t, i) => !Equals(t, otherContainer.Content[i])).Any();
     }
@@ -78,7 +78,7 @@ public class JarfterArray<T>(T[] elements) : JarfterObject, IJarfterParsable<Jar
 
         if (ReferenceEquals(this, otherContainer)) return true;
 
-        if (Content.Length != otherContainer.Content.Length) return false;
+        if (Content.Count != otherContainer.Content.Count) return false;
 
         // 使用 comparer 比较数组元素
         return !Content.Where((t, i) => !comparer.Equals(t, otherContainer.Content[i])).Any();

@@ -30,9 +30,23 @@ public class JarfterInterpreter()
         mutableString.Append(Tail);
         Run(mutableString);
     }
+
+    internal void RunConsole(ReadOnlySpan<char> input)
+    {
+        if (input.Length == 0 || input[0] is '#') return;
+        JarfterFrame jarfterFrame = JarfterContext.CallingTree.Peek();
+        IList<JarfterFunc> blockCodesContent = jarfterFrame.BlockCodes.Content;
+        while (jarfterFrame.CurrIndex < blockCodesContent.Count)
+        {
+            JarfterFunc func = blockCodesContent[jarfterFrame.CurrIndex];
+            ++jarfterFrame.CurrIndex;
+            Run(func.FuncCode);
+        }
+    }
     
     public void Run(ReadOnlySpan<char> input)
     {
+        if (input.Length == 0 || input[0] is '#') return;
         JarfterContext.ParsingIndex = 0;
         ref int index = ref JarfterContext.ParsingIndex;
         while (char.IsWhiteSpace(input[index])) ++index;

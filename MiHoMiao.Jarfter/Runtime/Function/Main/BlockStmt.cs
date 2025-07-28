@@ -23,7 +23,7 @@ public sealed class BlockStmt : IJarfterFunc<BlockStmt, JarfterArray<JarfterFunc
     internal static bool RunBlockBody(JarfterContext jarfterContext, JarfterArray<JarfterFunc> arg0,
         JarfterFrame currFrame)
     {
-        for (currFrame.CurrIndex = 0; currFrame.CurrIndex < arg0.Content.Length; ++currFrame.CurrIndex)
+        for (currFrame.CurrIndex = 0; currFrame.CurrIndex < arg0.Content.Count; ++currFrame.CurrIndex)
         {
             JarfterFunc jarfterFunc = arg0.Content[currFrame.CurrIndex];
             jarfterContext.JarfterInterpreter.Run(jarfterFunc.FuncCode);
@@ -35,13 +35,14 @@ public sealed class BlockStmt : IJarfterFunc<BlockStmt, JarfterArray<JarfterFunc
     
     public static void JarfterFuncImpl(JarfterContext jarfterContext, JarfterArray<string> arg0)
     {
-        JarfterArray<JarfterFunc> array = new JarfterArray<JarfterFunc>(
-            Array.ConvertAll(
-                arg0.Content,
-                item => item.StartsWith('{')
-                    ? new JarfterFunc(item[1..^1])
-                    : new JarfterFunc(item))
-        );
+        JarfterFunc[] funcArray = new JarfterFunc[arg0.Content.Count];
+        for (int index = 0; index < arg0.Content.Count; index++)
+        {
+            string item = arg0.Content[index];
+            funcArray[index] = new JarfterFunc(item.StartsWith('{') ? item[1..^1] : item);
+        }
+        
+        JarfterArray<JarfterFunc> array = new JarfterArray<JarfterFunc>(funcArray);
         JarfterFrame currFrame = new JarfterFrame(array);
         jarfterContext.PushStack(currFrame);
         if (RunBlockBody(jarfterContext, array, currFrame)) jarfterContext.PopStack();

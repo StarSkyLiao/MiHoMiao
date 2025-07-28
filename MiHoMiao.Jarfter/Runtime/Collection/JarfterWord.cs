@@ -3,6 +3,7 @@ using MiHoMiao.Jarfter.Exception;
 using MiHoMiao.Jarfter.Runtime.Core;
 
 [assembly:InternalsVisibleTo("MiHoMiao.xUnit")]
+[assembly: InternalsVisibleTo("MiHoMiao.Program")]
 
 namespace MiHoMiao.Jarfter.Runtime.Collection;
 

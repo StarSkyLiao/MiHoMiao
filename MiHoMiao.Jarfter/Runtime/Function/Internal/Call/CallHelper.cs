@@ -33,14 +33,14 @@ public static class CallHelper
     /// 调用已注册的 alias 方法。
     /// 方法的参数为 args.
     /// </summary>
-    public static object? Invoke(JarfterContext jarfterContext, string alias, params ReadOnlySpan<string> args)
+    public static object? Invoke(JarfterContext jarfterContext, string alias, params IList<string> args)
     {
         if (!s_Map.TryGetValue(alias, out var method))
             throw new InvalidOperationException($"未注册的方法别名：{alias}");
 
         ParameterInfo[] parameterInfos = method.Method.GetParameters();
-        if (parameterInfos.Length != args.Length)
-            throw new ArgumentException($"参数个数不符：期望 {parameterInfos.Length}，实际 {args.Length}");
+        if (parameterInfos.Length != args.Count)
+            throw new ArgumentException($"参数个数不符：期望 {parameterInfos.Length}，实际 {args.Count}");
 
         var parsedArgs = new object?[parameterInfos.Length];
         for (int i = 0; i < parameterInfos.Length; i++)
