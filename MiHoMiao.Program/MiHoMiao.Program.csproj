@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MiHoMiao.Core\MiHoMiao.Core.csproj" />
       <ProjectReference Include="..\MiHoMiao.Jarfter\MiHoMiao.Jarfter.csproj" />
     </ItemGroup>
 
