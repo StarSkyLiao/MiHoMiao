@@ -16,7 +16,7 @@ namespace MiHoMiao.Core.Collections.Generic;
 /// <typeparam name="T">集合中元素的类型，必须为非空类型。</typeparam>
 public class LruHashSet<T>(int capacity) : ICollection<T> where T : notnull
 {
-    private readonly LinkedList<T> m_LinkedList = [];
+    internal readonly LinkedList<T> LinkedList = [];
     private readonly Dictionary<T, LinkedListNode<T>> m_Dictionary = [];
     
     #region IEnumerableMethods
@@ -25,7 +25,7 @@ public class LruHashSet<T>(int capacity) : ICollection<T> where T : notnull
     /// 获取集合的枚举器，用于按插入顺序遍历元素。
     /// </summary>
     /// <returns>返回一个按插入顺序遍历元素的枚举器。</returns>
-    public IEnumerator<T> GetEnumerator() => m_LinkedList.GetEnumerator();
+    public IEnumerator<T> GetEnumerator() => LinkedList.GetEnumerator();
 
     /// <summary>
     /// 获取非泛型枚举器，用于兼容非泛型接口。
@@ -40,12 +40,12 @@ public class LruHashSet<T>(int capacity) : ICollection<T> where T : notnull
     /// <summary>
     /// 获取集合中元素的数量。
     /// </summary>
-    public int Count => m_LinkedList.Count;
+    public int Count => LinkedList.Count;
 
     /// <summary>
     /// 获取集合的版本号，每次修改集合时版本号递增。
     /// </summary>
-    public int Version { get; private set; }
+    internal int Version { get; private set; }
 
     /// <summary>
     /// 获取一个值，指示集合是否为只读。
@@ -63,18 +63,18 @@ public class LruHashSet<T>(int capacity) : ICollection<T> where T : notnull
         ++Version;
         if (m_Dictionary.TryGetValue(item, out LinkedListNode<T>? node))
         {
-            m_LinkedList.Remove(node);
-            m_LinkedList.AddFirst(node);
+            LinkedList.Remove(node);
+            LinkedList.AddFirst(node);
         }
         else
         {
-            node = m_LinkedList.AddFirst(item);
+            node = LinkedList.AddFirst(item);
             m_Dictionary.Add(item, node);
-            while (m_LinkedList.Count > capacity)
+            while (LinkedList.Count > capacity)
             {
-                node = m_LinkedList.Last;
+                node = LinkedList.Last;
                 m_Dictionary.Remove(node!.Value);
-                m_LinkedList.RemoveLast();
+                LinkedList.RemoveLast();
             }
         }
     }
@@ -85,7 +85,7 @@ public class LruHashSet<T>(int capacity) : ICollection<T> where T : notnull
     public void Clear()
     {
         ++Version;
-        m_LinkedList.Clear();
+        LinkedList.Clear();
         m_Dictionary.Clear();
     }
     
@@ -107,7 +107,7 @@ public class LruHashSet<T>(int capacity) : ICollection<T> where T : notnull
     /// </summary>
     /// <param name="array">目标数组。</param>
     /// <param name="arrayIndex">目标数组的起始索引。</param>
-    public void CopyTo(T[] array, int arrayIndex) => m_LinkedList.CopyTo(array, arrayIndex);
+    public void CopyTo(T[] array, int arrayIndex) => LinkedList.CopyTo(array, arrayIndex);
 
     /// <summary>
     /// 从集合中移除指定元素。
@@ -118,7 +118,7 @@ public class LruHashSet<T>(int capacity) : ICollection<T> where T : notnull
     {
         if (!m_Dictionary.TryGetValue(item, out LinkedListNode<T>? node)) return false;
         ++Version;
-        m_LinkedList.Remove(node);
+        LinkedList.Remove(node);
         return m_Dictionary.Remove(item);
     }
 
