@@ -12,6 +12,8 @@
 #if UseEmit
 using System.Reflection.Emit;
 #endif
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using System.Reflection;
@@ -22,7 +24,7 @@ using System.Runtime.InteropServices;
 
 namespace MiHoMiao.Core.Collections.Unsafe; 
 
-public ref struct MutableString : IDisposable
+public ref struct MutableString : IDisposable, IEquatable<MutableString>, IEnumerable<char>
 {
     /// <summary>
     /// 底层字符串的长度的比特位最小值.
@@ -108,6 +110,14 @@ public ref struct MutableString : IDisposable
         if (StringValue.Length != CurrStringLength) SetLength(StringValue, CurrStringLength);
         return new string(StringValue);
     }
+
+    #region IEnumerable
+
+    public IEnumerator<char> GetEnumerator() => Read().GetEnumerator();
+    
+    IEnumerator IEnumerable.GetEnumerator() => Read().GetEnumerator();
+    
+    #endregion
 
     #region AppendMethods
     
@@ -331,6 +341,23 @@ public ref struct MutableString : IDisposable
         ReleaseAction = null;
     }
 
+    public bool Equals(MutableString other) => Read().Equals(other.Read());
+
+    #region Operators
+
+    public static implicit operator ReadOnlySpan<char>(MutableString mutableString) 
+        => mutableString.StringSpan[..mutableString.RawStringLength];
+    
+    public static explicit operator string(MutableString mutableString) 
+        => mutableString.ToString();
+    
+    public static implicit operator MutableString(string input) 
+        => new MutableString(input);
+
+    #endregion
+    
+    #region PrivateMethods
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AppendFormattableInternal<T>(T value) where T : ISpanFormattable
     {
@@ -378,20 +405,9 @@ public ref struct MutableString : IDisposable
         RawStringLength = newString.Length;
     }
 
-    #region Operators
-
-    public static implicit operator ReadOnlySpan<char>(MutableString mutableString) 
-        => mutableString.StringSpan[..mutableString.RawStringLength];
-    
-    public static explicit operator string(MutableString mutableString) 
-        => mutableString.ToString();
-    
-    public static implicit operator MutableString(string input) 
-        => new MutableString(input);
-
     #endregion
     
-    #region Strings
+    #region StringsUtils
 
 #if UseEmit
     
@@ -454,7 +470,7 @@ public ref struct MutableString : IDisposable
     
     #endregion
 
-    #region Spans
+    #region SpanUtils
     
     /// <summary>
     /// 将 source 中的字符复制到 destination 中.
