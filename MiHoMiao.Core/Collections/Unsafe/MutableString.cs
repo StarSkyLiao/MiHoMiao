@@ -13,7 +13,6 @@
 using System.Reflection.Emit;
 #endif
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using System.Reflection;
@@ -341,7 +340,8 @@ public ref struct MutableString : IDisposable, IEquatable<MutableString>, IEnume
         ReleaseAction = null;
     }
 
-    public bool Equals(MutableString other) => Read().Equals(other.Read());
+    public bool Equals(MutableString other) 
+        => StringSpan[..CurrStringLength].SequenceEqual(other.StringSpan[..other.CurrStringLength]);
 
     #region Operators
 
@@ -420,6 +420,7 @@ public ref struct MutableString : IDisposable, IEquatable<MutableString>, IEnume
     /// 不会进行任何检查,
     /// 这意味着 newLength 如果大于 content 的实际长度,
     /// 修改仍将发生, 此时继续访问 content 可能会读取到一些意料之外的内容.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static void SetLength(string content, int newLength) => s_SetLengthAction(content, newLength);
     
