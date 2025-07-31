@@ -6,6 +6,7 @@
 
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using MiHoMiao.Core.Numerics.Values;
 
 namespace MiHoMiao.Core.Numerics.Hash;
 
@@ -13,7 +14,7 @@ namespace MiHoMiao.Core.Numerics.Hash;
 /// 基于哈希的伪随机数生成器, 提供多种类型的随机数生成方法.
 /// 该类通过哈希算法生成确定性的随机数序列, 适用于需要可重复随机序列的场景.
 /// </summary>
-public class HashRandom(int value)
+public class HashRandom(int value) : Random
 {
 
     /// <summary>
@@ -25,51 +26,42 @@ public class HashRandom(int value)
     /// 获取经过哈希计算的值
     /// </summary>
     public int Value { get => field = HashCodes.Combine(field); private set; } = value;
+
+    public override int Next() => Value.Int32().Abs();
+
+    public override int Next(int maxValue) => Value.Range(0, maxValue);
+
+    public override int Next(int minValue, int maxValue)=> Value.Range(minValue, maxValue);
     
-    /// <summary>
-    /// 生成指定范围内的随机整数
-    /// </summary>
-    public int Range(int minValue, int maxValue) => Value.Range(minValue, maxValue);
+    public override long NextInt64() => (((long)(uint)Value.Int32() << 32) | (uint)Value.Int32()).Abs();
 
-    /// <summary>
-    /// 生成指定范围内的随机整数
-    /// </summary>
-    public float Single(float minValue, float maxValue) => Value.Range(minValue, maxValue);
+    public override long NextInt64(long maxValue) 
+        => (((long)(uint)Value.Int32() << 32) | (uint)Value.Int32()).CircleClamp(0, maxValue);
+    
+    public override long NextInt64(long minValue, long maxValue)
+        => (((long)(uint)Value.Int32() << 32) | (uint)Value.Int32()).CircleClamp(minValue, maxValue);
 
-    /// <summary>
-    /// 生成指定范围内的随机双精度浮点数
-    /// </summary>
-    public double Double(double minValue, double maxValue) => Value.Range(minValue, maxValue);
+    public override float NextSingle() => Value.Range(0.0f, 1.0f);
 
-    /// <summary>
-    /// 生成一个随机32位整数
-    /// </summary>
-    public int Int32() => Value.Int32();
-
-    /// <summary>
-    /// 生成 [0, 1) 之间的随机单精度浮点数
-    /// </summary>
-    public float NextSingle() => Single(0.0f, 1.0f);
-
-    /// <summary>
-    /// 生成 [0, 1) 之间的随机双精度浮点数
-    /// </summary>
-    public double NextDouble() => Double(0.0, 1.0);
+    protected override double Sample() => Value.Range(0.0, 1.0);
+    
+    public override double NextDouble() => Value.Range(0.0, 1.0);
 
     /// <summary>
     /// 生成随机布尔值
     /// </summary>
-    public bool NextBool(double chance) => Double(0, 1) < chance;
+    public bool NextBool(double chance) => NextDouble() < chance;
 
-    /// <summary>
-    /// 填充字节数组
-    /// </summary>
-    public void NextBytes(byte[] buffer)
+    public override void NextBytes(byte[] buffer)
     {
         ArgumentNullException.ThrowIfNull(buffer);
-
+        NextBytes(buffer.AsSpan());
+    }
+    
+    public override void NextBytes(Span<byte> buffer)
+    {
         // 使用Unsafe直接写入内存
-        ref byte bufferRef = ref MemoryMarshal.GetReference(buffer.AsSpan());
+        ref byte bufferRef = ref MemoryMarshal.GetReference(buffer);
         int i = 0;
 
         // 批量填充4字节（int大小）
@@ -87,6 +79,7 @@ public class HashRandom(int value)
             Unsafe.Add(ref bufferRef, i + j) = (byte)(value >> (j * 8));
         }
     }
+
 
     /// <summary>
     /// 重置随机种子至初始值.

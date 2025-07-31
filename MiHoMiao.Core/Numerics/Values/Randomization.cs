@@ -127,11 +127,6 @@ public static class Randomization
     /// 否则, 返回 false
     /// </summary>
     public static bool Try(this Random random, float chance) => chance > random.Range(0f, 1f);
-        
-    /// <summary>
-    /// 返回数组中的一个随机元素
-    /// </summary>
-    public static T? RandomSelect<T>(this T[] array) => array.Length == 0 ? default : array[s_Random.Next(0, array.Length)];
     
     /// <summary>
     /// 返回枚举中的一个随机元素
@@ -149,58 +144,6 @@ public static class Randomization
     {
         T[] array = enumerable as T[] ?? enumerable.ToArray();
         return array.Length == 0 ? default : array[random.Range(0, array.Length)];
-    }
-
-    /// <summary>
-    /// 将数组 array 随机打乱
-    /// </summary>
-    public static void Shuffle<T>(this Span<T> array)
-    {
-        int n = array.Length;
-        while (n-- > 1)
-        {
-            int k = s_Random.Next(0, n + 1);
-            (array[n], array[k]) = (array[k], array[n]);
-        }
-    }
-    
-    /// <summary>
-    /// 将数组 array 随机打乱
-    /// </summary>
-    public static void Shuffle<T>(this IList<T> array)
-    {
-        int n = array.Count;
-        while (n-- > 1)
-        {
-            int k = s_Random.Next(0, n + 1);
-            (array[n], array[k]) = (array[k], array[n]);
-        }
-    }
-
-    /// <summary>
-    /// 将数组 array 随机打乱
-    /// </summary>
-    public static void Shuffle<T>(this Random random, IList<T> array)
-    {
-        int n = array.Count;
-        while (n-- > 1)
-        {
-            int k = random.Next(n + 1);
-            (array[n], array[k]) = (array[k], array[n]);
-        }
-    }
-    
-    /// <summary>
-    /// 将数组 array 随机打乱
-    /// </summary>
-    public static void Shuffle<T>(this Random random, Span<T> array)
-    {
-        int n = array.Length;
-        while (n-- > 1)
-        {
-            int k = random.Next(n + 1);
-            (array[n], array[k]) = (array[k], array[n]);
-        }
     }
     
 }
