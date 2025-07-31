@@ -17,6 +17,9 @@ public static class TimeTest
 {
     private static readonly Stopwatch s_Stopwatch = new Stopwatch();
     
+    /// <summary>
+    /// 运行时间使用测试，测量指定方法的时间消耗量。
+    /// </summary>
     public static void RunTest(Action testAction, string? name = null, int iterations = 1, RunTestOption option = 0)
     {
         StringBuilder stringBuilder = new StringBuilder();
