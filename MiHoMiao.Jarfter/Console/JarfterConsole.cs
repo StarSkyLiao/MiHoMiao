@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using MiHoMiao.Core.Collections.Generic;
 using MiHoMiao.Jarfter.Runtime.Collection;
@@ -8,40 +7,36 @@ namespace MiHoMiao.Jarfter.Console;
 
 public class JarfterConsole
 {
+    /// <summary>
+    /// 历史记录的指令, 用于上下切换
+    /// </summary>
     [field: AllowNull, MaybeNull]
-    private LruHashSet<string> HistoryCommand
-        => field ??= new LruHashSet<string>(128);
+    private LruHashSet<string> HistoryCommand => field ??= new LruHashSet<string>(128);
 
+    /// <summary>
+    /// 用于迭代历史记录的迭代器
+    /// </summary>
     [field: AllowNull, MaybeNull]
-    private LruIterator<string> HistoryIterator 
-        => field ??= new LruIterator<string>(HistoryCommand);
+    private LruIterator<string> HistoryIterator => field ??= new LruIterator<string>(HistoryCommand);
     
-    private readonly List<JarfterFunc> m_FuncCodes = [];
-    
-    [field: AllowNull, MaybeNull]
-    private JarfterArray<JarfterFunc> JarfterFunc 
-        => field ??= new JarfterArray<JarfterFunc>(m_FuncCodes);
-
+    /// <summary>
+    /// Jarfter 的解释器
+    /// </summary>
     private readonly JarfterInterpreter m_Interpreter = new JarfterInterpreter();
-
-    public JarfterConsole()
-    {
-        m_Interpreter.JarfterContext.CallingTree.Push(new JarfterFrame(JarfterFunc));
-    }
     
+    /// <summary>
+    /// 执行环境的上下文
+    /// </summary>
+    private readonly List<JarfterFunc> m_FuncCodes = [];
+
+    public JarfterConsole() => m_Interpreter.JarfterContext.CallingTree.Push(
+        new JarfterFrame(new JarfterArray<JarfterFunc>(m_FuncCodes))
+    );
+
     /// <summary>
     /// 执行一行语句
     /// </summary>
     public void Run(string input)
-    {
-#if DEBUG
-        RunDebug(input);
-#else 
-        RunRelease(input);
-#endif
-    }
-    
-    public void RunRelease(string input)
     {
         m_FuncCodes.Add(new JarfterFunc(input));
         try
@@ -52,6 +47,7 @@ public class JarfterConsole
         {
             System.Console.WriteLine(ex.Message);
             m_FuncCodes.RemoveAt(m_FuncCodes.Count - 1);
+            throw;
         }
         finally
         {
@@ -59,13 +55,6 @@ public class JarfterConsole
         }
     }
     
-    internal void RunDebug(string input)
-    {
-        m_FuncCodes.Add(new JarfterFunc(input));
-        m_Interpreter.RunConsole(input);
-        HistoryCommand.Add(input);
-    }
-
     /// <summary>
     /// 获取更早的输入记录
     /// </summary>
