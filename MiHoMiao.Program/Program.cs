@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // ConsoleProgram.Run();
@@ -12,3 +13,15 @@ unsafe
     Console.Write(input);
 }
 
+abstract class Compilation
+{
+    public abstract Compilation WithOptions();
+}
+
+class CSharpCompilation : Compilation
+{
+    public override CSharpCompilation WithOptions()
+    {
+        return null;
+    }
+}

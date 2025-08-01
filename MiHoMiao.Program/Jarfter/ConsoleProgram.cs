@@ -11,8 +11,8 @@ internal static class ConsoleProgram
         {
             string input = Console.ReadLine()!;
             if (string.IsNullOrEmpty(input)) break;
-            jarfterConsole.RunDebug(input);
+            jarfterConsole.Run(input);
         }
-        jarfterConsole.RunDebug("print (peek)");
+        jarfterConsole.Run("print (peek)");
     }
 }
