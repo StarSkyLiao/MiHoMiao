@@ -11,7 +11,7 @@ public class InterpreterTest
     {
         JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
         jarfterInterpreter.Run("var item 500");
-        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item")!.ToString());
+        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item").ToString());
         Assert.Throws<VariableMulDeclaredException>(() => jarfterInterpreter.Run("var item 500"));
     }
     
@@ -20,7 +20,7 @@ public class InterpreterTest
     {
         JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
         jarfterInterpreter.Run("main.var item.my 500");
-        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item.my")!.ToString());
+        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item.my").ToString());
         Assert.Throws<VariableMulDeclaredException>(() => jarfterInterpreter.Run("main.var item.my 500"));
     }
     
@@ -40,7 +40,7 @@ public class InterpreterTest
         JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
         jarfterInterpreter.Run("var item 500");
         jarfterInterpreter.Run("var copy @item");
-        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("copy")!.ToString());
+        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("copy").ToString());
     }
     
     [Fact]
@@ -48,9 +48,9 @@ public class InterpreterTest
     {
         JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
         jarfterInterpreter.Run("var item 500");
-        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item")!.ToString());
+        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item").ToString());
         jarfterInterpreter.Run("let item 100");
-        Assert.Equal("100", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item")!.ToString());
+        Assert.Equal("100", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item").ToString());
         Assert.Throws<VariableNotDeclaredException>(() => jarfterInterpreter.Run("let copy 100"));
     }
     
@@ -64,14 +64,14 @@ public class InterpreterTest
             block[ { var item 100 },]
             """
         );
-        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item")!.ToString());
+        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run(
             """
             block[ { let item 100 },]
             """
         );
-        Assert.Equal("100", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item")!.ToString());
+        Assert.Equal("100", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run(
             """
@@ -86,20 +86,20 @@ public class InterpreterTest
     {
         JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
         jarfterInterpreter.Run("execute true { var item 500 }");
-        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item")!.ToString());
+        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("execute false { let item 100 }   ");
-        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item")!.ToString());
+        Assert.Equal("500", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("execute false { let item 100 } else { let item 400 }");
-        Assert.Equal("400", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item")!.ToString());
+        Assert.Equal("400", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("var boolean true ");
         jarfterInterpreter.Run("execute @boolean { let item 300 } else { let item 600 }");
-        Assert.Equal("300", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item")!.ToString());
+        Assert.Equal("300", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("execute true { block[ { let boolean 100 },] }");
-        Assert.Equal("100", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("boolean")!.ToString());
+        Assert.Equal("100", jarfterInterpreter.JarfterContext.JarfterSymbolTable.LoadVariable("boolean").ToString());
         
     }
     
@@ -111,19 +111,19 @@ public class InterpreterTest
         jarfterInterpreter.Run("var item 0");
         
         jarfterInterpreter.Run("let item @{ add @item 1 }");
-        Assert.Equal("1", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("1", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item @{ sub @item -1 }");
-        Assert.Equal("2", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("2", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item @{ mul @item 3 }");
-        Assert.Equal("6", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("6", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item @{ div @item 2 }");
-        Assert.Equal("3", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("3", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item @{ mod @item 2 }");
-        Assert.Equal("1", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("1", symbols.LoadVariable("item").ToString());
         
     }
     
@@ -134,10 +134,10 @@ public class InterpreterTest
         JarfterSymbolTable<JarfterObject> symbols = jarfterInterpreter.JarfterContext.JarfterSymbolTable;
         
         jarfterInterpreter.Run("var item 0");
-        Assert.Equal("0", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("0", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("loop 5 { let item @{ add @item 1 } }   ");
-        Assert.Equal("5", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("5", symbols.LoadVariable("item").ToString());
         
     }
     
@@ -148,10 +148,10 @@ public class InterpreterTest
         JarfterSymbolTable<JarfterObject> symbols = jarfterInterpreter.JarfterContext.JarfterSymbolTable;
         
         jarfterInterpreter.Run("var item 0");
-        Assert.Equal("0", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("0", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("repeat 5 [ { let item @{ add @item @i } } ]   ");
-        Assert.Equal("10", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("10", symbols.LoadVariable("item").ToString());
         
     }
     
@@ -180,7 +180,7 @@ public class InterpreterTest
             """
         );
 
-        Assert.Equal("6", symbols.LoadVariable("n")!.ToString());
+        Assert.Equal("6", symbols.LoadVariable("n").ToString());
         
     }
     
@@ -220,7 +220,7 @@ public class InterpreterTest
             """
         );
 
-        Assert.Equal("6", symbols.LoadVariable("n")!.ToString());
+        Assert.Equal("6", symbols.LoadVariable("n").ToString());
         
     }
     
@@ -260,7 +260,7 @@ public class InterpreterTest
             """
         );
     
-        Assert.Equal("6", symbols.LoadVariable("n")!.ToString());
+        Assert.Equal("6", symbols.LoadVariable("n").ToString());
         
     }
     
@@ -300,7 +300,7 @@ public class InterpreterTest
             """
         );
     
-        Assert.Equal("6", symbols.LoadVariable("n")!.ToString());
+        Assert.Equal("6", symbols.LoadVariable("n").ToString());
         
     }
     
@@ -339,7 +339,7 @@ public class InterpreterTest
             """
         );
     
-        Assert.Equal("6", symbols.LoadVariable("n")!.ToString());
+        Assert.Equal("6", symbols.LoadVariable("n").ToString());
         
     }
     
@@ -375,7 +375,7 @@ public class InterpreterTest
             """
         );
     
-        Assert.Equal("6", symbols.LoadVariable("n")!.ToString());
+        Assert.Equal("6", symbols.LoadVariable("n").ToString());
         
     }
     
@@ -412,7 +412,7 @@ public class InterpreterTest
             """
         );
     
-        Assert.Equal("6", symbols.LoadVariable("n")!.ToString());
+        Assert.Equal("6", symbols.LoadVariable("n").ToString());
         
     }
     
@@ -424,19 +424,19 @@ public class InterpreterTest
         jarfterInterpreter.Run("var item 0");
         
         jarfterInterpreter.Run("let item (max [1, 2, 3, 4, 5])");
-        Assert.Equal("5", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("5", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item (min [1, 2, 3, 4, 5])");
-        Assert.Equal("1", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("1", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item (avg [1, 2, 3, 4, 5])");
-        Assert.Equal("3", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("3", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item (sum [1, 2, 3, 4, 5])");
-        Assert.Equal("15", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("15", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item (round 1.45)");
-        Assert.Equal("1", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("1", symbols.LoadVariable("item").ToString());
         
     }
     
@@ -448,16 +448,28 @@ public class InterpreterTest
         jarfterInterpreter.Run("var item 0");
         
         jarfterInterpreter.Run("let item (ceil 1.6)");
-        Assert.Equal("2", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("2", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item (floor 1.6)");
-        Assert.Equal("1", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("1", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item (clamp 6.5 1 4.2)");
-        Assert.Equal("4.2", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("4.2", symbols.LoadVariable("item").ToString());
         
         jarfterInterpreter.Run("let item (pow 3 3)");
-        Assert.Equal("27", symbols.LoadVariable("item")!.ToString());
+        Assert.Equal("27", symbols.LoadVariable("item").ToString());
+        
+    }
+ 
+    [Fact]
+    public void MathArrayExMethod()
+    {
+        JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
+        JarfterSymbolTable<JarfterObject> symbols = jarfterInterpreter.JarfterContext.JarfterSymbolTable;
+        jarfterInterpreter.Run("var item 0");
+        
+        jarfterInterpreter.Run("let item (sum (range 1 5))");
+        Assert.Equal("10", symbols.LoadVariable("item").ToString());
         
     }
     
