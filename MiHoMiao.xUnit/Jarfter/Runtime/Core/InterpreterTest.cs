@@ -416,5 +416,29 @@ public class InterpreterTest
         
     }
     
+    [Fact]
+    public void MathExMethod()
+    {
+        JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
+        JarfterSymbolTable<JarfterObject> symbols = jarfterInterpreter.JarfterContext.JarfterSymbolTable;
+        jarfterInterpreter.Run("var item 0");
+        
+        jarfterInterpreter.Run("let item (max [1, 2, 3, 4, 5])");
+        Assert.Equal("5", symbols.LoadVariable("item")!.ToString());
+        
+        jarfterInterpreter.Run("let item (min [1, 2, 3, 4, 5])");
+        Assert.Equal("1", symbols.LoadVariable("item")!.ToString());
+        
+        jarfterInterpreter.Run("let item (avg [1, 2, 3, 4, 5])");
+        Assert.Equal("3", symbols.LoadVariable("item")!.ToString());
+        
+        jarfterInterpreter.Run("let item (sum [1, 2, 3, 4, 5])");
+        Assert.Equal("15", symbols.LoadVariable("item")!.ToString());
+        
+        jarfterInterpreter.Run("let item (round 1.45)");
+        Assert.Equal("1", symbols.LoadVariable("item")!.ToString());
+        
+    }
+    
     
 }

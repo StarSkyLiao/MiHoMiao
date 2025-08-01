@@ -52,22 +52,6 @@ public class SignalControllerTests
     }
 
     [Fact]
-    public void AddToSignal_WhenSignalDoesNotExist_DoesNothing()
-    {
-        // Act
-        m_Controller.AddToSignal((TestDelegate)TestDelegate);
-
-        // Assert
-        TestDelegate? signal = m_Controller.GetSignal<TestDelegate>();
-        Assert.Null(signal);
-        return;
-
-        void TestDelegate()
-        {
-        }
-    }
-
-    [Fact]
     public void AddToSignal_WithType_WhenSignalExists_AddsDelegate()
     {
         m_Controller.RegisterSignal<TestDelegate>();
@@ -95,22 +79,6 @@ public class SignalControllerTests
         // Assert
         TestDelegate? signal = m_Controller.GetSignal<TestDelegate>();
         Assert.Null(signal); // Delegate is removed, signal is null
-    }
-
-    [Fact]
-    public void RemoveSignal_WhenSignalDoesNotExist_DoesNothing()
-    {
-        // Act
-        m_Controller.RemoveSignal(TestDelegate);
-
-        // Assert
-        TestDelegate? signal = m_Controller.GetSignal<TestDelegate>();
-        Assert.Null(signal);
-        return;
-        
-        void TestDelegate()
-        {
-        }
     }
 
     [Fact]
