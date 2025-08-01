@@ -440,5 +440,25 @@ public class InterpreterTest
         
     }
     
+    [Fact]
+    public void MathEx2Method()
+    {
+        JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
+        JarfterSymbolTable<JarfterObject> symbols = jarfterInterpreter.JarfterContext.JarfterSymbolTable;
+        jarfterInterpreter.Run("var item 0");
+        
+        jarfterInterpreter.Run("let item (ceil 1.6)");
+        Assert.Equal("2", symbols.LoadVariable("item")!.ToString());
+        
+        jarfterInterpreter.Run("let item (floor 1.6)");
+        Assert.Equal("1", symbols.LoadVariable("item")!.ToString());
+        
+        jarfterInterpreter.Run("let item (clamp 6.5 1 4.2)");
+        Assert.Equal("4.2", symbols.LoadVariable("item")!.ToString());
+        
+        jarfterInterpreter.Run("let item (pow 3 3)");
+        Assert.Equal("27", symbols.LoadVariable("item")!.ToString());
+        
+    }
     
 }
