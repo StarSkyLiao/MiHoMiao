@@ -13,7 +13,7 @@ public class JarfterAccessor(JarfterObject content, string name) : JarfterObject
 
     private class TestSymbolTable : JarfterSymbolTable<JarfterObject>
     {
-        public override JarfterObject? LoadVariable(string name) => new JarfterObject();
+        public override JarfterObject LoadVariable(string name) => new JarfterObject();
     }
     
     internal static JarfterAccessor ParseInternal(ReadOnlySpan<char> input)

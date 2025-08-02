@@ -131,7 +131,7 @@ public static class Randomization
     /// <summary>
     /// 返回枚举中的一个随机元素
     /// </summary>
-    public static T? Select<T>(IEnumerable<T> enumerable)
+    public static T? Select<T>(this IEnumerable<T> enumerable)
     {
         T[] array = enumerable as T[] ?? enumerable.ToArray();
         return array.Length == 0 ? default : array[s_Random.Next(0, array.Length)];
