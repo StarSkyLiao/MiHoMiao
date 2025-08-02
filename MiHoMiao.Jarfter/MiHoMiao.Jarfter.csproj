@@ -16,4 +16,8 @@
       <ProjectReference Include="..\MiHoMiao.Core\MiHoMiao.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Runtime\Function\Internal\Array\" />
+    </ItemGroup>
+
 </Project>

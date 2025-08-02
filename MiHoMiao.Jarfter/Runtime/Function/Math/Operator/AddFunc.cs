@@ -6,11 +6,11 @@ using MiHoMiao.Jarfter.Runtime.Function.Template;
 namespace MiHoMiao.Jarfter.Runtime.Function.Math.Operator;
 
 [UsedImplicitly]
-public class AddFunc : IJarfterFunc<AddFunc, long, long>
+public class AddFunc : IJarfterFunc<AddFunc, decimal, decimal>
 {
     public string[] JarfterFuncName { get; } = ["add", "math"];
 
-    public static void JarfterFuncImpl(JarfterContext jarfterContext, long arg0, long arg1)
+    public static void JarfterFuncImpl(JarfterContext jarfterContext, decimal arg0, decimal arg1)
     {
         jarfterContext.CalculationStack.Push(arg0 + arg1);
     }
@@ -28,32 +28,9 @@ public class AddFuncString : IJarfterFunc<AddFuncString, string, string>
 }
 
 [UsedImplicitly]
-public class AddFuncFloat : IJarfterFunc<AddFuncFloat, decimal, decimal>
-{
-    public string[] JarfterFuncName { get; } = ["add.float", "math"];
-
-    public static void JarfterFuncImpl(JarfterContext jarfterContext, decimal arg0, decimal arg1)
-    {
-        jarfterContext.CalculationStack.Push(arg0 + arg1);
-    }
-}
-
-[UsedImplicitly]
-public class AddFuncList : IJarfterFunc<AddFuncList, JarfterArray<long>>
+public class AddFuncList : IJarfterFunc<AddFuncList, JarfterArray<decimal>>
 {
     public string[] JarfterFuncName { get; } = ["add.list", "math"];
-
-    public static void JarfterFuncImpl(JarfterContext jarfterContext, JarfterArray<long> arg1)
-    {
-        jarfterContext.CalculationStack.Push(arg1.Content.Sum());
-    }
-
-}
-
-[UsedImplicitly]
-public class AddFuncFloatList : IJarfterFunc<AddFuncFloatList, JarfterArray<decimal>>
-{
-    public string[] JarfterFuncName { get; } = ["add.float.list", "math"];
 
     public static void JarfterFuncImpl(JarfterContext jarfterContext, JarfterArray<decimal> arg1)
     {

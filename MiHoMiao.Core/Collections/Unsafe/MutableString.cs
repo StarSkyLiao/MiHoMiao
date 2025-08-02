@@ -12,6 +12,7 @@
 #if UseEmit
 using System.Reflection.Emit;
 #endif
+using System.Collections;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using System.Reflection;
@@ -22,7 +23,7 @@ using System.Runtime.InteropServices;
 
 namespace MiHoMiao.Core.Collections.Unsafe; 
 
-public ref struct MutableString : IDisposable
+public ref struct MutableString : IDisposable, IEquatable<MutableString>, IEnumerable<char>
 {
     /// <summary>
     /// 底层字符串的长度的比特位最小值.
@@ -86,9 +87,12 @@ public ref struct MutableString : IDisposable
     
     /// <summary>
     /// 读取字符串的内容.
-    /// [Warning]: 返回的字符串不能被保存下来！
-    /// 如果需要保存返回值, 参阅<see cref="ToString"/>方法.
     /// </summary>
+    /// <remarks>
+    /// 返回的字符串不能被保存下来！
+    /// 返回的字符串引用直接指向底层缓冲区，且可能随后续操作而改变。
+    /// 如果需要保存返回值, 参阅<see cref="ToString"/>方法.
+    /// </remarks>
     [Pure]
     public string Read()
     {
@@ -106,6 +110,14 @@ public ref struct MutableString : IDisposable
         return new string(StringValue);
     }
 
+    #region IEnumerable
+
+    public IEnumerator<char> GetEnumerator() => Read().GetEnumerator();
+    
+    IEnumerator IEnumerable.GetEnumerator() => Read().GetEnumerator();
+    
+    #endregion
+
     #region AppendMethods
     
     /// <summary>
@@ -120,6 +132,54 @@ public ref struct MutableString : IDisposable
         
         System.Runtime.CompilerServices.Unsafe.Add(ref MemoryMarshal.GetReference(StringSpan), oldLength++) = value;
     }
+
+    /// <summary>
+    /// 在字符串的尾部插入一个元素
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(byte value) => AppendFormattable(value);
+    
+    /// <summary>
+    /// 在字符串的尾部插入一个元素
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(short value) => AppendFormattable(value);
+    
+    /// <summary>
+    /// 在字符串的尾部插入一个元素
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(int value) => AppendFormattable(value);
+    
+    /// <summary>
+    /// 在字符串的尾部插入一个元素
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(long value) => AppendFormattable(value);
+    
+    /// <summary>
+    /// 在字符串的尾部插入一个元素
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(Int128 value) => AppendFormattable(value);
+    
+    /// <summary>
+    /// 在字符串的尾部插入一个元素
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(float value) => AppendFormattable(value);
+    
+    /// <summary>
+    /// 在字符串的尾部插入一个元素
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(double value) => AppendFormattable(value);
+    
+    /// <summary>
+    /// 在字符串的尾部插入一个元素
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(decimal value) => AppendFormattable(value);
 
     /// <summary>
     /// 在字符串的尾部插入一个对象
@@ -280,6 +340,24 @@ public ref struct MutableString : IDisposable
         ReleaseAction = null;
     }
 
+    public bool Equals(MutableString other) 
+        => StringSpan[..CurrStringLength].SequenceEqual(other.StringSpan[..other.CurrStringLength]);
+
+    #region Operators
+
+    public static implicit operator ReadOnlySpan<char>(MutableString mutableString) 
+        => mutableString.StringSpan[..mutableString.RawStringLength];
+    
+    public static explicit operator string(MutableString mutableString) 
+        => mutableString.ToString();
+    
+    public static implicit operator MutableString(string input) 
+        => new MutableString(input);
+
+    #endregion
+    
+    #region PrivateMethods
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AppendFormattableInternal<T>(T value) where T : ISpanFormattable
     {
@@ -327,20 +405,9 @@ public ref struct MutableString : IDisposable
         RawStringLength = newString.Length;
     }
 
-    #region Operators
-
-    public static implicit operator ReadOnlySpan<char>(MutableString mutableString) 
-        => mutableString.StringSpan[..mutableString.RawStringLength];
-    
-    public static explicit operator string(MutableString mutableString) 
-        => mutableString.ToString();
-    
-    public static implicit operator MutableString(string input) 
-        => new MutableString(input);
-
     #endregion
     
-    #region Strings
+    #region StringsUtils
 
 #if UseEmit
     
@@ -348,10 +415,12 @@ public ref struct MutableString : IDisposable
 
     /// <summary>
     /// 强制将 content 字符串的长度修改为 newLength.
-    /// [Warning]: 不会进行任何检查.
+    /// </summary>
+    /// <remarks>
+    /// 不会进行任何检查,
     /// 这意味着 newLength 如果大于 content 的实际长度,
     /// 修改仍将发生, 此时继续访问 content 可能会读取到一些意料之外的内容.
-    /// </summary>
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static void SetLength(string content, int newLength) => s_SetLengthAction(content, newLength);
     
@@ -383,10 +452,12 @@ public ref struct MutableString : IDisposable
 #else
     /// <summary>
     /// 强制将 content 字符串的长度修改为 newLength.
-    /// [Warning]: 不会进行任何检查.
+    /// </summary>
+    /// <remarks>
+    /// 不会进行任何检查,
     /// 这意味着 newLength 如果大于 content 的实际长度,
     /// 修改仍将发生, 此时继续访问 content 可能会读取到一些意料之外的内容.
-    /// </summary>
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static void SetLength(string content, int newLength) 
         => s_StringLengthField.SetValue(content, newLength);
@@ -400,22 +471,26 @@ public ref struct MutableString : IDisposable
     
     #endregion
 
-    #region Spans
+    #region SpanUtils
     
     /// <summary>
     /// 将 source 中的字符复制到 destination 中.
-    /// [Warning]: 不会进行安全检查.
-    /// 如果 source 的长度高于 destination, 会由运行时抛出异常. 
     /// </summary>
+    /// <remarks>
+    /// 不会进行任何检查,
+    /// 如果 source 的长度高于 destination, 会由运行时抛出异常. 
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static void CopyTo(ReadOnlySpan<char> source, ReadOnlySpan<char> destination) 
         => source.CopyTo(AsSpan(destination));
     
     /// <summary>
     /// 将 source 中的字符复制到 destination 中.
-    /// [Warning]: 不会进行安全检查.
-    /// 如果 source 的长度高于 destination, 会由运行时抛出异常. 
     /// </summary>
+    /// <remarks>
+    /// 不会进行任何检查,
+    /// 如果 source 的长度高于 destination, 会由运行时抛出异常. 
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static void CopyTo(Span<char> source, ReadOnlySpan<char> destination) 
         => source.CopyTo(AsSpan(destination));

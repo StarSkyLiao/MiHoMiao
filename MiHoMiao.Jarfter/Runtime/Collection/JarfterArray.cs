@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Immutable;
 using MiHoMiao.Core.Collections.Tool;
 using MiHoMiao.Core.Numerics.Hash;
 using MiHoMiao.Jarfter.Exception;
