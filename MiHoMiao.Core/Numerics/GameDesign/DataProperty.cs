@@ -43,8 +43,8 @@ public class DataProperty(double baseValue, double rate = 1)
         $"({baseValue:N0} * (1 + {BuffValue.Value:P1}) + {ExtraValue.Value:N0}) " +
         $"= {Value:F2}";
 
-    public static readonly DataProperty One = new DataProperty(1);
+    public static DataProperty One => new DataProperty(1);
     
-    public static readonly DataProperty Zero = new DataProperty(0);
+    public static DataProperty Zero => new DataProperty(0);
 
 }

@@ -29,6 +29,16 @@ public class ModuleController<TModule> : ICollection<TModule>, ICollection where
     }
     
     /// <summary>
+    /// 根据 type 获取这个对象的一个 EntityModule.
+    /// 添加前, 会先执行 callBack 回调.
+    /// </summary>
+    public bool AddModule<T>(T module, Action<T> callBack) where T : TModule
+    {
+        callBack(module);
+        return AddModule(module);
+    }
+    
+    /// <summary>
     /// 尝试添加一个签名为 T 的模块,
     /// 返回是否添加成功.
     /// </summary>
