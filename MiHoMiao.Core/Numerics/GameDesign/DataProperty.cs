@@ -36,6 +36,11 @@ public class DataProperty(double baseValue, double rate = 1)
     /// </summary>
     public event Action<double, double>? OnSetAction;
 
+    /// <summary>
+    /// 强制刷新一次数值
+    /// </summary>
+    public void ForceUpdate() => OnSetAction?.Invoke(Value, Value);
+    
     public void TriggerEvent(double before, double after) => OnSetAction?.Invoke(before, after);
     
     public override string ToString() =>
