@@ -9,6 +9,7 @@ namespace MiHoMiao.Core.Numerics.GameDesign;
 /// </summary>
 public class ModuleController<TModule> : ICollection<TModule>, ICollection where TModule : class, IModule
 {
+    
     #region Fields
     private Dictionary<Type, TModule> EntityModules { get; } = [];
     
