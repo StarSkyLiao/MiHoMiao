@@ -31,12 +31,10 @@ public class JarfterAccessor(JarfterObject content, string name) : JarfterObject
         if (provider is not JarfterContext context) throw new InvalidCallingTreeException();
         ref int index = ref context.ParsingIndex;
         while (index < input.Length && char.IsWhiteSpace(input[index])) ++index;
-        if (IsPunctuation(input[index]) || char.IsWhiteSpace(input[index]))
+        if (JarfterWord.IsPunctuation(input[index]) || char.IsWhiteSpace(input[index]))
             throw new InvalidTypeException<JarfterAccessor>(input[index].ToString());
         string varName = JarfterWord.ParseSpan(input, context).ToString();
         return new JarfterAccessor(context.JarfterSymbolTable.LoadVariable(varName)!, varName);
     }
-    
-    private static bool IsPunctuation(char input) => char.IsPunctuation(input) && (input is not '.' and not '_');
     
 }

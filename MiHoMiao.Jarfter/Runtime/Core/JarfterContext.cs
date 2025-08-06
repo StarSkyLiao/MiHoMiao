@@ -16,6 +16,8 @@ public class JarfterContext(JarfterInterpreter jarfterInterpreter) : IFormatProv
 
     public readonly Stack<JarfterFrame> CallingTree = [];
 
+    public readonly Dictionary<string, object> Environment = [];
+
     public int ParsingIndex = 0;
     
     public void PushStack(JarfterFrame jarfterFrame)

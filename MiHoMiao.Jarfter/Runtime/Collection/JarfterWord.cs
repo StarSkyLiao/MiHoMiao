@@ -41,6 +41,6 @@ public class JarfterWord(string content) : JarfterObject, IJarfterParsable<Jarft
         return input[start..index].ToString();
     }
     
-    private static bool IsPunctuation(char input) => char.IsPunctuation(input) && (input is not '.' and not '_');
+    internal static bool IsPunctuation(char input) => char.IsPunctuation(input) && (input is not '.' and not '_' and not '%');
     
 }

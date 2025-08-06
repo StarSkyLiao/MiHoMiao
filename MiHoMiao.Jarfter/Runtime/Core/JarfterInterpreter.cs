@@ -9,7 +9,7 @@ namespace MiHoMiao.Jarfter.Runtime.Core;
 
 public class JarfterInterpreter()
 {
-    [field: AllowNull, MaybeNull] internal JarfterContext JarfterContext => field ??= new JarfterContext(this);
+    [field: AllowNull, MaybeNull] public JarfterContext JarfterContext => field ??= new JarfterContext(this);
     
     public void Run(string[] input)
     {

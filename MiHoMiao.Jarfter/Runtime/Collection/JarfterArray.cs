@@ -52,8 +52,6 @@ public class JarfterArray<T>(IList<T> elements) : JarfterObject, IJarfterParsabl
         return new JarfterArray<T>([..elements]);
     }
 
-    private static bool IsPunctuation(char input) => char.IsPunctuation(input) && input is not '.' and not '_';
-    
     public static bool operator ==(JarfterArray<T>? left, JarfterArray<T>? right) => Equals(left, right);
 
     public static bool operator !=(JarfterArray<T>? left, JarfterArray<T>? right) => !Equals(left, right);

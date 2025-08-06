@@ -22,14 +22,14 @@ public class JarfterConsole
     /// <summary>
     /// Jarfter 的解释器
     /// </summary>
-    private readonly JarfterInterpreter m_Interpreter = new JarfterInterpreter();
+    public readonly JarfterInterpreter Interpreter = new JarfterInterpreter();
     
     /// <summary>
     /// 执行环境的上下文
     /// </summary>
     private readonly List<JarfterFunc> m_FuncCodes = [];
 
-    public JarfterConsole() => m_Interpreter.JarfterContext.CallingTree.Push(
+    public JarfterConsole() => Interpreter.JarfterContext.CallingTree.Push(
         new JarfterFrame(new JarfterArray<JarfterFunc>(m_FuncCodes))
     );
 
@@ -41,7 +41,7 @@ public class JarfterConsole
         m_FuncCodes.Add(new JarfterFunc(input));
         try
         {
-            m_Interpreter.RunConsole(input);
+            Interpreter.RunConsole(input);
         }
         catch (System.Exception ex)
         {
