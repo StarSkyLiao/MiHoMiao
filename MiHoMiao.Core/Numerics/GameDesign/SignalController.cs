@@ -12,8 +12,12 @@ public class SignalController
     /// 如果信号已经被注册过, 则无事发生.
     /// 注意: 该信号为 C# 的委托, 而非 Godot 的信号
     /// </summary>
-    public void RegisterSignal<T>() where T : Delegate => Signals.TryAdd(typeof(T), null!);
-    
+    public void RegisterSignal<T>() where T : Delegate
+    {
+        Debug.Assert(!Signals.ContainsKey(typeof(T)));
+        Signals.Add(typeof(T), null!);
+    }
+
     /// <summary>
     /// 查找类型为 T 的信号并添加一个委托.
     /// 找不到指定信号时会直接返回.
