@@ -1,4 +1,5 @@
 using MiHoMiao.Jarfter.Console;
+using MiHoMiao.Jarfter.Runtime.Function.Internal.Call;
 
 namespace MiHoMiao.Program.Jarfter;
 
@@ -6,6 +7,7 @@ internal static class ConsoleProgram
 {
     public static void Run()
     {
+        CallHelper.Register("sqrt", Method);
         JarfterConsole jarfterConsole = new JarfterConsole();
         while (true)
         {
@@ -14,5 +16,11 @@ internal static class ConsoleProgram
             jarfterConsole.Run(input);
         }
         jarfterConsole.Run("print (peek)");
+        return;
+
+        double Method(decimal item)
+        {
+            return Math.Sqrt((double)item);
+        }
     }
 }

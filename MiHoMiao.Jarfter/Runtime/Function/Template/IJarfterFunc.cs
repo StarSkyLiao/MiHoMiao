@@ -11,7 +11,13 @@ public interface IJarfterFunc
     public abstract string[] JarfterFuncName { get; }
 
     public abstract void RunJarfterFunc(JarfterContext jarfterContext, ReadOnlySpan<char> input);
-    
+
+    internal static T JarfterParseFromString<T>(JarfterContext jarfterContext, string input) where T : ISpanParsable<T>
+    {
+        jarfterContext.ParsingIndex = 0;
+        return JarfterParse<T>(jarfterContext, input.AsSpan());
+    }
+
     public static T JarfterParse<T>(JarfterContext jarfterContext, ReadOnlySpan<char> input) where T : ISpanParsable<T>
     {
         ref int startIndex = ref jarfterContext.ParsingIndex;

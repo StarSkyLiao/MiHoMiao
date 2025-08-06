@@ -2,26 +2,29 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// ConsoleProgram.Run();
-unsafe
+
+
+// 示例类型
+Type intType = typeof(int);
+Type stringType = typeof(string);
+Type customType = typeof(MyCustomType);
+
+// 检查是否实现了 ISpanParsable<TSelf>
+bool intImplements = ImplementsISpanParsable(intType); // true（int 实现了 ISpanParsable<int>）
+bool stringImplements = ImplementsISpanParsable(stringType); // false
+bool customImplements = ImplementsISpanParsable(customType); // 取决于 MyCustomType 是否实现
+
+Console.WriteLine($"int: {intImplements}");
+Console.WriteLine($"string: {stringImplements}");
+Console.WriteLine($"custom: {customImplements}");
+
+static bool ImplementsISpanParsable(Type type)
 {
-    string input = "1111";
-    ReadOnlySpan<byte> readOnlySpan = MemoryMarshal.AsBytes(input.AsSpan());
-    ref byte reference = ref MemoryMarshal.GetReference(readOnlySpan);
-    void* pointer = Unsafe.AsPointer(ref Unsafe.AddByteOffset(ref reference, new IntPtr(-4)));
-    *(int*)pointer = 1;
-    Console.Write(input);
+    // 检查类型是否实现了 ISpanParsable<TSelf> 接口
+    return type.GetInterfaces()
+        .Any(i => i.IsGenericType && 
+                  i.GetGenericTypeDefinition() == typeof(ISpanParsable<>));
 }
 
-abstract class Compilation
-{
-    public abstract Compilation WithOptions();
-}
 
-class CSharpCompilation : Compilation
-{
-    public override CSharpCompilation WithOptions()
-    {
-        return null;
-    }
-}
+struct MyCustomType;

@@ -35,14 +35,13 @@ public static class CallHelper
     /// </summary>
     public static object? Invoke(JarfterContext jarfterContext, string alias, params IList<string> args)
     {
-        if (!s_Map.TryGetValue(alias, out var method))
-            throw new InvalidOperationException($"未注册的方法别名：{alias}");
+        if (!s_Map.TryGetValue(alias, out Delegate? method)) throw new InvalidOperationException($"未注册的方法别名：{alias}");
 
         ParameterInfo[] parameterInfos = method.Method.GetParameters();
-        if (parameterInfos.Length != args.Count)
+        if (args.Count < parameterInfos.Length)
             throw new ArgumentException($"参数个数不符：期望 {parameterInfos.Length}，实际 {args.Count}");
 
-        var parsedArgs = new object?[parameterInfos.Length];
+        object?[] parsedArgs = new object?[parameterInfos.Length];
         for (int i = 0; i < parameterInfos.Length; i++)
         {
             Type targetType = parameterInfos[i].ParameterType;
@@ -66,47 +65,35 @@ public static class CallHelper
     private static bool IsParseable(Type type)
     {
         if (s_ParseMap.ContainsKey(type)) return true;
-        return type.GetInterface("System.ISpanParsable`1") != null;
+        // 检查类型是否实现了 ISpanParsable<TSelf> 接口
+        return type.GetInterfaces().Any(item
+            => item.IsGenericType &&
+               item.GetGenericTypeDefinition() == typeof(ISpanParsable<>)
+        );
     }
     
     private static readonly Dictionary<Type, MethodInfo> s_ParseMap = [];
 
-    internal static MethodInfo? LoadParser(Type type)
+    private static MethodInfo? LoadParser(Type type)
     {
         if (s_ParseMap.TryGetValue(type, out MethodInfo? parser)) return parser;
-        if (type == typeof(string))
-        {
-            parser = ((Func<JarfterContext, string, string>)StringParser).Method;
-        }
-        else
-        {
-            parser = typeof(IJarfterFunc).GetMethod(
-                nameof(IJarfterFunc.JarfterParse), BindingFlags.Public | BindingFlags.Static,
-                [typeof(JarfterContext), typeof(string), typeof(IFormatProvider)]
-            )?.MakeGenericMethod(type);
-        }
+        MethodInfo? methodInfo = typeof(IJarfterFunc).GetMethod(
+            nameof(IJarfterFunc.JarfterParseFromString), BindingFlags.NonPublic | BindingFlags.Static,
+            [typeof(JarfterContext), typeof(string)]
+        );
+        parser = methodInfo?.MakeGenericMethod(type);
         if (parser == null) return null;
         return s_ParseMap[type] = parser;
     }
         
     internal static T InvokeParser<T>(JarfterContext jarfterContext, string input) 
-        => (T)InvokeParser(typeof(T), jarfterContext, input, null);
-
-    internal static T InvokeParser<T>(JarfterContext jarfterContext, string input, IFormatProvider? provider)
-        => (T)InvokeParser(typeof(T), jarfterContext, input, provider);
+        => (T)InvokeParser(typeof(T), jarfterContext, input);
     
-    internal static object InvokeParser(Type type, JarfterContext jarfterContext, string input) 
-        => InvokeParser(type, jarfterContext, input, null);
-    
-    internal static object InvokeParser(Type type, JarfterContext jarfterContext, string input, IFormatProvider? provider)
+    internal static object InvokeParser(Type type, JarfterContext jarfterContext, string input)
     {
         MethodInfo? parser = LoadParser(type);
         if (parser == null) throw new ArgumentException($"Type {type.FullName} has no parser method.");
-        int paramCount = parser.GetParameters().Length;
-        return parser.Invoke(null, (paramCount is 3) ? [jarfterContext, input, provider] : [jarfterContext, input])!;
+        return parser.Invoke(null, [jarfterContext, input])!;
     }
-
-    private static string StringParser(JarfterContext jarfterContext, string input) 
-        => IJarfterFunc.JarfterParse<string>(jarfterContext, input);
     
 }
