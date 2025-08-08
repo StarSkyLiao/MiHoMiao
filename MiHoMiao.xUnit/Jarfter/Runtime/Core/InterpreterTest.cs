@@ -1,6 +1,8 @@
+using MiHoMiao.Jarfter.Console;
 using MiHoMiao.Jarfter.Exception;
 using MiHoMiao.Jarfter.Runtime.Collection;
 using MiHoMiao.Jarfter.Runtime.Core;
+using MiHoMiao.Jarfter.Runtime.Function.Internal.Call;
 
 namespace MiHoMiao.xUnit.Jarfter.Runtime.Core;
 
@@ -470,6 +472,46 @@ public class InterpreterTest
         
         jarfterInterpreter.Run("let item (sum (range 1 5))");
         Assert.Equal("10", symbols.LoadVariable("item").ToString());
+        
+    }
+    
+    [Fact]
+    public void CallMethod()
+    {
+        JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
+        JarfterSymbolTable<JarfterObject> symbols = jarfterInterpreter.JarfterContext.JarfterSymbolTable;
+        jarfterInterpreter.Run("var item 0");
+        CallHelper.Register("sqrt", Method);
+        
+        jarfterInterpreter.Run("let item (call sqrt [16])");
+        Assert.Equal("4", symbols.LoadVariable("item").ToString());
+        return;
+
+        double Method(decimal item)
+        {
+            return Math.Sqrt((double)item);
+        }
+        
+    }
+    
+    [Fact]
+    public void ReflectMethod()
+    {
+        JarfterInterpreter jarfterInterpreter = new JarfterInterpreter();
+        JarfterSymbolTable<JarfterObject> symbols = jarfterInterpreter.JarfterContext.JarfterSymbolTable;
+        jarfterInterpreter.Run("var item 0");
+        
+        jarfterInterpreter.Run("unsafe.reflect abs.1 System.Math.Abs");
+        jarfterInterpreter.Run("let item (call abs.1 [-10086])");
+        Assert.Equal("10086", symbols.LoadVariable("item").ToString());
+        
+        jarfterInterpreter.Run("unsafe.reflect abs.2 System.Math.Abs [Double]");
+        jarfterInterpreter.Run("let item (call abs.2 [-10086.10086])");
+        Assert.Equal("10086.10086", symbols.LoadVariable("item").ToString());
+        
+        jarfterInterpreter.Run("unsafe.reflect max System.Math.Max [Double, Double]");
+        jarfterInterpreter.Run("let item (call max [-10086, 10086])");
+        Assert.Equal("10086", symbols.LoadVariable("item").ToString());
         
     }
     

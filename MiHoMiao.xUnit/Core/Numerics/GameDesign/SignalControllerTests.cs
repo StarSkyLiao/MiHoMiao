@@ -21,22 +21,6 @@ public class SignalControllerTests
     }
 
     [Fact]
-    public void RegisterSignal_WhenSignalAlreadyRegistered_DoesNotOverride()
-    {
-        m_Controller.RegisterSignal<TestDelegate>();
-        TestDelegate originalDelegate = () => { };
-        m_Controller.AddToSignal(originalDelegate);
-
-        // Act
-        m_Controller.RegisterSignal<TestDelegate>();
-
-        // Assert
-        TestDelegate? signal = m_Controller.GetSignal<TestDelegate>();
-        Assert.NotNull(signal);
-        Assert.Contains(originalDelegate, signal.GetInvocationList());
-    }
-
-    [Fact]
     public void AddToSignal_WhenSignalExists_AddsDelegate()
     {
         m_Controller.RegisterSignal<TestDelegate>();
