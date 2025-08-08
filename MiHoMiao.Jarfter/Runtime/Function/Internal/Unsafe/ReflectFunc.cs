@@ -7,6 +7,9 @@ using MiHoMiao.Jarfter.Runtime.Function.Template;
 
 namespace MiHoMiao.Jarfter.Runtime.Function.Internal.Unsafe;
 
+/// <summary>
+/// 实例: "unsafe.reflect println %System.Console%System.Console.WriteLine [String]"
+/// </summary>
 [UsedImplicitly]
 public class ReflectFunc : IJarfterFunc
 {
@@ -39,9 +42,9 @@ public class ReflectFunc : IJarfterFunc
         // Construct the full type name (excluding the last part which is the method name)
         string typeName = string.Join(".", parts.Take(parts.Length - 1));
         string methodName = parts[^1];
-
+        
         // Get the type from the type name
-        Type? type = Type.GetType(typeName);
+        Type? type = Type.GetType(typeName) ?? Type.GetType(ParseMethodName(typeName));
         if (type == null) return null;
 
         // Find all methods with the specified name (including public, non-public, static, and instance methods)
@@ -86,6 +89,24 @@ public class ReflectFunc : IJarfterFunc
         return methodInfo.CreateDelegate(delegateType);
     }
 
+    private static string ParseMethodName(string methodName)
+    {
+        if (string.IsNullOrEmpty(methodName)) return methodName;
+
+        // Check if the string starts with [AssemblyName]
+        if (!methodName.StartsWith('%')) return methodName;
+        
+        int endBracket = methodName.LastIndexOf('%');
+        if (endBracket <= 1 || endBracket >= methodName.Length - 1) return methodName;
+        
+        // Extract assembly name (between %)
+        string assemblyName = methodName.Substring(1, endBracket - 1);
+        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        Assembly assembly = assemblies.First(assembly => assembly.GetName().Name == assemblyName);
+
+        return $"{methodName[(endBracket + 1)..]}, {assembly.GetName().FullName}";
+    }
+    
     private static bool IsParameterMatch(ParameterInfo[] parameters, IList<string> parameterTypeNames)
     {
         // If parameterTypeNames is longer than the method's parameter list, it's not a match
