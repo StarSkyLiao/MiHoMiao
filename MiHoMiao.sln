@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiHoMiao.Jarfter", "MiHoMia
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiHoMiao.Program", "MiHoMiao.Program\MiHoMiao.Program.csproj", "{8430F903-51A6-4C5C-BC62-06E153D0C303}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiHoMiao.Migxn", "MiHoMiao.Migxn\MiHoMiao.Migxn.csproj", "{F49E2D6C-FEF6-48F5-BDCE-B012BBFFE5E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{8430F903-51A6-4C5C-BC62-06E153D0C303}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8430F903-51A6-4C5C-BC62-06E153D0C303}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8430F903-51A6-4C5C-BC62-06E153D0C303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F49E2D6C-FEF6-48F5-BDCE-B012BBFFE5E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F49E2D6C-FEF6-48F5-BDCE-B012BBFFE5E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F49E2D6C-FEF6-48F5-BDCE-B012BBFFE5E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F49E2D6C-FEF6-48F5-BDCE-B012BBFFE5E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
