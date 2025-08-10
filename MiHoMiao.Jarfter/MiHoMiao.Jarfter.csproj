@@ -9,7 +9,6 @@
 
     <ItemGroup>
       <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-      <PackageReference Include="Sprache" Version="3.0.0-develop-00049" />
     </ItemGroup>
 
     <ItemGroup>
