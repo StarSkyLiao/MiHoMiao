@@ -1,9 +1,3 @@
-using System.Diagnostics;
-using System.Reflection;
-using MiHoMiao.Migxn.Runtime;
-using MiHoMiao.Migxn.Syntax;
-using MiHoMiao.Migxn.Syntax.Tokens;
-
 namespace MiHoMiao.Program.Migxn;
 
 public class MigxnTest
@@ -27,18 +21,18 @@ public class MigxnTest
     
     public static void Run()
     {
-        MigxnAssembly assembly = new MigxnAssembly("Migxn");
-        MigxnModule module = assembly.CreateModule("MyModule");
-        
-        IEnumerable<MigxnToken> tokens = new MigxnLexer().Parse(Input);
-        MigxnTree? item = new MigxnParser().Parse(tokens);
-        Debug.Assert(item != null);
-        
-        MethodInfo method = module.CompileMethod("TestMethod", item);
-
-        module.Build();
-        assembly.Save();
-        assembly.PrintMethodInfo(module, "TestMethod");
+        // MigxnAssembly assembly = new MigxnAssembly("Migxn");
+        // MigxnModule module = assembly.CreateModule("MyModule");
+        //
+        // IEnumerable<MigxnToken> tokens = new MigxnLexer().Parse(Input);
+        // MigxnTree? item = new MigxnParser().Parse(tokens);
+        // Debug.Assert(item != null);
+        //
+        // MethodInfo method = module.CompileMethod("TestMethod", item);
+        //
+        // module.Build();
+        // assembly.Save();
+        // assembly.PrintMethodInfo(module, "TestMethod");
 
     }
 

@@ -1,8 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
-using MiHoMiao.Migxn.Syntax;
-using MiHoMiao.Migxn.Syntax.Node;
 
 namespace MiHoMiao.Migxn.Runtime;
 
@@ -53,20 +51,20 @@ public class MigxnModule
     /// </summary>
     public MethodInfo? GetMethod(string methodName) => m_Methods.GetValueOrDefault(methodName);
     
-    /// <summary>
-    /// 编译指定的方法体
-    /// </summary>
-    public MethodInfo CompileMethod(string name, MigxnTree migxnTree)
-    {
-        MethodBuilder methodBuilder = TypeBuilder.DefineMethod(name,
-            MethodAttributes.Public | MethodAttributes.Static
-        );
-        MigxnContext context = new MigxnContext();
-        
-        ILGenerator ilGenerator = methodBuilder.GetILGenerator();
-        foreach (MigxnNode node in migxnTree.Nodes) node.EmitCode(context, ilGenerator);
-        ilGenerator.Emit(OpCodes.Ret);
-        return m_Methods[name] = methodBuilder;
-    }
+    // /// <summary>
+    // /// 编译指定的方法体
+    // /// </summary>
+    // public MethodInfo CompileMethod(string name, MigxnTree migxnTree)
+    // {
+    //     MethodBuilder methodBuilder = TypeBuilder.DefineMethod(name,
+    //         MethodAttributes.Public | MethodAttributes.Static
+    //     );
+    //     MigxnContext context = new MigxnContext();
+    //     
+    //     ILGenerator ilGenerator = methodBuilder.GetILGenerator();
+    //     foreach (MigxnNode node in migxnTree.Nodes) node.EmitCode(context, ilGenerator);
+    //     ilGenerator.Emit(OpCodes.Ret);
+    //     return m_Methods[name] = methodBuilder;
+    // }
     
 }
