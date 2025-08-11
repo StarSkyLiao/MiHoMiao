@@ -37,7 +37,7 @@ public class MigxnParser()
                 case CurlyRightToken:
                 {
                     MoveNext();
-                    break;
+                    yield break;
                 }
                 case CurlyLeftToken:
                 {
