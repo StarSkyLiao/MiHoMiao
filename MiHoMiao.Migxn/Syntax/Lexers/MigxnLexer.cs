@@ -192,7 +192,7 @@ public class MigxnLexer
         MoveNext();
         
         bool hasDecimal = false;
-        while (!char.IsWhiteSpace(Current))
+        while (!char.IsWhiteSpace(Current) && Current != '\0')
         {
             if (char.IsDigit(Current)) MoveNext();
             else if (Current == '.')
@@ -236,7 +236,7 @@ public class MigxnLexer
         if (Current != '"')
         {
             (m_Index, m_LineNumber, m_ColumnNumber) = rawPosition;
-            while (!char.IsWhiteSpace(Current)) MoveNext();
+            while (!char.IsWhiteSpace(Current) && Current != '\0') MoveNext();
             ReadOnlyMemory<char> text = m_Input.AsMemory()[start..m_Index];
             m_Exceptions.Add(new UnrecognisedTokenException((line, column), text));
             return new BadToken(text, startIndex, (line, column));

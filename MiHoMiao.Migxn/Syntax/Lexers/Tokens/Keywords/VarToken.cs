@@ -1,21 +1,64 @@
+using System.Diagnostics;
 using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Syntax.Grammars;
+using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
+using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
+using MiHoMiao.Migxn.Syntax.Grammars.Statements;
+using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
+using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
 internal record VarToken(int Index, (int Line, int Column) Position)
-    : AbstractKeyword(UniqueName.AsMemory(), Index, Position), IKeywordToken//, ILeadToken
+    : AbstractKeyword(UniqueName.AsMemory(), Index, Position), IKeywordToken, ILeadToken
 {
     public static string UniqueName => "var";
 
     public static AbstractKeyword Create(int index, (int Line, int Column) position) => new VarToken(index, position);
 
-    // Result<MigxnTree> ILeadToken.TryCollectToken(ReadOnlySpan<MigxnToken> tokens, out int movedStep)
-    // {
-    //     
-    //     
-    //     
-    //     
-    // }
+    public Result<MigxnTree> TryCollectToken(MigxnGrammar migxnGrammar)
+    {
+        MigxnToken? token = migxnGrammar.MoveNext();
+        Debug.Assert(token is VarToken);
+        
+        if (!migxnGrammar.TryMatchNext(out SymbolToken? identifier))
+            return new TokenMissingException(new BadTree([this]), nameof(identifier));
+        Debug.Assert(identifier != null);
+        
+        // 情况 1：var item : Type [= expr]
+        if (migxnGrammar.TryMatchNext(out ColonToken? colon))
+        {
+            Debug.Assert(colon != null);
+            if (!migxnGrammar.TryMatchNext(out SymbolToken? varType))
+                return new TokenMissingException(new BadTree([this, identifier, colon]), nameof(varType));
+            Debug.Assert(varType != null);
+
+            if (!migxnGrammar.TryMatchNext(out EqualToken? equal))
+                return new VarStmt(this, identifier, colon, varType, null, null);
+            Debug.Assert(equal != null);
+            
+            MigxnTree? next = migxnGrammar.ParseNext(true);
+            if (next is not MigxnExpr initialExpr)
+                return new TokenMissingException(
+                    new BadTree([this, identifier, colon, varType, equal]), nameof(initialExpr)
+                );
+            return new VarStmt(this, identifier, colon, varType, equal, initialExpr);
+        }
+        // 情况 2：var item = expr
+        if (migxnGrammar.TryMatchNext(out EqualToken? equalToken))
+        {
+            Debug.Assert(equalToken != null);
+            MigxnTree? next = migxnGrammar.ParseNext(true);
+            if (next is not MigxnExpr initialExpr)
+                return new TokenMissingException(
+                    new BadTree([this, identifier, equalToken]), nameof(initialExpr)
+                );
+            return new VarStmt(this, identifier, null, null, equalToken, initialExpr);
+        }
+
+        return new TokenMissingException(
+            new BadTree([this, identifier]), "varType or initialExpr"
+        );
+    }
     
 }

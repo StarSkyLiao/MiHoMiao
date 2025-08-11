@@ -19,6 +19,6 @@ internal interface IOperatorToken : ITokenFactory<AbstractOperator>;
 
 internal interface ILeadToken
 {
-    public Result<MigxnTree> TryCollectToken(ReadOnlySpan<MigxnToken> tokens, out int movedStep);
+    public Result<MigxnTree> TryCollectToken(MigxnGrammar migxnGrammar);
     
 }

@@ -46,7 +46,7 @@ public static class Viewer
     /// <summary>
     /// 将泛型集合的内容输出为字符串（带自定义转换）
     /// </summary>
-    public static string GenericViewer<T>(this ICollection<T> collection, Func<T, string> toString, string left = "[", string right = "]", string split = ",")
+    public static string GenericViewer<T>(this IEnumerable<T> collection, Func<T, string> toString, string left = "[", string right = "]", string split = ",")
         => ToString(collection, item => item switch
         {
             null => "null",
@@ -55,9 +55,9 @@ public static class Viewer
             _ => toString(item)
         }, left, right, split);
 
-    private static string ToString<T>(ICollection<T> collection, Func<T, string> toString, string left, string right, string split)
+    private static string ToString<T>(IEnumerable<T> collection, Func<T, string> toString, string left, string right, string split)
     {
-        if (collection.Count == 0) return $"{left}{right}";
+        if (!collection.Any()) return $"{left}{right}";
         StringBuilder sb = new StringBuilder().Append(left);
         foreach (T item in collection)
             sb.Append(toString(item)).Append(split);
