@@ -1,3 +1,7 @@
+using MiHoMiao.Core.Diagnostics;
+using MiHoMiao.Migxn.Syntax.Grammars;
+using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
+
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
 internal interface ITokenFactory<out T> where T : MigxnToken
@@ -9,7 +13,12 @@ internal interface ITokenFactory<out T> where T : MigxnToken
 
 }
 
-internal interface IKeywordToken : ITokenFactory<AbstractKeyword>
-{
+internal interface IKeywordToken : ITokenFactory<AbstractKeyword>;
 
+internal interface IOperatorToken : ITokenFactory<AbstractOperator>;
+
+internal interface ILeadToken
+{
+    public Result<MigxnTree> TryCollectToken(ReadOnlySpan<MigxnToken> tokens, out int movedStep);
+    
 }

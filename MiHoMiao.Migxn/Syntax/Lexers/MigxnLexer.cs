@@ -7,7 +7,7 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers;
 
-public class MigxnLexer(string input)
+public class MigxnLexer
 {
 
     [field: AllowNull, MaybeNull]
@@ -20,8 +20,21 @@ public class MigxnLexer(string input)
                 type.GetMethod(nameof(IKeywordToken.Create)).CreateDelegate<Func<int, (int, int), AbstractKeyword>>(null)
             )
         );
+    
+    [field: AllowNull, MaybeNull]
+    private static IDictionary<string, Func<int, (int, int), AbstractOperator>> Operator => field ??=
+        new Dictionary<string, Func<int, (int, int), AbstractOperator>>(
+            from type in typeof(MigxnLexer).Assembly.GetTypes()
+            where type.IsAssignableTo(typeof(AbstractOperator)) && type.IsAssignableTo(typeof(IOperatorToken)) && !type.IsAbstract
+            select new KeyValuePair<string, Func<int, (int, int), AbstractOperator>>(
+                (string)type.GetProperty(nameof(IOperatorToken.UniqueName)).GetValue(null),
+                type.GetMethod(nameof(IOperatorToken.Create)).CreateDelegate<Func<int, (int, int), AbstractOperator>>(null)
+            )
+        );
 
     #region Information
+    
+    private MigxnLexer(string input) => m_Input = input;
 
     /// <summary>
     /// 当前的字符串索引
@@ -43,21 +56,28 @@ public class MigxnLexer(string input)
     /// </summary>
     private readonly List<Exception> m_Exceptions = [];
     
-    private char Current => m_Index >= input.Length ? '\0' : input[m_Index];
+    /// <summary>
+    /// 解析到的 Token.
+    /// </summary>
+    private readonly List<MigxnToken> m_MigxnTokens = [];
 
-    private char Next => m_Index + 1 >= input.Length ? '\0' : input[m_Index + 1];
+    private readonly string m_Input;
+
+    private char Current => m_Index >= m_Input.Length ? '\0' : m_Input[m_Index];
+
+    private char Next => m_Index + 1 >= m_Input.Length ? '\0' : m_Input[m_Index + 1];
     
     private char Peek(int offset)
     {
         int index = m_Index + offset;
-        return index >= input.Length ? '\0' : input[index];
+        return index >= m_Input.Length ? '\0' : m_Input[index];
     }
     
     private char MoveNext()
     {
         int index = m_Index++;
-        if (index >= input.Length) return '\0';
-        char c = input[index];
+        if (index >= m_Input.Length) return '\0';
+        char c = m_Input[index];
         if (c == '\n')
         {
             m_LineNumber++;
@@ -76,8 +96,19 @@ public class MigxnLexer(string input)
     }
 
     #endregion
+
+    public static MigxnLexer Parse(string input)
+    {
+        MigxnLexer result = new MigxnLexer(input);
+        result.m_MigxnTokens.AddRange(result.Lex());
+        return result;
+    }
+
+    public IEnumerable<Exception> Exceptions => m_Exceptions;
     
-    public IEnumerable<MigxnToken> Lex()
+    public IEnumerable<MigxnToken> MigxnTokens => m_MigxnTokens;
+    
+    private IEnumerable<MigxnToken> Lex()
     {
         SkipWhiteSpace();
         while (Current != '\0')
@@ -126,8 +157,6 @@ public class MigxnLexer(string input)
         }
     }
     
-    public IEnumerable<Exception> Exceptions => m_Exceptions;
-    
     private void SkipWhiteSpace()
     {
         while (char.IsWhiteSpace(Current)) MoveNext();
@@ -137,7 +166,7 @@ public class MigxnLexer(string input)
     {
         int start = m_Index;
         while (Current != '\0' && Current != '\n') MoveNext();
-        return new SingleLineComment(startIndex, input.AsMemory()[start..m_Index], (line, column));
+        return new SingleLineComment(startIndex, m_Input.AsMemory()[start..m_Index], (line, column));
     }
 
     private MultiLineComment ReadMultiLineComment(int startIndex, int line, int column)
@@ -154,7 +183,7 @@ public class MigxnLexer(string input)
             MoveNext(3);
             break;
         }
-        return new MultiLineComment(startIndex, input.AsMemory()[start..m_Index], (line, column));
+        return new MultiLineComment(startIndex, m_Input.AsMemory()[start..m_Index], (line, column));
     }
     
     private LiteralToken ReadNumber(int startIndex, int line, int column)
@@ -177,21 +206,21 @@ public class MigxnLexer(string input)
                 else
                 {
                     MoveNext();
-                    m_Exceptions.Add(new UnrecognisedTokenException((line, column), input.AsMemory()[start..m_Index]));
-                    return new BadToken(startIndex, input.AsMemory()[start..m_Index], (line, column));
+                    m_Exceptions.Add(new UnrecognisedTokenException((line, column), m_Input.AsMemory()[start..m_Index]));
+                    return new BadToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
                 }
             }
             else
             {
                 MoveNext();
-                m_Exceptions.Add(new UnrecognisedTokenException((line, column), input.AsMemory()[start..m_Index]));
-                return new BadToken(startIndex, input.AsMemory()[start..m_Index], (line, column));
+                m_Exceptions.Add(new UnrecognisedTokenException((line, column), m_Input.AsMemory()[start..m_Index]));
+                return new BadToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
             }
         }
 
         return hasDecimal
-            ? new DoubleToken(startIndex, input.AsMemory()[start..m_Index], (line, column))
-            : new LongToken(startIndex, input.AsMemory()[start..m_Index], (line, column));
+            ? new DoubleToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column))
+            : new LongToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
     }
     
     private MigxnToken ReadString(int startIndex, int line, int column)
@@ -208,13 +237,13 @@ public class MigxnLexer(string input)
         {
             (m_Index, m_LineNumber, m_ColumnNumber) = rawPosition;
             while (!char.IsWhiteSpace(Current)) MoveNext();
-            ReadOnlyMemory<char> text = input.AsMemory()[start..m_Index];
+            ReadOnlyMemory<char> text = m_Input.AsMemory()[start..m_Index];
             m_Exceptions.Add(new UnrecognisedTokenException((line, column), text));
-            return new BadToken(startIndex, text, (line, column));
+            return new BadToken(text, startIndex, (line, column));
         }
 
         MoveNext();
-        return new StringToken(startIndex, input.AsMemory()[start..m_Index], (line, column));
+        return new StringToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
     }
 
     private CharToken ReadChar(int startIndex, int line, int column)
@@ -223,20 +252,20 @@ public class MigxnLexer(string input)
         MoveNext(); // Skip '
         if (Current == '\0' || Current == '\n')
         {
-            m_Exceptions.Add(new UnrecognisedTokenException((line, column), input.AsMemory()[start..m_Index]));
-            return new CharToken(startIndex, input.AsMemory()[start..m_Index], (line, column));
+            m_Exceptions.Add(new UnrecognisedTokenException((line, column), m_Input.AsMemory()[start..m_Index]));
+            return new CharToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
         }
         if (Current == '\\' && Next != '\0') MoveNext();
         MoveNext(); // Skip character
         if (Current != '\'')
         {
-            m_Exceptions.Add(new UnrecognisedTokenException((line, column), input.AsMemory()[start..m_Index]));
+            m_Exceptions.Add(new UnrecognisedTokenException((line, column), m_Input.AsMemory()[start..m_Index]));
         }
         else
         {
             MoveNext(); // Skip closing '
         }
-        return new CharToken(startIndex, input.AsMemory()[start..m_Index], (line, column));
+        return new CharToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
     }
     
     private static readonly HashSet<string> s_MultiCharOperators = [">=", "<=", "!=", "==", "|>", "&&", "||", "++", "--", "->"];
@@ -247,19 +276,22 @@ public class MigxnLexer(string input)
     {
         int start = m_Index;
         char firstChar = MoveNext();
-        if (s_MultiCharOperators.Contains($"{firstChar}{Next}")) MoveNext();
-
-        return new AbstractOperator(startIndex, input.AsMemory()[start..m_Index], (line, column));
+        if (IsOperatorChar(Current) && s_MultiCharOperators.Contains($"{firstChar}{Current}")) MoveNext();
+        
+        string text = m_Input[start..m_Index];
+        return Operator.TryGetValue(text, out Func<int, (int, int), AbstractOperator>? tokenFactory)
+            ? tokenFactory(startIndex, (line, column))
+            : new AbstractOperator(text.AsMemory(), startIndex, (line, column));
     }
     
     private MigxnToken ReadIdentifier(int startIndex, int line, int column)
     {
         int start = m_Index;
         while (char.IsLetterOrDigit(Current) || Current == '_') MoveNext();
-        string text = input[start..m_Index];
+        string text = m_Input[start..m_Index];
         return Keyword.TryGetValue(text, out Func<int, (int, int), AbstractKeyword>? tokenFactory)
             ? tokenFactory(startIndex, (line, column))
-            : new DefaultToken(text.AsMemory(), startIndex, (line, column));
+            : new SymbolToken(text.AsMemory(), startIndex, (line, column));
     }
 
 }

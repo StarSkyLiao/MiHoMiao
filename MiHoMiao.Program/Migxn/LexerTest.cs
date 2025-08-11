@@ -10,6 +10,7 @@ public static class LexerTest
         1a
         1.1
         1.a
+        bool1 and bool2
         var item_char = '2'
         {
             var item_i64 : i64 = 5
@@ -27,8 +28,8 @@ public static class LexerTest
     
     public static void Run()
     {
-        MigxnLexer lexer = new MigxnLexer(Input);
-        Console.WriteLine(lexer.Lex().GenericViewer("", "", "\n"));
+        MigxnLexer lexer = MigxnLexer.Parse(Input);
+        Console.WriteLine(lexer.MigxnTokens.GenericViewer("", "", "\n"));
         Console.WriteLine(lexer.Exceptions.GenericViewer());
     }
 }

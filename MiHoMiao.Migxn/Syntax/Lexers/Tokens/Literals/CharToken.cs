@@ -1,6 +1,7 @@
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 
-public record CharToken(int Index, ReadOnlyMemory<char> Text, (int Line, int Column) Position) : LiteralToken(Index, Text, Position)
+public record CharToken(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)
+    : LiteralToken(Text, Index, Position)
 {
     
 }
