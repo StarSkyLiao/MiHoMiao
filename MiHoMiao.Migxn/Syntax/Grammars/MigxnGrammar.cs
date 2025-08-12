@@ -44,7 +44,7 @@ public class MigxnGrammar
         return index >= m_Tokens.Length ? null : m_Tokens[index];
     }
     
-    internal bool TryMatchNext<T>([MaybeNullWhen(false)]out T result) where T : MigxnNode?
+    internal bool TryMatchToken<T>([MaybeNullWhen(false)]out T result) where T : MigxnNode?
     {
         result = Current as T;
         if (result is null) return false;
@@ -83,30 +83,47 @@ public class MigxnGrammar
         m_Index = 0;
         while (Current != null)
         {
-            MigxnTree? buildTree = ParseNext();
-            if (buildTree != null) yield return buildTree;
+            MigxnTree? result = ForceParseTree<MigxnTree>();
+            if (result is not null) yield return result;
         }
     }
-
-    internal MigxnTree? ParseNext(bool fallback = false)
+    
+    internal bool TryParseTree<T>([MaybeNullWhen(false)]out T result) where T : MigxnTree?
     {
         int startIndex = m_Index;
+        Result<MigxnTree> next = ParseNext<T>();
+        result = next.Value as T;
+        if (result is not null) return true;
+        m_Index = startIndex; 
+        return false;
+    }
+    
+    internal MigxnTree? ForceParseTree<T>() where T : MigxnTree?
+    {
+        Result<MigxnTree> result = ParseNext<T>();
+        if (result is { IsSuccess: true, Value: T next }) return next;
+        m_Exceptions.Add(result.IsSuccess ? new TokenMissingException(new BadTree([result]), typeof(T).Name) : result.Exception!);
+        return null;
+    }
+    
+    private Result<MigxnTree> ParseNext<T>() where T : MigxnTree?
+    {
         if (Current is ILeadToken leadToken)
         {
             Result<MigxnTree> result = leadToken.TryCollectToken(this);
-            if (result.IsSuccess) return result.Value;
-            m_Exceptions.Add(result.Exception!);
-            if (fallback) m_Index = startIndex;
-            return (result.Exception as IBadTreeException)?.MigxnTree;
+            if (result is { IsSuccess: true, Value: T next }) return next;
+            return result.IsSuccess ? new TokenMissingException(new BadTree([result]), typeof(T).Name) : result.Exception!;
         }
         if (Current is LiteralToken literalToken)
         {
             MoveNext();
-            return new TokenExpr(literalToken);
+            TokenExpr tokenExpr = new TokenExpr(literalToken);
+            if (tokenExpr is T next) return next;
+            BadTree badTree = new BadTree([tokenExpr]);
+            return new TokenMissingException(badTree, typeof(T).Name);
         }
-        if (fallback) m_Index = startIndex;
-        else MoveNext();
-        return null;
-
+        MoveNext();
+        return new Result<MigxnTree>(value:null!);
     }
+    
 }

@@ -8,11 +8,7 @@ public static class LexerTest
 {
     public const string Input =
         """
-        var item_i64
-        var item_i64 :
-        var item_i64 : wq
-        var item_i64 : wq = 
-        var item : i64 = 1 and 2
+        var item_i64 = 1 + 2 * 3 + 4
         """;
     
     public static void Run()
