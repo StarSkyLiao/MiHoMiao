@@ -73,6 +73,12 @@ public class ModuleController<TModule> : ICollection<TModule>, ICollection where
     [Pure]
     public T? GetModule<T>() where T : class, TModule 
         => EntityModules.TryGetValue(typeof(T), out TModule? module) ? module as T : null;
+    
+    /// <summary>
+    /// 返回找到的首个满足类型 T 的 Module.
+    /// </summary>
+    [Pure]
+    public T? FirstOfType<T>() where T : class, TModule => EntityModules.Values.OfType<T>().FirstOrDefault();
 
     /// <summary>
     /// 尝试根据 type 获取这个对象的一个 Module
