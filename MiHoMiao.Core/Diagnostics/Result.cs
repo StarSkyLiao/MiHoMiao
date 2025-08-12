@@ -14,7 +14,7 @@ public readonly struct Result<T>
     /// 包含的值
     /// </summary>
     [field: AllowNull]
-    public T Value => Exception != null ? throw new NotSupportedException(Exception.Message) : field;
+    public T Value { get; }
 
     /// <summary>
     /// 包含的异常

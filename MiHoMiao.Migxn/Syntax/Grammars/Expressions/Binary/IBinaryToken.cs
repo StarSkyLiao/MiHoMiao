@@ -5,5 +5,5 @@ public interface IBinaryToken
     /// <summary>
     /// 优先级越小, 实际优先级越高
     /// </summary>
-    static abstract int Priority { get; }
+    abstract int Priority { get; }
 }

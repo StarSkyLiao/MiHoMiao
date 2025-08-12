@@ -23,9 +23,15 @@ public abstract record LiteralToken(ReadOnlyMemory<char> Text, int Index, (int L
         {
             case IBinaryToken binaryToken:
                 migxnGrammar.MoveNext();
-                MigxnTree? next = migxnGrammar.ParseNext();
-                if (next is MigxnExpr rightExpr) return new BinaryExpr(leftNode, binaryToken, rightExpr);
-                return new TokenMissingException(new BadTree([leftNode, op]), nameof(rightExpr));
+                if (!migxnGrammar.TryParseTree(out MigxnExpr? rightExpr))
+                    return new TokenMissingException(new BadTree([leftNode, op]), nameof(rightExpr));
+                Debug.Assert(rightExpr != null);
+                
+                if (rightExpr is not BinaryExpr rightBinaryExpr || rightBinaryExpr.BinaryToken.Priority < binaryToken.Priority) 
+                    return new BinaryExpr(leftNode, binaryToken, rightExpr);
+                
+                BinaryExpr binaryExpr = new BinaryExpr(leftNode, binaryToken, rightBinaryExpr.Left);
+                return new BinaryExpr(binaryExpr, rightBinaryExpr.BinaryToken, rightBinaryExpr.Right);
             default:
                 return leftNode;
         }

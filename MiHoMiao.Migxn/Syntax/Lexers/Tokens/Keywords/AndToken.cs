@@ -9,6 +9,6 @@ internal record AndToken(int Index, (int Line, int Column) Position)
 
     public static AbstractKeyword Create(int index, (int Line, int Column) position) => new AndToken(index, position);
 
-    static int IBinaryToken.Priority => 8;
+    int IBinaryToken.Priority => 12;
 
 }
