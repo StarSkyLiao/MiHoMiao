@@ -1,9 +1,7 @@
-using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
-
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 public record AbstractOperator(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)
-    : LiteralToken(Text, Index, Position)
+    : MigxnToken(Text, Index, Position)
 {
     
 }

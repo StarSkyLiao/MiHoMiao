@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
@@ -84,11 +85,21 @@ public class MigxnGrammar
         m_Index = 0;
         while (Current != null)
         {
-            MigxnTree? result = ForceParseTree<MigxnTree>();
-            if (result is not null) yield return result;
+            IResult<MigxnExpr> result = TryParse<MigxnExpr>();
+            if (result.IsSuccess) yield return result.Result!;
+            else m_Exceptions.Add(result.Exception!);
         }
     }
     
+    public IResult<T> TryParse<T>() where T : class, IExprParser<T> => T.TryParse(this);
+    
+    public T? TryMatchToken<T>() where T : MigxnToken
+    {
+        if (Current is not T token) return null;
+        MoveNext();
+        return token;
+    }
+
     internal bool TryParseTree<T>([MaybeNullWhen(false)]out T result) where T : MigxnTree?
     {
         int startIndex = m_Index;
