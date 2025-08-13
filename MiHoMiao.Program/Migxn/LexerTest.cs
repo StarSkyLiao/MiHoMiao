@@ -8,7 +8,7 @@ public static class LexerTest
 {
     public const string Input =
         """
-        var item_i64 = 1 + 2 * 3 + 4
+        (1+2) * 3 + 4
         """;
     
     public static void Run()

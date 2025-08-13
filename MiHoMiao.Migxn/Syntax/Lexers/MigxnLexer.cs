@@ -210,12 +210,13 @@ public class MigxnLexer
                     return new BadToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
                 }
             }
-            else
+            else if (char.IsLetter(Current))
             {
                 MoveNext();
                 m_Exceptions.Add(new UnrecognisedTokenException((line, column), m_Input.AsMemory()[start..m_Index]));
                 return new BadToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
             }
+            else break;
         }
 
         return hasDecimal
