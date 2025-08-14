@@ -2,7 +2,7 @@ using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 
-namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
+namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 
 public record TokenExpr(LiteralToken Token) : MigxnExpr(Token.Text, Token.Index, Token.Position), IExprParser<TokenExpr>
 {

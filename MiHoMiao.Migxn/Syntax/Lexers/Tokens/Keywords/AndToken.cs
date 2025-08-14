@@ -1,4 +1,5 @@
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
+using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
@@ -11,6 +12,6 @@ internal record AndToken(int Index, (int Line, int Column) Position)
 
     int IBinaryToken.Priority => 12;
     
-    MigxnNode IBinaryToken.MigxnNode => this;
+    MigxnNode ILeaderOpToken.MigxnNode => this;
 
 }

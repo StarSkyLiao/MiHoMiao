@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
+using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
@@ -12,20 +14,14 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
     static IResult<MigxnExpr> IExprParser<MigxnExpr>.TryParse(MigxnGrammar grammar)
     {
         IResult<MigxnExpr> current = ParseCurrent(grammar);
-        if (!current.IsSuccess || grammar.Current is not IBinaryToken binaryToken) return current;
-        grammar.MoveNext();
-        IResult<MigxnExpr> next = grammar.TryParse<MigxnExpr>();
-        if (!next.IsSuccess)
+        if (!current.IsSuccess) return current;
+        Debug.Assert(current.Result != null);
+        switch (grammar.Current)
         {
-            List<MigxnNode> childNodes = [current.Result!, binaryToken.MigxnNode];
-            return TokenMissingException.Create<MigxnExpr>(childNodes, nameof(MigxnExpr));
+            case IBinaryToken: return BinaryExpr.ParseForward(current.Result, grammar);
+            case ISuffixToken: return SuffixExpr.ParseForward(current.Result, grammar);
         }
-    
-        if (next.Result! is not BinaryExpr nextBinary || nextBinary.BinaryToken.Priority < binaryToken.Priority) 
-            return new ActionResult<MigxnExpr>(new BinaryExpr(current.Result!, binaryToken, next.Result!)) ;
-    
-        BinaryExpr binaryExpr = new BinaryExpr(current.Result!, binaryToken, nextBinary.Left);
-        return new ActionResult<MigxnExpr>(new BinaryExpr(binaryExpr, nextBinary.BinaryToken, nextBinary.Right));
+        return current;
     }
 
     private static IResult<MigxnExpr> ParseCurrent(MigxnGrammar grammar)

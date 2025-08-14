@@ -268,8 +268,9 @@ public class MigxnLexer
         }
         return new CharToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
     }
-    
-    private static readonly HashSet<string> s_MultiCharOperators = [">=", "<=", "!=", "==", "|>", "&&", "||", "++", "--", "->"];
+
+    private static readonly HashSet<string> s_MultiCharOperators =
+        [">=", "<=", "!=", "==", "|>", "&&", "||", "++", "--", "->", "<<", ">>"];
     
     private static bool IsOperatorChar(char c) => "+-*/=(){}[],.<>?:|&^".Contains(c);
 
