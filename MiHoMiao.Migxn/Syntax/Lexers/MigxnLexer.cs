@@ -272,7 +272,7 @@ public class MigxnLexer
     private static readonly HashSet<string> s_MultiCharOperators =
         [">=", "<=", "!=", "==", "|>", "&&", "||", "++", "--", "->", "<<", ">>"];
     
-    private static bool IsOperatorChar(char c) => "+-*/=(){}[],.<>?:|&^".Contains(c);
+    private static bool IsOperatorChar(char c) => "+-*/%=(){}[],.<>?:|&^".Contains(c);
 
     private AbstractOperator ReadOperator(int startIndex, int line, int column)
     {

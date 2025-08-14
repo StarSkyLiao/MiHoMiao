@@ -10,7 +10,9 @@ internal record SubToken(int Index, (int Line, int Column) Position)
     public static string UniqueName => "-";
 
     public static AbstractOperator Create(int index, (int Line, int Column) position) => new SubToken(index, position);
-
+    
+    int IPrefixToken.Priority => 1;
+    
     int IBinaryToken.Priority => 5;
 
     MigxnNode ILeaderOpToken.MigxnNode => this;

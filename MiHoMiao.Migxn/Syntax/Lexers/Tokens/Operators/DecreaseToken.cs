@@ -11,6 +11,10 @@ internal record DecreaseToken(int Index, (int Line, int Column) Position)
 
     public static AbstractOperator Create(int index, (int Line, int Column) position) => new DecreaseToken(index, position);
     
-    MigxnNode ILeaderOpToken.MigxnNode => this;
+    int IPrefixToken.Priority => 1;
 
+    int ISuffixToken.Priority => 1;
+    
+    MigxnNode ILeaderOpToken.MigxnNode => this;
+    
 }

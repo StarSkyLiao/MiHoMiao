@@ -4,7 +4,7 @@ using MiHoMiao.Core.Diagnostics;
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 
 internal record SuffixExpr(MigxnExpr Left, ISuffixToken SuffixToken)
-    : MigxnExpr($"{Left.Text}{SuffixToken.MigxnNode.Text}".AsMemory(), Left.Index, Left.Position)
+    : MigxnExpr($"({Left.Text}{SuffixToken.MigxnNode.Text})".AsMemory(), Left.Index, Left.Position)
 {
 
     internal override IEnumerable<MigxnNode> Children() => [Left, SuffixToken.MigxnNode];
