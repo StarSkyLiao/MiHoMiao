@@ -1,10 +1,11 @@
+using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 internal record IncreaseToken(int Index, (int Line, int Column) Position)
-    : AbstractOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, ISuffixToken
+    : AbstractOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, ISuffixToken, IPrefixToken
 {
     public static string UniqueName => "++";
 

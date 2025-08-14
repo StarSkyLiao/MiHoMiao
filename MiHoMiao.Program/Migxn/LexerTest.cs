@@ -8,7 +8,7 @@ public static class LexerTest
 {
     public const string Input =
         """
-        (1+(2+3)*4++) . (1)
+        a.a--
         """;
     
     public static void Run()

@@ -2,6 +2,7 @@ using System.Diagnostics;
 using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
+using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
@@ -13,7 +14,8 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
 {
     static IResult<MigxnExpr> IExprParser<MigxnExpr>.TryParse(MigxnGrammar grammar)
     {
-        IResult<MigxnExpr> current = ParseCurrent(grammar);
+        if (grammar.Current is IPrefixToken) return PrefixExpr.ParseForward(grammar);
+        IResult<MigxnExpr> current = ParseUnitExpr(grammar);
         if (!current.IsSuccess) return current;
         Debug.Assert(current.Result != null);
         switch (grammar.Current)
@@ -24,7 +26,7 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
         return current;
     }
 
-    private static IResult<MigxnExpr> ParseCurrent(MigxnGrammar grammar)
+    internal static IResult<MigxnExpr> ParseUnitExpr(MigxnGrammar grammar)
     {
         switch (grammar.Current)
         {
