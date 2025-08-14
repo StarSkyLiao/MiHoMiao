@@ -11,6 +11,8 @@ internal record AddToken(int Index, (int Line, int Column) Position)
 
     public static AbstractOperator Create(int index, (int Line, int Column) position) => new AddToken(index, position);
 
+    int IPrefixToken.Priority => 1;
+    
     int IBinaryToken.Priority => 5;
 
     MigxnNode ILeaderOpToken.MigxnNode => this;

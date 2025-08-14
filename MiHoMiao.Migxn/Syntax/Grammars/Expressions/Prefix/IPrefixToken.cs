@@ -4,4 +4,8 @@ namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 
 internal interface IPrefixToken : ILeaderOpToken
 {
+    /// <summary>
+    /// 优先级越小, 实际优先级越高
+    /// </summary>
+    int Priority { get; }
 }

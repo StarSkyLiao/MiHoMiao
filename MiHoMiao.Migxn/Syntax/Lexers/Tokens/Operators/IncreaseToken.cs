@@ -5,12 +5,16 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 internal record IncreaseToken(int Index, (int Line, int Column) Position)
-    : AbstractOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, ISuffixToken, IPrefixToken
+    : AbstractOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IPrefixToken, ISuffixToken
 {
     public static string UniqueName => "++";
 
     public static AbstractOperator Create(int index, (int Line, int Column) position) => new IncreaseToken(index, position);
-    
+
+    int IPrefixToken.Priority => 1;
+
+    int ISuffixToken.Priority => 1;
+
     MigxnNode ILeaderOpToken.MigxnNode => this;
 
 }
