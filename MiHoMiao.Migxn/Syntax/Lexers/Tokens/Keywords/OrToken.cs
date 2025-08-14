@@ -10,5 +10,7 @@ internal record OrToken(int Index, (int Line, int Column) Position)
     public static AbstractKeyword Create(int index, (int Line, int Column) position) => new OrToken(index, position);
 
     int IBinaryToken.Priority => 13;
+    
+    MigxnNode IBinaryToken.MigxnNode => this;
 
 }

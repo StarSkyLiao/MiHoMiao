@@ -12,4 +12,6 @@ internal record AddToken(int Index, (int Line, int Column) Position)
 
     int IBinaryToken.Priority => 5;
 
+    MigxnNode IBinaryToken.MigxnNode => this;
+    
 }

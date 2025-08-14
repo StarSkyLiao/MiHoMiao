@@ -11,5 +11,7 @@ internal record MulToken(int Index, (int Line, int Column) Position)
     public static AbstractOperator Create(int index, (int Line, int Column) position) => new MulToken(index, position);
 
     int IBinaryToken.Priority => 4;
+    
+    MigxnNode IBinaryToken.MigxnNode => this;
 
 }

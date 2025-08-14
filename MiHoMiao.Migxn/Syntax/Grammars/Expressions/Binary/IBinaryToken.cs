@@ -6,4 +6,6 @@ public interface IBinaryToken
     /// 优先级越小, 实际优先级越高
     /// </summary>
     abstract int Priority { get; }
+
+    MigxnNode MigxnNode { get; }
 }

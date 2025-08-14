@@ -12,9 +12,20 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
     static IResult<MigxnExpr> IExprParser<MigxnExpr>.TryParse(MigxnGrammar grammar)
     {
         IResult<MigxnExpr> current = ParseCurrent(grammar);
-        if (!current.IsSuccess) return current;
-        
-        return current;
+        if (!current.IsSuccess || grammar.Current is not IBinaryToken binaryToken) return current;
+        grammar.MoveNext();
+        IResult<MigxnExpr> next = grammar.TryParse<MigxnExpr>();
+        if (!next.IsSuccess)
+        {
+            List<MigxnNode> childNodes = [current.Result!, binaryToken.MigxnNode];
+            return TokenMissingException.Create<MigxnExpr>(childNodes, nameof(MigxnExpr));
+        }
+    
+        if (next.Result! is not BinaryExpr nextBinary || nextBinary.BinaryToken.Priority < binaryToken.Priority) 
+            return new ActionResult<MigxnExpr>(new BinaryExpr(current.Result!, binaryToken, next.Result!)) ;
+    
+        BinaryExpr binaryExpr = new BinaryExpr(current.Result!, binaryToken, nextBinary.Left);
+        return new ActionResult<MigxnExpr>(new BinaryExpr(binaryExpr, nextBinary.BinaryToken, nextBinary.Right));
     }
 
     private static IResult<MigxnExpr> ParseCurrent(MigxnGrammar grammar)
