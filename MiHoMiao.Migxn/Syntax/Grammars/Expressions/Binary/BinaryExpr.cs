@@ -16,7 +16,9 @@ internal record BinaryExpr(MigxnExpr Left, IBinaryToken BinaryToken, MigxnExpr R
         Debug.Assert(binary is not null);
         IResult<MigxnExpr> next = grammar.TryParse<MigxnExpr>();
         if (next.IsSuccess) return new ActionResult<MigxnExpr>(CombineBinary(current, binary, next.Result!));
-        List<MigxnNode> childNodes = [current, binary.MigxnNode];
+        List<MigxnNode> childNodes = next.Exception is IBadTreeException tree
+            ? [current, binary.MigxnNode, ..tree.MigxnTree.Children()]
+            : [current, binary.MigxnNode];
         return TokenMissingException.Create<MigxnExpr>(childNodes, nameof(MigxnExpr));
     }
     

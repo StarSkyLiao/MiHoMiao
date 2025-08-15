@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
-using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;

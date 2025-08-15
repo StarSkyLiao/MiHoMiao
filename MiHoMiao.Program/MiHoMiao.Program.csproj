@@ -15,9 +15,4 @@
       <ProjectReference Include="..\MiHoMiao.Migxn\MiHoMiao.Migxn.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="dnlib" Version="4.5.0" />
-      <PackageReference Include="Mono.Cecil" Version="0.11.6" />
-    </ItemGroup>
-
 </Project>

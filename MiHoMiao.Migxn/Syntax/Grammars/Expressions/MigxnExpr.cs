@@ -2,6 +2,7 @@ using System.Diagnostics;
 using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
+using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Param;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
@@ -18,10 +19,20 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
         IResult<MigxnExpr> current = ParseUnitExpr(grammar);
         if (!current.IsSuccess) return current;
         Debug.Assert(current.Result != null);
-        if (grammar.Current is ISuffixToken) current = SuffixExpr.ParseForward(current.Result, grammar);
-        if (!current.IsSuccess) return current;
-        Debug.Assert(current.Result != null);
-        if (grammar.Current is IBinaryToken) current =  BinaryExpr.ParseForward(current.Result, grammar);
+
+        switch (grammar.Current)
+        {
+            case ISuffixToken:
+                current = SuffixExpr.ParseForward(current.Result, grammar);
+                if (!current.IsSuccess) return current;
+                break;
+            case RoundOpenToken:
+                current = ParamExpr.ParseForward(current.Result, grammar);
+                if (!current.IsSuccess) return current;
+                break;
+        }
+
+        if (grammar.Current is IBinaryToken) current = BinaryExpr.ParseForward(current.Result, grammar);
         return current;
     }
 

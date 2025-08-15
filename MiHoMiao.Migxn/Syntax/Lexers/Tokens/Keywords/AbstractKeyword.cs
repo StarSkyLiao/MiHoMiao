@@ -1,6 +1,3 @@
-using MiHoMiao.Core.Diagnostics;
-using MiHoMiao.Migxn.Syntax.Grammars;
-
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
 internal abstract record AbstractKeyword(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)

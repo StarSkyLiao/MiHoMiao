@@ -2,7 +2,6 @@ using System.Diagnostics;
 using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
-using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 
@@ -19,7 +18,9 @@ internal record PrefixExpr(IPrefixToken PrefixToken, MigxnExpr Right)
         
         IResult<MigxnExpr> next = grammar.TryParse<MigxnExpr>();
         if (next.IsSuccess) return new ActionResult<MigxnExpr>(CombinePrefix(prefix, next.Result!));
-        List<MigxnNode> childNodes = [prefix.MigxnNode];
+        List<MigxnNode> childNodes = next.Exception is IBadTreeException tree
+            ? [prefix.MigxnNode, ..tree.MigxnTree.Children()]
+            : [prefix.MigxnNode];
         return TokenMissingException.Create<MigxnExpr>(childNodes, nameof(MigxnExpr));
     }
     
