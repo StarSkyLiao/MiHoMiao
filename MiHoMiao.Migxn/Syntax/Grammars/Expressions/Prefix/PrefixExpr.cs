@@ -2,6 +2,7 @@ using System.Diagnostics;
 using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
+using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 
@@ -16,21 +17,23 @@ internal record PrefixExpr(IPrefixToken PrefixToken, MigxnExpr Right)
         IPrefixToken? prefix = grammar.MoveNext() as IPrefixToken;
         Debug.Assert(prefix is not null);
         
-        IResult<MigxnExpr> next = ParseUnitExpr(grammar);;
-        if (!next.IsSuccess)
+        IResult<MigxnExpr> next = grammar.TryParse<MigxnExpr>();
+        if (next.IsSuccess) return new ActionResult<MigxnExpr>(CombinePrefix(prefix, next.Result!));
+        List<MigxnNode> childNodes = [prefix.MigxnNode];
+        return TokenMissingException.Create<MigxnExpr>(childNodes, nameof(MigxnExpr));
+    }
+    
+    internal static MigxnExpr CombinePrefix(IPrefixToken prefix, MigxnExpr right)
+    {
+        switch (right)
         {
-            List<MigxnNode> childNodes = [prefix.MigxnNode];
-            return TokenMissingException.Create<MigxnExpr>(childNodes, nameof(MigxnExpr));
+            case BinaryExpr nextBinary when nextBinary.BinaryToken.Priority >= prefix.Priority:
+            {
+                MigxnExpr binaryExpr = CombinePrefix(prefix, nextBinary.Left);
+                return new BinaryExpr(binaryExpr, nextBinary.BinaryToken, nextBinary.Right);
+            }
         }
-        Debug.Assert(next.Result != null);
-        
-        if (next.Result is BinaryExpr nextBinary && nextBinary.BinaryToken.Priority > prefix.Priority)
-        {
-            PrefixExpr prefixExpr = new PrefixExpr(prefix, nextBinary.Left);
-            return new ActionResult<MigxnExpr>(new BinaryExpr(prefixExpr, nextBinary.BinaryToken, nextBinary.Right));
-        }
-        
-        return new ActionResult<MigxnExpr>(new PrefixExpr(prefix, next.Result));
+        return new PrefixExpr(prefix, right);
     }
     
 }

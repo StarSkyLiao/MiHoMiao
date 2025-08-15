@@ -18,11 +18,10 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
         IResult<MigxnExpr> current = ParseUnitExpr(grammar);
         if (!current.IsSuccess) return current;
         Debug.Assert(current.Result != null);
-        switch (grammar.Current)
-        {
-            case IBinaryToken: return BinaryExpr.ParseForward(current.Result, grammar);
-            case ISuffixToken: return SuffixExpr.ParseForward(current.Result, grammar);
-        }
+        if (grammar.Current is ISuffixToken) current = SuffixExpr.ParseForward(current.Result, grammar);
+        if (!current.IsSuccess) return current;
+        Debug.Assert(current.Result != null);
+        if (grammar.Current is IBinaryToken) current =  BinaryExpr.ParseForward(current.Result, grammar);
         return current;
     }
 

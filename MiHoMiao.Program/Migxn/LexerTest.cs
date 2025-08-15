@@ -8,7 +8,7 @@ public static class LexerTest
 {
     public const string Input =
         """
-        (((5 + 3 * 2) << 1 + 4 / 2 - (10 % 3) & 7 | 2 ^ 3) > 0) and true
+        ++ (1 + 2) * 3-- * 4 + 5
         """;
     
     public static void Run()
@@ -16,7 +16,8 @@ public static class LexerTest
         MigxnLexer lexer = MigxnLexer.Parse(Input);
         // Console.WriteLine(lexer.MigxnTokens.GenericViewer("", "", "\n"));
         // Console.WriteLine(lexer.Exceptions.GenericViewer("", "", "\n"));
-        
+        int i = 0;
+        i += i++ + ++i;
         MigxnGrammar grammar = MigxnGrammar.Parse(lexer);
         Console.WriteLine(grammar.MigxnTrees.GenericViewer("", "", "\n"));
         Console.WriteLine(grammar.Exceptions.GenericViewer(item => item.Message, "", "", "\n"));
