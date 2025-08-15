@@ -1,6 +1,5 @@
 using System.Diagnostics;
-using MiHoMiao.Core.Diagnostics;
-using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
+using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
@@ -15,13 +14,13 @@ internal record PrefixExpr(IPrefixToken PrefixToken, MigxnExpr Right)
     {
         IPrefixToken? prefix = grammar.MoveNext() as IPrefixToken;
         Debug.Assert(prefix is not null);
-        
+
         IResult<MigxnExpr> next = grammar.TryParse<MigxnExpr>();
-        if (next.IsSuccess) return new ActionResult<MigxnExpr>(CombinePrefix(prefix, next.Result!));
-        List<MigxnNode> childNodes = next.Exception is IBadTreeException tree
-            ? [prefix.MigxnNode, ..tree.MigxnTree.Children()]
-            : [prefix.MigxnNode];
-        return TokenMissingException.Create<MigxnExpr>(childNodes, nameof(MigxnExpr));
+        if (next.IsSuccess) return new Diagnostic<MigxnExpr>(CombinePrefix(prefix, next.Result!));
+        
+        Debug.Assert(next.Exception != null);
+        next.Exception.MigxnTree.Insert(0, prefix.MigxnNode);
+        return next;
     }
     
     internal static MigxnExpr CombinePrefix(IPrefixToken prefix, MigxnExpr right)

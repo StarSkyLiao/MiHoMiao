@@ -8,7 +8,7 @@ public static class LexerTest
 {
     public const string Input =
         """
-        ++ (1 + 2) * 3-- * 4 + 5(1, 2 + 3, 6*5 << 1
+        Console.WriteLine(grammar.MigxnTrees.GenericViewer("", "", "\n"))
         """;
     
     public static void Run()

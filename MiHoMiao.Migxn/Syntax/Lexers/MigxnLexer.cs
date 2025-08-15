@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using MiHoMiao.Migxn.Syntax.Lexers.Exceptions;
+using MiHoMiao.Migxn.CodeAnalysis;
+using MiHoMiao.Migxn.CodeAnalysis.Lexer;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Comments;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
@@ -54,7 +55,7 @@ public class MigxnLexer
     /// <summary>
     /// 存储解析过程中的异常
     /// </summary>
-    private readonly List<Exception> m_Exceptions = [];
+    private readonly List<BadMigxnTree> m_Exceptions = [];
     
     /// <summary>
     /// 解析到的 Token.
@@ -104,7 +105,7 @@ public class MigxnLexer
         return result;
     }
 
-    public IEnumerable<Exception> Exceptions => m_Exceptions;
+    public IEnumerable<BadMigxnTree> Exceptions => m_Exceptions;
     
     public IEnumerable<MigxnToken> MigxnTokens => m_MigxnTokens;
     
@@ -151,7 +152,8 @@ public class MigxnLexer
             else
             {
                 string invalid = MoveNext().ToString();
-                m_Exceptions.Add(new UnrecognisedTokenException((startLine, startColumn), invalid.AsMemory()));
+                BadToken badToken = new BadToken(invalid.AsMemory(), startIndex, (startLine, startColumn));
+                m_Exceptions.Add(new UnrecognizedToken(badToken));
             }
             SkipWhiteSpace();
         }
@@ -206,15 +208,17 @@ public class MigxnLexer
                 else
                 {
                     MoveNext();
-                    m_Exceptions.Add(new UnrecognisedTokenException((line, column), m_Input.AsMemory()[start..m_Index]));
-                    return new BadToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
+                    BadToken badToken = new BadToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
+                    m_Exceptions.Add(new UnrecognizedToken(badToken));
+                    return badToken;
                 }
             }
             else if (char.IsLetter(Current))
             {
                 MoveNext();
-                m_Exceptions.Add(new UnrecognisedTokenException((line, column), m_Input.AsMemory()[start..m_Index]));
-                return new BadToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
+                BadToken badToken = new BadToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
+                m_Exceptions.Add(new UnrecognizedToken(badToken));
+                return badToken;
             }
             else break;
         }
@@ -239,8 +243,10 @@ public class MigxnLexer
             (m_Index, m_LineNumber, m_ColumnNumber) = rawPosition;
             while (!char.IsWhiteSpace(Current) && Current != '\0') MoveNext();
             ReadOnlyMemory<char> text = m_Input.AsMemory()[start..m_Index];
-            m_Exceptions.Add(new UnrecognisedTokenException((line, column), text));
-            return new BadToken(text, startIndex, (line, column));
+            
+            BadToken badToken = new BadToken(text, startIndex, (line, column));
+            m_Exceptions.Add(new UnrecognizedToken(badToken));
+            return badToken;
         }
 
         MoveNext();
@@ -253,20 +259,16 @@ public class MigxnLexer
         MoveNext(); // Skip '
         if (Current == '\0' || Current == '\n')
         {
-            m_Exceptions.Add(new UnrecognisedTokenException((line, column), m_Input.AsMemory()[start..m_Index]));
-            return new CharToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
+            CharToken badToken = new CharToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
+            m_Exceptions.Add(new UnrecognizedToken(badToken));
+            return badToken;
         }
         if (Current == '\\' && Next != '\0') MoveNext();
         MoveNext(); // Skip character
-        if (Current != '\'')
-        {
-            m_Exceptions.Add(new UnrecognisedTokenException((line, column), m_Input.AsMemory()[start..m_Index]));
-        }
-        else
-        {
-            MoveNext(); // Skip closing '
-        }
-        return new CharToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
+        CharToken charToken = new CharToken(m_Input.AsMemory()[start..m_Index], startIndex, (line, column));
+        if (Current == '\'') MoveNext();
+        else m_Exceptions.Add(new UnrecognizedToken(charToken));
+        return charToken;
     }
 
     private static readonly HashSet<string> s_MultiCharOperators =

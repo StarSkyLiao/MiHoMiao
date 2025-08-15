@@ -5,6 +5,8 @@ namespace MiHoMiao.Migxn.Syntax.Grammars;
 public abstract record MigxnTree(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position) 
     : MigxnNode(Text, Index, Position)
 {
+    public override int NextColumn => Children().Last().NextColumn;
+    
     internal abstract IEnumerable<MigxnNode> Children();
     
     internal override string ToStringImpl(int level)
@@ -13,10 +15,10 @@ public abstract record MigxnTree(ReadOnlyMemory<char> Text, int Index, (int Line
         string indent = new string(' ', level * 2);
         // 构建当前节点的信息
         StringBuilder sb = new StringBuilder();
-        sb.AppendLine($"{GetType().Name} (Line: {Position.Line}, Column: {Position.Column}): {Text.ToString()}");
+        sb.AppendLine(SelfString());
 
         // 处理子节点
-        List<MigxnNode?> children = Children().ToList();
+        List<MigxnNode> children = Children().ToList();
         if (children.Count == 0) return sb.ToString();
         for (int i = 0; i < children.Count; i++)
         {
@@ -32,5 +34,7 @@ public abstract record MigxnTree(ReadOnlyMemory<char> Text, int Index, (int Line
 
         return sb.ToString();
     }
+
+    protected virtual string SelfString() => $"{GetType().Name} (Line: {Position.Line}, Column: {Position.Column}): {Text.ToString()}";
     
 }

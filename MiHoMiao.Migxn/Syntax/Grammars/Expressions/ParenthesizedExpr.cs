@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using MiHoMiao.Core.Diagnostics;
-using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
+using MiHoMiao.Migxn.CodeAnalysis;
+using MiHoMiao.Migxn.CodeAnalysis.Grammar;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;
@@ -8,7 +8,7 @@ namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 public record ParenthesizedExpr(RoundOpenToken Left, MigxnExpr Content, RoundCloseToken Right) 
     : MigxnExpr($"({Content.Text})".AsMemory(), Left.Index, Left.Position), IExprParser<ParenthesizedExpr>
 {
-    internal override IEnumerable<MigxnNode?> Children() => [Left, Content, Right];
+    internal override IEnumerable<MigxnNode> Children() => [Left, Content, Right];
 
     static IResult<ParenthesizedExpr> IExprParser<ParenthesizedExpr>.TryParse(MigxnGrammar grammar)
     {
@@ -16,12 +16,12 @@ public record ParenthesizedExpr(RoundOpenToken Left, MigxnExpr Content, RoundClo
         Debug.Assert(openToken != null);
 
         IResult<MigxnExpr> content = grammar.TryParse<MigxnExpr>();
-        if (!content.IsSuccess) return new ActionResult<ParenthesizedExpr>(content.Exception!);
+        if (!content.IsSuccess) return new Diagnostic<ParenthesizedExpr>(content.Exception!);
         Debug.Assert(content.Result != null);
 
         RoundCloseToken? closeToken = grammar.TryMatchToken<RoundCloseToken>();
-        if (closeToken is null) return TokenMissingException.Create<ParenthesizedExpr>([openToken, content.Result], ")");
+        if (closeToken is null) return SpecifiedTokenMissing.Create<ParenthesizedExpr>([openToken, content.Result], ")");
        
-        return new ActionResult<ParenthesizedExpr>(new ParenthesizedExpr(openToken, content.Result, closeToken));
+        return new Diagnostic<ParenthesizedExpr>(new ParenthesizedExpr(openToken, content.Result, closeToken));
     }
 }

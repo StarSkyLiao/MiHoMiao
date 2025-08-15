@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using MiHoMiao.Core.Diagnostics;
-using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
+using MiHoMiao.Migxn.CodeAnalysis;
+using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Param;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
@@ -15,11 +15,11 @@ internal record BinaryExpr(MigxnExpr Left, IBinaryToken BinaryToken, MigxnExpr R
         IBinaryToken? binary = grammar.MoveNext() as IBinaryToken;
         Debug.Assert(binary is not null);
         IResult<MigxnExpr> next = grammar.TryParse<MigxnExpr>();
-        if (next.IsSuccess) return new ActionResult<MigxnExpr>(CombineBinary(current, binary, next.Result!));
-        List<MigxnNode> childNodes = next.Exception is IBadTreeException tree
-            ? [current, binary.MigxnNode, ..tree.MigxnTree.Children()]
-            : [current, binary.MigxnNode];
-        return TokenMissingException.Create<MigxnExpr>(childNodes, nameof(MigxnExpr));
+        if (next.IsSuccess) return new Diagnostic<MigxnExpr>(CombineBinary(current, binary, next.Result!));
+        
+        Debug.Assert(next.Exception != null);
+        next.Exception.MigxnTree.InsertRange(0, [current, binary.MigxnNode]);
+        return next;
     }
     
     internal static MigxnExpr CombineBinary(MigxnExpr left, IBinaryToken binary, MigxnExpr right)
@@ -35,6 +35,11 @@ internal record BinaryExpr(MigxnExpr Left, IBinaryToken BinaryToken, MigxnExpr R
             {
                 BinaryExpr binaryExpr = new BinaryExpr(left, binary, nextSuffix.Left);
                 return new SuffixExpr(binaryExpr, nextSuffix.SuffixToken);
+            }
+            case FuncCallExpr funcCallExpr when binary.Priority == 0:
+            {
+                MigxnExpr binaryExpr = CombineBinary(left, binary, funcCallExpr.Method);
+                return new FuncCallExpr(binaryExpr, funcCallExpr.Left, funcCallExpr.ParamList, funcCallExpr.Right);
             }
         }
         return new BinaryExpr(left, binary, right);

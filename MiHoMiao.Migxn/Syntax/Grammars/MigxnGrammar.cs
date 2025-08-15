@@ -1,11 +1,8 @@
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
-using MiHoMiao.Core.Diagnostics;
-using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
+using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Lexers;
-using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
-using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars;
 
@@ -30,7 +27,7 @@ public class MigxnGrammar
     /// <summary>
     /// 存储解析过程中的异常
     /// </summary>
-    private readonly List<Exception> m_Exceptions;
+    private readonly List<BadMigxnTree> m_Exceptions;
     
     private readonly List<MigxnTree> m_MigxnTrees = [];
 
@@ -74,7 +71,7 @@ public class MigxnGrammar
         return result;
     }
 
-    public IEnumerable<Exception> Exceptions => m_Exceptions;
+    public IEnumerable<BadMigxnTree> Exceptions => m_Exceptions;
     
     public IEnumerable<MigxnTree> MigxnTrees => m_MigxnTrees;
 
@@ -97,43 +94,35 @@ public class MigxnGrammar
         MoveNext();
         return token;
     }
-
-    internal bool TryParseTree<T>([MaybeNullWhen(false)]out T result) where T : MigxnTree?
-    {
-        int startIndex = m_Index;
-        Result<MigxnTree> next = ParseNext<T>();
-        result = next.Value as T;
-        if (result is not null) return true;
-        m_Index = startIndex; 
-        return false;
-    }
-    
-    internal MigxnTree? ForceParseTree<T>() where T : MigxnTree?
-    {
-        Result<MigxnTree> result = ParseNext<T>();
-        if (result is { IsSuccess: true, Value: T next }) return next;
-        m_Exceptions.Add(result.IsSuccess ? new TokenMissingException(new BadTree([result]), typeof(T).Name) : result.Exception!);
-        return null;
-    }
-    
-    private Result<MigxnTree> ParseNext<T>() where T : MigxnTree?
-    {
-        if (Current is ILeadToken leadToken)
-        {
-            Result<MigxnTree> result = leadToken.TryCollectToken(this);
-            if (result is { IsSuccess: true, Value: T next }) return next;
-            return result.IsSuccess ? new TokenMissingException(new BadTree([result]), typeof(T).Name) : result.Exception!;
-        }
-        if (Current is LiteralToken literalToken)
-        {
-            MoveNext();
-            TokenExpr tokenExpr = new TokenExpr(literalToken);
-            if (tokenExpr is T next) return next;
-            BadTree badTree = new BadTree([tokenExpr]);
-            return new TokenMissingException(badTree, typeof(T).Name);
-        }
-        MoveNext();
-        return new Result<MigxnTree>(value:null!);
-    }
+    //
+    // internal bool TryParseTree<T>([MaybeNullWhen(false)]out T result) where T : MigxnTree?
+    // {
+    //     int startIndex = m_Index;
+    //     Result<MigxnTree> next = ParseNext<T>();
+    //     result = next.Value as T;
+    //     if (result is not null) return true;
+    //     m_Index = startIndex; 
+    //     return false;
+    // }
+    //
+    // private Result<MigxnTree> ParseNext<T>() where T : MigxnTree?
+    // {
+    //     if (Current is ILeadToken leadToken)
+    //     {
+    //         Result<MigxnTree> result = leadToken.TryCollectToken(this);
+    //         if (result is { IsSuccess: true, Value: T next }) return next;
+    //         return result.IsSuccess ? new SpecifiedTokenMissing(new BadTree([result]), typeof(T).Name) : result.Exception!;
+    //     }
+    //     if (Current is LiteralToken literalToken)
+    //     {
+    //         MoveNext();
+    //         TokenExpr tokenExpr = new TokenExpr(literalToken);
+    //         if (tokenExpr is T next) return next;
+    //         BadTree badTree = new BadTree([tokenExpr]);
+    //         return new SpecifiedTokenMissing(badTree, typeof(T).Name);
+    //     }
+    //     MoveNext();
+    //     return new Result<MigxnTree>(value:null!);
+    // }
     
 }

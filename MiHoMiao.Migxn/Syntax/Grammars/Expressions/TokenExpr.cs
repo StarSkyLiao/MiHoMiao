@@ -1,5 +1,6 @@
-using MiHoMiao.Core.Diagnostics;
-using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
+using MiHoMiao.Migxn.CodeAnalysis;
+using MiHoMiao.Migxn.CodeAnalysis.Grammar;
+using MiHoMiao.Migxn.Syntax.Lexers;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;
@@ -10,7 +11,8 @@ public record TokenExpr(LiteralToken Token) : MigxnExpr(Token.Text, Token.Index,
 
     static IResult<TokenExpr> IExprParser<TokenExpr>.TryParse(MigxnGrammar grammar)
     {
-        if (grammar.MoveNext() is LiteralToken token) return new ActionResult<TokenExpr>(new TokenExpr(token));
-        return new ActionResult<TokenExpr>(new TokenNotFoundException<LiteralToken>());
+        MigxnToken? migxnToken = grammar.MoveNext();
+        if (migxnToken is LiteralToken token) return new Diagnostic<TokenExpr>(new TokenExpr(token));
+        return SpecifiedTokenMissing.Create<TokenExpr>([], nameof(LiteralToken));
     }
 }

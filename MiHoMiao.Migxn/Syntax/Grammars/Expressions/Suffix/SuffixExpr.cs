@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using MiHoMiao.Core.Diagnostics;
+using MiHoMiao.Migxn.CodeAnalysis;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 
@@ -13,7 +13,7 @@ internal record SuffixExpr(MigxnExpr Left, ISuffixToken SuffixToken)
     {
         ISuffixToken? suffix = grammar.MoveNext() as ISuffixToken;
         Debug.Assert(suffix is not null);
-        return new ActionResult<MigxnExpr>(new SuffixExpr(current, suffix));
+        return new Diagnostic<MigxnExpr>(new SuffixExpr(current, suffix));
     }
     
 }

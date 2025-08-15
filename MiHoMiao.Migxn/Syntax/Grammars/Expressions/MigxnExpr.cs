@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using MiHoMiao.Core.Diagnostics;
-using MiHoMiao.Migxn.Syntax.Grammars.Exceptions;
+using MiHoMiao.Migxn.CodeAnalysis;
+using MiHoMiao.Migxn.CodeAnalysis.Grammar;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Param;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
@@ -27,11 +27,11 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
                 if (!current.IsSuccess) return current;
                 break;
             case RoundOpenToken:
-                current = ParamExpr.ParseForward(current.Result, grammar);
+                current = FuncCallExpr.ParseForward(current.Result, grammar);
                 if (!current.IsSuccess) return current;
                 break;
         }
-
+        Debug.Assert(current.Result != null);
         if (grammar.Current is IBinaryToken) current = BinaryExpr.ParseForward(current.Result, grammar);
         return current;
     }
@@ -42,9 +42,9 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
         {
             case RoundOpenToken: return grammar.TryParse<ParenthesizedExpr>();
             case LiteralToken: return grammar.TryParse<TokenExpr>();
-            case null: return TokenMissingException.Create<MigxnExpr>([], nameof(MigxnExpr));
+            case null: return SpecifiedTokenMissing.Create<MigxnExpr>([], nameof(MigxnExpr));
         }
-        return new ActionResult<MigxnExpr>(new UnexpectedTokenException<MigxnExpr>(grammar.MoveNext()!.Text.ToString()));
+        return new Diagnostic<MigxnExpr>(new UnexpectedToken<MigxnExpr>(grammar.MoveNext()!));
     }
     
 }
