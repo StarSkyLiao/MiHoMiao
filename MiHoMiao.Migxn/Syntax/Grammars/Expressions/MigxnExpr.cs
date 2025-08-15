@@ -36,4 +36,5 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
         }
         return new ActionResult<MigxnExpr>(new UnexpectedTokenException<MigxnExpr>(grammar.MoveNext()!.Text.ToString()));
     }
+    
 }
