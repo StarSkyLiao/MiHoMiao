@@ -13,7 +13,7 @@ internal record DecreaseToken(int Index, (int Line, int Column) Position)
     
     int IPrefixToken.Priority => 1;
 
-    int ISuffixToken.Priority => 1;
+    int ISuffixToken.Priority => 0;
     
     MigxnNode ILeaderOpToken.MigxnNode => this;
     
