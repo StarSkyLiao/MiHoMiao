@@ -1,10 +1,12 @@
+using System.Collections;
+
 namespace MiHoMiao.Core.Numerics.GameDesign;
 
 /// <summary>
 /// 一个存储 double 类型数据的盒子.
 /// 访问一个不存在的数据时, 自动创建新项并返回 0.
 /// </summary>
-public class DataBox<T> where T : notnull
+public class DataBox<T> : IEnumerable<(T, double)> where T : notnull
 {
 
     private readonly Dictionary<T, double> m_DataBox = [];
@@ -41,5 +43,8 @@ public class DataBox<T> where T : notnull
     {
         if (!m_OnSetAction.TryAdd(key, action)) m_OnSetAction[key] += action;
     }
-    
+
+    public IEnumerator<(T, double)> GetEnumerator() => m_DataBox.Select(pair => (pair.Key, pair.Value)).GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
