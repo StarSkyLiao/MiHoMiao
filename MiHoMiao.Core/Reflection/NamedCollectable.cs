@@ -21,7 +21,8 @@ public abstract class NamedCollectable : ICollectable
     /// </summary>
     public PackageInfoAttribute? PackageInfo => field ??= GetType().Assembly.GetCustomAttribute<PackageInfoAttribute>();
 
-    public virtual string UniqueName => $"{PackageInfo?.Name}::{EnglishName}";
+    [field: AllowNull, MaybeNull]
+    public virtual string UniqueName => field ??= $"{PackageInfo?.Name}::{EnglishName}";
 
     [field: AllowNull, MaybeNull]
     public virtual string[][] NameGroups => field ??=
