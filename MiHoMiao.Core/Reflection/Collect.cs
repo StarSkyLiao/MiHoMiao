@@ -45,7 +45,7 @@ public static class Collect<T> where T : ICollectable
                 dynamicString.Clear();
                 foreach (string name in nameGroup)
                 {
-                    if (dynamicString.Length > 0) dynamicString.Insert(0, '.');
+                    if (dynamicString.Length > 0) dynamicString.Insert(0, "::");
                     dynamicString.Insert(0, name);
                     if (ConflictNames.Contains(dynamicString.Read())) continue;
                     string readResult = dynamicString.ToString();

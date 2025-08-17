@@ -21,10 +21,10 @@ public abstract class NamedCollectable : ICollectable
     /// </summary>
     public PackageInfoAttribute? PackageInfo => field ??= GetType().Assembly.GetCustomAttribute<PackageInfoAttribute>();
 
-    public string UniqueName => $"{PackageInfo?.Name}::{EnglishName}";
+    public virtual string UniqueName => $"{PackageInfo?.Name}::{EnglishName}";
 
     [field: AllowNull, MaybeNull]
-    public string[][] NameGroups => field ??=
+    public virtual string[][] NameGroups => field ??=
     [
         [ChineseName, PackageInfo?.Name!],
         [EnglishName, PackageInfo?.Name!]
