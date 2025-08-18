@@ -37,6 +37,8 @@ public static class MemoryTest
             stringBuilder.Append($"Memory Usage Sequence({iterations} Times): ");
             for (int i = 0; i < iterations; i++)
             {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
                 long memoryStart = GC.GetTotalAllocatedBytes(true);
                 testAction();
                 long memoryEnd = GC.GetTotalAllocatedBytes(true);
@@ -46,17 +48,13 @@ public static class MemoryTest
                 // 清理内存以减少后续迭代的干扰
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-                GC.Collect();
             }
             stringBuilder.AppendLine();
         }
         else
         {
             long memoryStart = GC.GetTotalAllocatedBytes(true);
-            for (int i = 0; i < iterations; i++)
-            {
-                testAction();
-            }
+            for (int i = 0; i < iterations; i++) testAction();
             long memoryEnd = GC.GetTotalAllocatedBytes(true);
             totalMemoryBytes = memoryEnd - memoryStart;
         }

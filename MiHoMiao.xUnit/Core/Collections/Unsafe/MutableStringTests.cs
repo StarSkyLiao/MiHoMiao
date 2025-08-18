@@ -1,6 +1,6 @@
 using MiHoMiao.Core.Collections.Unsafe;
 
-namespace MiHoMiao.xUnit.Core.Collections.Specialized;
+namespace MiHoMiao.xUnit.Core.Collections.Unsafe;
 
 public class MutableStringTests
 {
