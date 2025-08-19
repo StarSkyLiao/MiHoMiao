@@ -1,6 +1,6 @@
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
-namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
+namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Pair;
 
 public record RoundCloseToken(int Index, (int Line, int Column) Position)
     : AbstractOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken

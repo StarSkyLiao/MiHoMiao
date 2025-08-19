@@ -1,7 +1,7 @@
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
-namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
+namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords.Logic;
 
 internal record AndToken(int Index, (int Line, int Column) Position)
     : AbstractKeyword(UniqueName.AsMemory(), Index, Position), IKeywordToken, IBinaryToken

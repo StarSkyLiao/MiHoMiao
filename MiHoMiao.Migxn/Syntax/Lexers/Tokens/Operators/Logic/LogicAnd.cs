@@ -1,7 +1,7 @@
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
-namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
+namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Logic;
 
 public record LogicAnd(int Index, (int Line, int Column) Position)
     : AbstractOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IBinaryToken
