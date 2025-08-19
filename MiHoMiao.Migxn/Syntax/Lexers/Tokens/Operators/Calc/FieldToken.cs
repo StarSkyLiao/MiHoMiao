@@ -4,7 +4,7 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
 
 internal record FieldToken(int Index, (int Line, int Column) Position)
-    : AbstractOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IBinaryToken
+    : AbstractOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IClosedBinaryToken
 {
     public static string UniqueName => ".";
 

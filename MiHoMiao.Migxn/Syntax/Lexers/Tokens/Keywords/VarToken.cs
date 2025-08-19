@@ -11,7 +11,7 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
 internal record VarToken(int Index, (int Line, int Column) Position)
-    : AbstractKeyword(UniqueName.AsMemory(), Index, Position), IKeywordToken, ILeadToken //, ILeadToken
+    : AbstractKeyword(UniqueName.AsMemory(), Index, Position), IKeywordToken, ILeadToken
 {
     public static string UniqueName => "var";
 

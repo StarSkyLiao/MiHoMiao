@@ -6,7 +6,10 @@ using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 
 internal record BinaryExpr(MigxnExpr Left, IBinaryToken BinaryToken, MigxnExpr Right)
-    : MigxnExpr($"({Left.Text} {BinaryToken.MigxnNode.Text} {Right.Text})".AsMemory(), Left.Index, Left.Position)
+    : MigxnExpr((BinaryToken is IClosedBinaryToken
+            ? $"{Left.Text}{BinaryToken.MigxnNode.Text}{Right.Text}"
+            : $"({Left.Text} {BinaryToken.MigxnNode.Text} {Right.Text})"
+        ).AsMemory(), Left.Index, Left.Position)
 {
     internal override IEnumerable<MigxnNode> Children() => [Left, BinaryToken.MigxnNode, Right];
     

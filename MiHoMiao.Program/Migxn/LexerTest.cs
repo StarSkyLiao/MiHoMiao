@@ -8,7 +8,9 @@ public static class LexerTest
 {
     public const string Input =
         """
+        label start:
         var item = Console.WriteLine(grammar.MigxnTrees.GenericViewer("", "", "\n"))
+        goto start
         """;
     
     public static void Run()
