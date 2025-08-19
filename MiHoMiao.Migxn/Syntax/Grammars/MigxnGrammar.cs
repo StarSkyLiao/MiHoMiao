@@ -1,8 +1,8 @@
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Lexers;
+using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars;
 
@@ -41,13 +41,13 @@ public class MigxnGrammar
         return index >= m_Tokens.Length ? null : m_Tokens[index];
     }
     
-    internal bool TryMatchToken<T>([MaybeNullWhen(false)]out T result) where T : MigxnNode?
-    {
-        result = Current as T;
-        if (result is null) return false;
-        MoveNext();
-        return true;
-    }
+    // internal bool TryMatchToken<T>([MaybeNullWhen(false)]out T result) where T : MigxnNode?
+    // {
+    //     result = Current as T;
+    //     if (result is null) return false;
+    //     MoveNext();
+    //     return true;
+    // }
     
     internal MigxnToken? MoveNext()
     {
@@ -80,7 +80,11 @@ public class MigxnGrammar
         m_Index = 0;
         while (Current != null)
         {
-            IResult<MigxnExpr> result = TryParse<MigxnExpr>();
+            IResult<MigxnTree> result = (Current) switch
+            {
+                ILeadToken leadToken => leadToken.TryCollectToken(this),
+                _ => TryParse<MigxnExpr>()
+            };
             if (result.IsSuccess) yield return result.Result!;
             else m_Exceptions.Add(result.Exception!);
         }

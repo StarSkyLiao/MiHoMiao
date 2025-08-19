@@ -1,5 +1,6 @@
-using MiHoMiao.Core.Diagnostics;
+using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.Syntax.Grammars;
+using MiHoMiao.Migxn.Syntax.Grammars.Statements;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
@@ -19,6 +20,6 @@ internal interface IOperatorToken : ITokenFactory<AbstractOperator>;
 
 internal interface ILeadToken
 {
-    public Result<MigxnTree> TryCollectToken(MigxnGrammar migxnGrammar);
+    public IResult<MigxnStmt> TryCollectToken(MigxnGrammar migxnGrammar);
     
 }

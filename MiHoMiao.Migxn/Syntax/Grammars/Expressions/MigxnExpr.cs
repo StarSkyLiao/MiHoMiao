@@ -6,7 +6,6 @@ using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Param;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
-using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Pair;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;
@@ -43,7 +42,7 @@ public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line
         {
             case RoundOpenToken: return grammar.TryParse<ParenthesizedExpr>();
             case LiteralToken: return grammar.TryParse<TokenExpr>();
-            case null: return SpecifiedTokenMissing.Create<MigxnExpr>([], nameof(MigxnExpr));
+            case null: return SpecifiedTokenMissing.Create<MigxnExpr>(nameof(MigxnExpr));
         }
         return new Diagnostic<MigxnExpr>(new UnexpectedToken<MigxnExpr>(grammar.MoveNext()!));
     }

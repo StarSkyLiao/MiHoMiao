@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis.Grammar;
-using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Pair;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;
@@ -21,7 +20,7 @@ public record ParenthesizedExpr(RoundOpenToken Left, MigxnExpr Content, RoundClo
         Debug.Assert(content.Result != null);
 
         RoundCloseToken? closeToken = grammar.TryMatchToken<RoundCloseToken>();
-        if (closeToken is null) return SpecifiedTokenMissing.Create<ParenthesizedExpr>([openToken, content.Result], ")");
+        if (closeToken is null) return SpecifiedTokenMissing.Create<ParenthesizedExpr>(")", openToken, content.Result);
        
         return new Diagnostic<ParenthesizedExpr>(new ParenthesizedExpr(openToken, content.Result, closeToken));
     }

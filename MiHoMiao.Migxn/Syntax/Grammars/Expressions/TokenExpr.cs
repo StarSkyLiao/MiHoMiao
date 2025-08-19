@@ -13,6 +13,6 @@ public record TokenExpr(LiteralToken Token) : MigxnExpr(Token.Text, Token.Index,
     {
         MigxnToken? migxnToken = grammar.MoveNext();
         if (migxnToken is LiteralToken token) return new Diagnostic<TokenExpr>(new TokenExpr(token));
-        return SpecifiedTokenMissing.Create<TokenExpr>([], nameof(LiteralToken));
+        return SpecifiedTokenMissing.Create<TokenExpr>(nameof(LiteralToken));
     }
 }

@@ -1,6 +1,6 @@
 namespace MiHoMiao.Migxn.Runtime;
 
-public class MigxnFrame()
+public class MigxnFrame
 {
     
 }

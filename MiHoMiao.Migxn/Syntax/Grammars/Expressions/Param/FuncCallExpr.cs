@@ -29,26 +29,26 @@ public record FuncCallExpr(MigxnExpr Method, RoundOpenToken Left, List<MigxnNode
             {
                 case RoundCloseToken right:
                     paramNodes.Add(grammar.MoveNext()!);
-                    if (node is null && paramNodes.Count > 0) return SpecifiedTokenMissing.Create<MigxnExpr>(paramNodes, nameof(MigxnExpr));
+                    if (node is null && paramNodes.Count > 0) return SpecifiedTokenMissing.Create<MigxnExpr>(nameof(MigxnExpr), paramNodes);
                     if (node is null) return new Diagnostic<MigxnExpr>(new FuncCallExpr(method, left, paramList, right));
                     paramList.Add(node);
                     return new Diagnostic<MigxnExpr>(new FuncCallExpr(method, left, paramList, right));
                 case CommaToken:
                     paramNodes.Add(grammar.MoveNext()!);
-                    if (node is null) return SpecifiedTokenMissing.Create<MigxnExpr>(paramNodes, nameof(MigxnExpr));
+                    if (node is null) return SpecifiedTokenMissing.Create<MigxnExpr>(nameof(MigxnExpr), paramNodes);
                     paramList.Add(node);
                     node = null;
                     break;
                 default:
                     IResult<MigxnExpr> result = grammar.TryParse<MigxnExpr>();
-                    if (!result.IsSuccess) return SpecifiedTokenMissing.Create<MigxnExpr>(paramNodes, nameof(MigxnExpr));
+                    if (!result.IsSuccess) return SpecifiedTokenMissing.Create<MigxnExpr>(nameof(MigxnExpr), paramNodes);
                     node = result.Result!;
                     paramNodes.Add(node);
                     break;
             }
         }
-        if (node is null && paramNodes.Count > 0) return SpecifiedTokenMissing.Create<MigxnExpr>(paramNodes, nameof(MigxnExpr));
-        return SpecifiedTokenMissing.Create<MigxnExpr>(paramNodes, nameof(RoundCloseToken));
+        if (node is null && paramNodes.Count > 0) return SpecifiedTokenMissing.Create<MigxnExpr>(nameof(MigxnExpr), paramNodes);
+        return SpecifiedTokenMissing.Create<MigxnExpr>(nameof(RoundCloseToken), paramNodes);
     }
     
 }
