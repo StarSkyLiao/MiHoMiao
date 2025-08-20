@@ -25,11 +25,11 @@ internal record LoopToken(int Index, (int Line, int Column) Position)
         Debug.Assert(token is LoopToken);
 
         IResult<ParenthesizedExpr> times = migxnGrammar.TryParse<ParenthesizedExpr>();
-        if (!times.IsSuccess) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(times), this);
+        if (!times.IsSuccess) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(times), children:[this, ..times.Exception!.MigxnTree]);
         Debug.Assert(times.Result != null);
         
-        IResult<MigxnTree> stmt = migxnGrammar.ParseStmt();
-        if (!stmt.IsSuccess) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(times), this, times.Result);
+        IResult<MigxnStmt> stmt = migxnGrammar.ParseStmt();
+        if (!stmt.IsSuccess) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(times), children:[this, times.Result, ..times.Exception!.MigxnTree]);
         Debug.Assert(stmt.Result != null);
         
         return new Diagnostic<MigxnStmt>(new LoopStmt(this, times.Result, stmt.Result));

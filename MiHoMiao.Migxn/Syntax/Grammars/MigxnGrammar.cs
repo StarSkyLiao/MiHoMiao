@@ -1,8 +1,15 @@
 using System.Collections.Immutable;
+using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
+using MiHoMiao.Migxn.CodeAnalysis.Grammar;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
+using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
+using MiHoMiao.Migxn.Syntax.Grammars.Statements;
 using MiHoMiao.Migxn.Syntax.Lexers;
+using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Comments;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
+using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
+using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars;
 
@@ -13,7 +20,7 @@ public class MigxnGrammar
 
     private MigxnGrammar(MigxnLexer lexer)
     {
-        m_Tokens = [..lexer.MigxnTokens];
+        m_Tokens = [..lexer.MigxnTokens.Where(item => item is not IgnoredToken)];
         m_Exceptions = [..lexer.Exceptions];
     }
     
@@ -86,14 +93,24 @@ public class MigxnGrammar
         }
     }
 
-    internal IResult<MigxnTree> ParseStmt()
+    internal IResult<MigxnStmt> ParseStmt()
     {
-        IResult<MigxnTree> result = Current switch
+        if (Current is ILeadToken leadToken) return leadToken.TryCollectToken(this);
+        IResult<MigxnExpr> pointer = MigxnExpr.ParseUnitExpr(this);
+        if (!pointer.IsSuccess) return new Diagnostic<MigxnStmt>(pointer.Exception!);
+        Debug.Assert(pointer.Result != null);
+        
+        MigxnToken? token = MoveNext();
+        if (token is EqualToken)
         {
-            ILeadToken leadToken => leadToken.TryCollectToken(this),
-            _ => TryParse<MigxnExpr>()
-        };
-        return result;
+            IResult<MigxnExpr> expr = MigxnExpr.ParseUnitExpr(this);
+            if (!expr.IsSuccess) return new Diagnostic<MigxnStmt>(expr.Exception!);
+            Debug.Assert(expr.Result != null);
+            AssignStmt assign = new AssignStmt(pointer.Result, expr.Result);
+            return new Diagnostic<MigxnStmt>(assign);
+        }
+
+        return new Diagnostic<MigxnStmt>(new BadAssignment(new BadTree([pointer.Result, token])));
     }
 
     public IResult<T> TryParse<T>() where T : class, IExprParser<T> => T.TryParse(this);
