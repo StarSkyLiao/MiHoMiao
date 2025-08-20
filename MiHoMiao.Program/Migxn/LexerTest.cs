@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 using MiHoMiao.Core.Collections.Unsafe;
 using MiHoMiao.Migxn.Syntax.Grammars;
 using MiHoMiao.Migxn.Syntax.Intermediate;
@@ -9,8 +10,7 @@ public static class LexerTest
 {
     public const string Input =
         """
-        var i = 0
-        while (i < 10) i = i + 1
+        loop(8) i = i + 1
         """;
     
     // label start:
