@@ -1,4 +1,5 @@
 using MiHoMiao.Core.Collections.Tool;
+using MiHoMiao.Core.Collections.Unsafe;
 using MiHoMiao.Migxn.Syntax.Grammars;
 using MiHoMiao.Migxn.Syntax.Intermediate;
 using MiHoMiao.Migxn.Syntax.Lexers;
@@ -9,9 +10,12 @@ public static class LexerTest
 {
     public const string Input =
         """
-        if(bool_1) a = 4
-        else if (bool_1) a = 6
-        else a = 4
+        if(bool_1) {
+        var a = 400
+        var b = 1
+        }
+        else if (bool_1) var a = 6
+        else var a = 4
         """;
     
     // label start:
@@ -26,12 +30,19 @@ public static class LexerTest
         MigxnGrammar grammar = MigxnGrammar.Parse(lexer);
         // Console.WriteLine(grammar.MigxnTrees.GenericViewer("", "", "\n"));
         // Console.WriteLine(grammar.Exceptions.GenericViewer(item => item.Message, "", "", "\n"));
-        foreach (var migxnTree in grammar.MigxnTrees)
+        using InterpolatedString ilCode = new InterpolatedString(512);
+        using InterpolatedString formatCode = new InterpolatedString(512);
+        foreach (MigxnTree migxnTree in grammar.MigxnTrees)
         {
+            formatCode.Append(migxnTree.Text);
+            formatCode.Append('\n');
             foreach (MigxnOpCode migxnOpCode in migxnTree.AsOpCodes())
             {
-                Console.WriteLine(migxnOpCode);
+                ilCode.Append(migxnOpCode.ToString());
+                ilCode.Append('\n');
             }
         }
+        Console.Write(formatCode.ToString());
+        Console.Write(ilCode.ToString());
     }
 }

@@ -6,7 +6,7 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 namespace MiHoMiao.Migxn.Syntax.Grammars.Statements;
 
 internal record IfElseStmt(IfToken IfToken, ParenthesizedExpr Condition, MigxnNode TrueStmt, MigxnNode FalseStmt) 
-    : MigxnStmt($"if {Condition.Text} {TrueStmt.Text}\n else {FalseStmt.Text}".AsMemory(), IfToken.Index, IfToken.Position)
+    : MigxnStmt($"if {Condition.Text} {TrueStmt.Text}\nelse {FalseStmt.Text}".AsMemory(), IfToken.Index, IfToken.Position)
 {
     internal override IEnumerable<MigxnNode> Children() => [IfToken, Condition, TrueStmt, FalseStmt];
 
