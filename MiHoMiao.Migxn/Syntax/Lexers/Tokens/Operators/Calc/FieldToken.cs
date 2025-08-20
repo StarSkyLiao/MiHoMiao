@@ -4,11 +4,11 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
 
 internal record FieldToken(int Index, (int Line, int Column) Position)
-    : AbstractOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IClosedBinaryToken
+    : MigxnOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IClosedBinaryToken
 {
     public static string UniqueName => ".";
 
-    public static AbstractOperator Create(int index, (int Line, int Column) position) => new FieldToken(index, position);
+    public static MigxnOperator Create(int index, (int Line, int Column) position) => new FieldToken(index, position);
 
     int IBinaryToken.Priority => 0;
     

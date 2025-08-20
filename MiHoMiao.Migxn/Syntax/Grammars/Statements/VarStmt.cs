@@ -1,4 +1,6 @@
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
+using MiHoMiao.Migxn.Syntax.Intermediate;
+using MiHoMiao.Migxn.Syntax.Intermediate.Data.Store;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 
@@ -9,6 +11,8 @@ internal record VarStmt(VarToken Var, SymbolToken Identifier, MigxnExpr Expr)
         Var.Index, Var.Position)
 {
     internal override IEnumerable<MigxnNode> Children() => [Var, Identifier, Expr];
+
+    public override IEnumerable<MigxnOpCode> AsOpCodes() => Expr.AsOpCodes().Concat([new OpStVar(Identifier.Text)]);
 
     public Type VarType { get; set; } = typeof(object);
 

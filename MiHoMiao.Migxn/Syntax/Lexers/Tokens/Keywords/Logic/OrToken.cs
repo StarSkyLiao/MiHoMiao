@@ -1,4 +1,5 @@
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
+using MiHoMiao.Migxn.Syntax.Intermediate;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords.Logic;
@@ -10,6 +11,8 @@ internal record OrToken(int Index, (int Line, int Column) Position)
 
     public static AbstractKeyword Create(int index, (int Line, int Column) position) => new OrToken(index, position);
 
+    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotImplementedException();
+    
     int IBinaryToken.Priority => 13;
     
     MigxnNode ILeaderOpToken.MigxnNode => this;

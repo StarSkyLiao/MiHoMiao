@@ -1,8 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
 
 namespace MiHoMiao.Migxn.Runtime;
 
@@ -29,20 +27,20 @@ public record MigxnAssembly(string Name): IDisposable
         MemoryStream.CopyTo(fs);
     }
 
-    public void PrintMethodInfo(MigxnModule module, string methodName)
-    {
-        MemoryStream.Position = 0;
-
-        AssemblyDefinition? asmDef = AssemblyDefinition.ReadAssembly(MemoryStream);
-        TypeDefinition? typeDef = asmDef.MainModule.GetType(module.ModuleName);
-        MethodDefinition? methodDef = typeDef.Methods.First(m => m.Name == methodName);
-
-        Console.WriteLine($"Method: {methodDef.FullName}");
-        foreach (Instruction? ins in methodDef.Body.Instructions)
-        {
-            Console.WriteLine($"{ins.Offset:X4}: {ins.OpCode} {ins.Operand}");
-        }
-    }
+    // public void PrintMethodInfo(MigxnModule module, string methodName)
+    // {
+    //     MemoryStream.Position = 0;
+    //
+    //     AssemblyDefinition? asmDef = AssemblyDefinition.ReadAssembly(MemoryStream);
+    //     TypeDefinition? typeDef = asmDef.MainModule.GetType(module.ModuleName);
+    //     MethodDefinition? methodDef = typeDef.Methods.First(m => m.Name == methodName);
+    //
+    //     Console.WriteLine($"Method: {methodDef.FullName}");
+    //     foreach (Instruction? ins in methodDef.Body.Instructions)
+    //     {
+    //         Console.WriteLine($"{ins.Offset:X4}: {ins.OpCode} {ins.Operand}");
+    //     }
+    // }
 
     ~MigxnAssembly() => Dispose();
     

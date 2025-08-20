@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
+using MiHoMiao.Migxn.Syntax.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 
@@ -8,6 +9,8 @@ internal record SuffixExpr(MigxnExpr Left, ISuffixToken SuffixToken)
 {
 
     internal override IEnumerable<MigxnNode> Children() => [Left, SuffixToken.MigxnNode];
+    
+    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotImplementedException();
     
     internal static IResult<MigxnExpr> ParseForward(MigxnExpr current, MigxnGrammar grammar)
     {

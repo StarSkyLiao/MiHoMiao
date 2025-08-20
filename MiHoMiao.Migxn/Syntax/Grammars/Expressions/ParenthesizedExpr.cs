@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis.Grammar;
+using MiHoMiao.Migxn.Syntax.Intermediate;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Pair;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;
@@ -9,6 +10,8 @@ public record ParenthesizedExpr(RoundOpenToken Left, MigxnExpr Content, RoundClo
     : MigxnExpr($"({Content.Text})".AsMemory(), Left.Index, Left.Position), IExprParser<ParenthesizedExpr>
 {
     internal override IEnumerable<MigxnNode> Children() => [Left, Content, Right];
+
+    public override IEnumerable<MigxnOpCode> AsOpCodes() => Content.AsOpCodes();
 
     static IResult<ParenthesizedExpr> IExprParser<ParenthesizedExpr>.TryParse(MigxnGrammar grammar)
     {

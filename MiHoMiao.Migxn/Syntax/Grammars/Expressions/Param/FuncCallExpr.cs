@@ -2,6 +2,7 @@ using System.Diagnostics;
 using MiHoMiao.Core.Collections.Tool;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis.Grammar;
+using MiHoMiao.Migxn.Syntax.Intermediate;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Pair;
 
@@ -14,6 +15,8 @@ public record FuncCallExpr(MigxnExpr Method, RoundOpenToken Left, List<MigxnNode
 {
 
     internal override IEnumerable<MigxnNode> Children() => [Method, Left, ..ParamList, Right];
+    
+    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotImplementedException();
     
     internal static IResult<MigxnExpr> ParseForward(MigxnExpr method, MigxnGrammar grammar)
     {

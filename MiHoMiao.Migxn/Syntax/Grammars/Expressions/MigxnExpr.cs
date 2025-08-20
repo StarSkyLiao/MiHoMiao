@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis.Grammar;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
@@ -13,6 +14,9 @@ namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position) 
     : MigxnTree(Text, Index, Position), IExprParser<MigxnExpr>
 {
+    [field: AllowNull, MaybeNull]
+    public Type ExprType { get => field ??= typeof(object); set; } 
+    
     static IResult<MigxnExpr> IExprParser<MigxnExpr>.TryParse(MigxnGrammar grammar)
     {
         if (grammar.Current is IPrefixToken) return PrefixExpr.ParseForward(grammar);

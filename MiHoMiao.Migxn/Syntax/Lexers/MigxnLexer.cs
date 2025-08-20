@@ -23,13 +23,13 @@ public class MigxnLexer
         );
     
     [field: AllowNull, MaybeNull]
-    private static IDictionary<string, Func<int, (int, int), AbstractOperator>> Operator => field ??=
-        new Dictionary<string, Func<int, (int, int), AbstractOperator>>(
+    private static IDictionary<string, Func<int, (int, int), MigxnOperator>> Operator => field ??=
+        new Dictionary<string, Func<int, (int, int), MigxnOperator>>(
             from type in typeof(MigxnLexer).Assembly.GetTypes()
-            where type.IsAssignableTo(typeof(AbstractOperator)) && type.IsAssignableTo(typeof(IOperatorToken)) && !type.IsAbstract
-            select new KeyValuePair<string, Func<int, (int, int), AbstractOperator>>(
+            where type.IsAssignableTo(typeof(MigxnOperator)) && type.IsAssignableTo(typeof(IOperatorToken)) && !type.IsAbstract
+            select new KeyValuePair<string, Func<int, (int, int), MigxnOperator>>(
                 (string)type.GetProperty(nameof(IOperatorToken.UniqueName)).GetValue(null),
-                type.GetMethod(nameof(IOperatorToken.Create)).CreateDelegate<Func<int, (int, int), AbstractOperator>>(null)
+                type.GetMethod(nameof(IOperatorToken.Create)).CreateDelegate<Func<int, (int, int), MigxnOperator>>(null)
             )
         );
 
@@ -276,16 +276,16 @@ public class MigxnLexer
     
     private static bool IsOperatorChar(char c) => "+-*/%=(){}[],.<>?:|&^".Contains(c);
 
-    private AbstractOperator ReadOperator(int startIndex, int line, int column)
+    private MigxnOperator ReadOperator(int startIndex, int line, int column)
     {
         int start = m_Index;
         char firstChar = MoveNext();
         if (IsOperatorChar(Current) && s_MultiCharOperators.Contains($"{firstChar}{Current}")) MoveNext();
         
         string text = m_Input[start..m_Index];
-        return Operator.TryGetValue(text, out Func<int, (int, int), AbstractOperator>? tokenFactory)
+        return Operator.TryGetValue(text, out Func<int, (int, int), MigxnOperator>? tokenFactory)
             ? tokenFactory(startIndex, (line, column))
-            : new AbstractOperator(text.AsMemory(), startIndex, (line, column));
+            : new MigxnOperator(text.AsMemory(), startIndex, (line, column));
     }
     
     private MigxnToken ReadIdentifier(int startIndex, int line, int column)

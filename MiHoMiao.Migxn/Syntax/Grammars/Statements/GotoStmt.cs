@@ -1,3 +1,5 @@
+using MiHoMiao.Migxn.Syntax.Intermediate;
+using MiHoMiao.Migxn.Syntax.Intermediate.Flow;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 
@@ -7,5 +9,7 @@ internal record GotoStmt(GotoToken Goto, SymbolToken Identifier)
     : MigxnStmt($"goto {Identifier.Text}".AsMemory(), Goto.Index, Goto.Position)
 {
     internal override IEnumerable<MigxnNode> Children() => [Goto, Identifier];
-    
+
+    public override IEnumerable<MigxnOpCode> AsOpCodes() => [new OpGoto(Identifier.Text)];
+
 }

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
+using MiHoMiao.Migxn.Syntax.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 
@@ -9,7 +10,9 @@ internal record PrefixExpr(IPrefixToken PrefixToken, MigxnExpr Right)
 {
 
     internal override IEnumerable<MigxnNode> Children() => [PrefixToken.MigxnNode, Right];
-    
+
+    public override IEnumerable<MigxnOpCode> AsOpCodes() => PrefixToken.PrefixOp(Right);
+
     internal static IResult<MigxnExpr> ParseForward(MigxnGrammar grammar)
     {
         IPrefixToken? prefix = grammar.MoveNext() as IPrefixToken;

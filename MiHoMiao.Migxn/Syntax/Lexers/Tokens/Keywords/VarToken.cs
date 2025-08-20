@@ -4,6 +4,7 @@ using MiHoMiao.Migxn.CodeAnalysis.Grammar;
 using MiHoMiao.Migxn.Syntax.Grammars;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Statements;
+using MiHoMiao.Migxn.Syntax.Intermediate;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
@@ -17,6 +18,8 @@ internal record VarToken(int Index, (int Line, int Column) Position)
 
     public static AbstractKeyword Create(int index, (int Line, int Column) position) => new VarToken(index, position);
 
+    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotSupportedException();
+    
     public IResult<MigxnStmt> TryCollectToken(MigxnGrammar migxnGrammar)
     {
         MigxnToken? token = migxnGrammar.MoveNext();

@@ -16,7 +16,7 @@ internal interface ITokenFactory<out T> where T : MigxnToken
 
 internal interface IKeywordToken : ITokenFactory<AbstractKeyword>;
 
-internal interface IOperatorToken : ITokenFactory<AbstractOperator>;
+internal interface IOperatorToken : ITokenFactory<MigxnOperator>;
 
 internal interface ILeadToken
 {
