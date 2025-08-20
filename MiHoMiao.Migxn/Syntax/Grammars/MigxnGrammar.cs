@@ -80,16 +80,22 @@ public class MigxnGrammar
         m_Index = 0;
         while (Current != null)
         {
-            IResult<MigxnTree> result = (Current) switch
-            {
-                ILeadToken leadToken => leadToken.TryCollectToken(this),
-                _ => TryParse<MigxnExpr>()
-            };
+            IResult<MigxnTree> result = ParseStmt();
             if (result.IsSuccess) yield return result.Result!;
             else m_Exceptions.Add(result.Exception!);
         }
     }
-    
+
+    internal IResult<MigxnTree> ParseStmt()
+    {
+        IResult<MigxnTree> result = Current switch
+        {
+            ILeadToken leadToken => leadToken.TryCollectToken(this),
+            _ => TryParse<MigxnExpr>()
+        };
+        return result;
+    }
+
     public IResult<T> TryParse<T>() where T : class, IExprParser<T> => T.TryParse(this);
     
     public T? TryMatchToken<T>() where T : MigxnToken

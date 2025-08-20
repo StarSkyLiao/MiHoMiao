@@ -9,6 +9,7 @@ public static class LexerTest
 {
     public const string Input =
         """
+        if(1) a = 1
         var a = 0
         var b = 1
         var i = 0
