@@ -9,7 +9,10 @@ public static class LexerTest
 {
     public const string Input =
         """
-        if(bool_1) a = 4
+        if(bool_1) {
+        a = 4
+        b = 1
+        }
         else if (bool_1) a = 6
         else a = 4
         """;
