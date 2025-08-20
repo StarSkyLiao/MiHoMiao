@@ -1,4 +1,3 @@
-using MiHoMiao.Core.Collections.Tool;
 using MiHoMiao.Core.Collections.Unsafe;
 using MiHoMiao.Migxn.Syntax.Grammars;
 using MiHoMiao.Migxn.Syntax.Intermediate;
@@ -10,12 +9,8 @@ public static class LexerTest
 {
     public const string Input =
         """
-        if(bool_1) {
-        var a = 400
-        var b = 1
-        }
-        else if (bool_1) var a = 6
-        else var a = 4
+        var i = 0
+        while (i < 10) i = i + 1
         """;
     
     // label start:
