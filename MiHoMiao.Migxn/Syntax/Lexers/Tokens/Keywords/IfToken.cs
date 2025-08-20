@@ -27,10 +27,19 @@ internal record IfToken(int Index, (int Line, int Column) Position)
 
         IResult<ParenthesizedExpr> condition = migxnGrammar.TryParse<ParenthesizedExpr>();
         if (!condition.IsSuccess) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(condition), this);
+        Debug.Assert(condition.Result != null);
         
-        IResult<MigxnTree> stmt = migxnGrammar.ParseStmt();
-        if (!stmt.IsSuccess) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(condition), this, condition.Result!);
+        IResult<MigxnTree> trueStmt = migxnGrammar.ParseStmt();
+        if (!trueStmt.IsSuccess) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(condition), this, condition.Result);
+        Debug.Assert(trueStmt.Result != null);
         
-        return new Diagnostic<MigxnStmt>(new IfStmt(this, condition.Result!, stmt.Result!));
+        ElseToken? elseToken = migxnGrammar.TryMatchToken<ElseToken>();
+        if (elseToken is null) return new Diagnostic<MigxnStmt>(new IfStmt(this, condition.Result, trueStmt.Result));
+
+        IResult<MigxnTree> falseStmt = migxnGrammar.ParseStmt();
+        if (!falseStmt.IsSuccess) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(condition), this, condition.Result, trueStmt.Result, elseToken);
+        Debug.Assert(falseStmt.Result != null);
+
+        return new Diagnostic<MigxnStmt>(new IfElseStmt(this, condition.Result, trueStmt.Result, falseStmt.Result));
     }
 }

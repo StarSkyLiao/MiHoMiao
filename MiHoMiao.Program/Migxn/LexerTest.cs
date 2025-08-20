@@ -9,20 +9,9 @@ public static class LexerTest
 {
     public const string Input =
         """
-        if(1) a = 1
-        var a = 0
-        var b = 1
-        var i = 0
-        label start:
-          goto end
-          var temp = a
-          a = b
-          b = temp + a
-          i = i + 1
-          goto start
-        label end:
-        
-        
+        if(bool_1) a = 4
+        else if (bool_1) a = 6
+        else a = 4
         """;
     
     // label start:
