@@ -9,7 +9,7 @@ internal record CharToken(ReadOnlyMemory<char> Text, int Index, (int Line, int C
 {
     public override Type LiteralType(MigxnContext context) => typeof(char);
     
-    public override IEnumerable<MigxnOpCode> AsOpCodes()
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
     {
         yield return new OpLdcI4(Text.Span[0]);
     }

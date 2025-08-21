@@ -2,26 +2,26 @@ namespace MiHoMiao.Migxn.Runtime;
 
 public class MigxnSymbols<T>(MigxnSymbols<T>? parentTable = null)
 {
-    private readonly List<Dictionary<ReadOnlyMemory<char>, T>> m_JarfterObjects = [[]];
+    private readonly List<Dictionary<string, T>> m_JarfterObjects = [[]];
     
     public MigxnSymbols<T>? ParentTable => parentTable;
 
     public int Count => m_JarfterObjects.Sum(dic => dic.Count);
 
-    public void DeclareVariable(ReadOnlyMemory<char> name, T @object)
+    public void DeclareVariable(string name, T @object)
     {
         if (m_JarfterObjects[^1].TryAdd(name, @object)) return;
         throw new NotSupportedException($"Variable {name} is already declared!");
     }
 
-    public void StoreVariable(ReadOnlyMemory<char> name, T @object)
+    public void StoreVariable(string name, T @object)
     {
-        if (name.Span is "_") m_JarfterObjects[^1]["_".AsMemory()] = @object;
+        if (name is "_") m_JarfterObjects[^1]["_"] = @object;
         else
         {
             for (var index = m_JarfterObjects.Count - 1; index >= 0; index--)
             {
-                Dictionary<ReadOnlyMemory<char>, T> item = m_JarfterObjects[index];
+                Dictionary<string, T> item = m_JarfterObjects[index];
                 if (!item.ContainsKey(name)) continue;
                 item[name] = @object;
                 return;
@@ -31,11 +31,11 @@ public class MigxnSymbols<T>(MigxnSymbols<T>? parentTable = null)
         else throw new NotSupportedException($"Variable {name} is not declared!");
     }
 
-    public T LoadVariable(ReadOnlyMemory<char> name)
+    public T LoadVariable(string name)
     {
         for (int index = m_JarfterObjects.Count - 1; index >= 0; index--)
         {
-            Dictionary<ReadOnlyMemory<char>, T> item = m_JarfterObjects[index];
+            Dictionary<string, T> item = m_JarfterObjects[index];
             if (item.TryGetValue(name, out T? value)) return value;
         }
         return ParentTable != null 

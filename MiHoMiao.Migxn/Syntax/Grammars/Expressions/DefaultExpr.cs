@@ -10,6 +10,6 @@ internal record DefaultExpr(DefaultToken DefaultToken) : MigxnExpr(DefaultToken.
     
     internal override IEnumerable<MigxnNode> Children() => [DefaultToken];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => DefaultToken.AsOpCodes();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => DefaultToken.AsOpCodes(context);
     
 }

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis.Grammar;
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars;
 using MiHoMiao.Migxn.Syntax.Grammars.Statements;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
@@ -16,7 +17,7 @@ internal record LabelToken(int Index, (int Line, int Column) Position)
 
     public static AbstractKeyword Create(int index, (int Line, int Column) position) => new LabelToken(index, position);
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new UnreachableException();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => throw new UnreachableException();
     
     public IResult<MigxnStmt> TryCollectToken(MigxnGrammar migxnGrammar)
     {

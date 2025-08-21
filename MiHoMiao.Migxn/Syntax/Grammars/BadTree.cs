@@ -1,4 +1,5 @@
 using MiHoMiao.Core.Collections.Tool;
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars;
@@ -9,7 +10,7 @@ internal record BadTree(List<MigxnNode> ChildNodes)
 {
     internal override IEnumerable<MigxnNode> Children() => ChildNodes;
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotSupportedException();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => throw new NotSupportedException();
     
     protected override string SelfString() =>
         $"{GetType().Name} >>>> (Line: {Position.Line}, Column: {Position.Column}): {Text}>>><<<";

@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
@@ -10,6 +11,6 @@ internal record LabelStmt(LabelToken Label, SymbolToken Identifier)
 {
     internal override IEnumerable<MigxnNode> Children() => [Label, Identifier];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => [new OpLabel(Identifier.Text)];
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => [new OpLabel(Identifier.Text)];
 
 }

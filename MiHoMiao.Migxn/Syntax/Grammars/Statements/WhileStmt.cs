@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
@@ -10,13 +11,13 @@ internal record WhileStmt(WhileToken WhileToken, ParenthesizedExpr Condition, Mi
 {
     internal override IEnumerable<MigxnNode> Children() => [WhileToken, Condition, TrueStmt];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes()
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
     {
         ReadOnlyMemory<char> labelStart = $"<label>.while_start_{WhileToken.Position}".AsMemory();
         ReadOnlyMemory<char> labelCondition = $"<label>.while_condition_{WhileToken.Position}".AsMemory();
         return [
             new OpGoto(labelCondition), new OpLabel(labelStart),
-            ..TrueStmt.AsOpCodes(), new OpLabel(labelCondition), ..Condition.AsOpCodes(),
+            ..TrueStmt.AsOpCodes(context), new OpLabel(labelCondition), ..Condition.AsOpCodes(context),
             new OpBrTrue(labelStart),
         ];
     }

@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
@@ -14,10 +15,10 @@ internal record EqualToken(int Index, (int Line, int Column) Position)
 
     public static MigxnOperator Create(int index, (int Line, int Column) position) => new EqualToken(index, position);
 
-    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right)
+    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context)
     {
         if (left is not TokenExpr { Token: SymbolToken symbol }) throw new NotSupportedException();
-        return right.AsOpCodes().Concat([new OpStVar(symbol.Text)]);
+        return right.AsOpCodes(context).Concat([new OpStVar(symbol.Text)]);
     }
     
     int IBinaryToken.Priority => 16;

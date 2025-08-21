@@ -13,7 +13,7 @@ internal record TokenExpr(LiteralToken Token) : MigxnExpr(Token.Text, Token.Inde
 
     internal override IEnumerable<MigxnNode> Children() => [Token];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => Token.AsOpCodes();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => Token.AsOpCodes(context);
 
     static IResult<TokenExpr> IExprParser<TokenExpr>.TryParse(MigxnGrammar grammar)
     {

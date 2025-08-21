@@ -9,7 +9,7 @@ internal record LongToken(ReadOnlyMemory<char> Text, int Index, (int Line, int C
 {
     public override Type LiteralType(MigxnContext context) => typeof(long);
     
-    public override IEnumerable<MigxnOpCode> AsOpCodes()
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
     {
         long value = long.Parse(Text.ToString());
         yield return value switch

@@ -1,4 +1,5 @@
 using MiHoMiao.Core.Collections.Tool;
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Pair;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
@@ -10,5 +11,7 @@ internal record BlockStmt(CurlyOpenToken OpenToken, List<MigxnTree> ContainedStm
 {
     internal override IEnumerable<MigxnNode> Children() => [OpenToken, ..ContainedStmts, CloseToken];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => ContainedStmts.SelectMany(item => item.AsOpCodes());
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) 
+        => ContainedStmts.SelectMany(item => item.AsOpCodes(context));
+    
 }

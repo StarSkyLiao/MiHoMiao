@@ -8,7 +8,7 @@ internal record DefaultToken(int Index, (int Line, int Column) Position) : Liter
 {
     public override Type LiteralType(MigxnContext context) => typeof(object);
     
-    public override IEnumerable<MigxnOpCode> AsOpCodes()
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
     {
         yield return new OpLdNull();
     }

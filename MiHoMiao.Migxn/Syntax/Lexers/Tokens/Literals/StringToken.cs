@@ -9,7 +9,7 @@ internal record StringToken(ReadOnlyMemory<char> Text, int Index, (int Line, int
 {
     public override Type LiteralType(MigxnContext context) => typeof(string);
     
-    public override IEnumerable<MigxnOpCode> AsOpCodes()
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
     {
         yield return new OpLdcStr(Text.ToString());
     }

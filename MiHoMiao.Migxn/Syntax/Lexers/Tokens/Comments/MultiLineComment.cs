@@ -1,8 +1,9 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Comments;
 
 internal record MultiLineComment(int Index, ReadOnlyMemory<char> Text, (int Line, int Column) Position) : IgnoredToken(Text, Index, Position)
 {
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => [];
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => [];
 }

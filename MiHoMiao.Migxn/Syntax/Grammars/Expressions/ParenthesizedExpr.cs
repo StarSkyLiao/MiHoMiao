@@ -14,7 +14,7 @@ internal record ParenthesizedExpr(RoundOpenToken Left, MigxnExpr Content, RoundC
 
     internal override IEnumerable<MigxnNode> Children() => [Left, Content, Right];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => Content.AsOpCodes();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => Content.AsOpCodes(context);
 
     static IResult<ParenthesizedExpr> IExprParser<ParenthesizedExpr>.TryParse(MigxnGrammar grammar)
     {

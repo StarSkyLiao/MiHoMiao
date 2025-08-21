@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
@@ -10,11 +11,11 @@ internal record IfStmt(IfToken IfToken, ParenthesizedExpr Condition, MigxnNode T
 {
     internal override IEnumerable<MigxnNode> Children() => [IfToken, Condition, TrueStmt];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes()
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
     {
         ReadOnlyMemory<char> labelFalse = $"<label>.if_false_{IfToken.Position}".AsMemory();
-        return Condition.AsOpCodes().Concat([
-            new OpBrFalse(labelFalse), ..TrueStmt.AsOpCodes(), new OpLabel(labelFalse)
+        return Condition.AsOpCodes(context).Concat([
+            new OpBrFalse(labelFalse), ..TrueStmt.AsOpCodes(context), new OpLabel(labelFalse)
         ]);
     }
 }

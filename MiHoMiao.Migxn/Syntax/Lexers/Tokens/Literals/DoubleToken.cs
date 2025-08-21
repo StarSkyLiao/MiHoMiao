@@ -9,7 +9,7 @@ internal record DoubleToken(ReadOnlyMemory<char> Text, int Index, (int Line, int
 {
     public override Type LiteralType(MigxnContext context) => typeof(double);
     
-    public override IEnumerable<MigxnOpCode> AsOpCodes()
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
     {
         double value = double.Parse(Text.ToString());
         yield return new OpLdcR8(value);

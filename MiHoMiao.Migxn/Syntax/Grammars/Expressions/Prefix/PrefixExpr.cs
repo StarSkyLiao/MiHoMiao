@@ -13,7 +13,7 @@ internal record PrefixExpr(IPrefixToken PrefixToken, MigxnExpr Right)
 
     internal override IEnumerable<MigxnNode> Children() => [PrefixToken.MigxnNode, Right];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => PrefixToken.PrefixOp(Right);
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => PrefixToken.PrefixOp(Right, context);
 
     internal static IResult<MigxnExpr> ParseForward(MigxnGrammar grammar)
     {

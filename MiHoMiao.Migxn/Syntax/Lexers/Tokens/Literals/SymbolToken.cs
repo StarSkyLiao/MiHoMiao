@@ -11,7 +11,7 @@ internal record SymbolToken(ReadOnlyMemory<char> Text, int Index, (int Line, int
     {
         try
         {
-            return context.Variables.LoadVariable(Text).Type;
+            return context.Variables.LoadVariable(Text.ToString()).Type;
         }
         catch (Exception ex)
         {
@@ -20,5 +20,17 @@ internal record SymbolToken(ReadOnlyMemory<char> Text, int Index, (int Line, int
         }
     }
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => [new OpLdVar(Text)];
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
+    {
+        try
+        {
+            MigxnVariable variable = context.Variables.LoadVariable(Text.ToString());
+            return [new OpLdVar(Text)];
+        }
+        catch (Exception ex)
+        {
+            context.MigxnParser.Exceptions.Add(ex);
+            return [];
+        }
+    }
 }

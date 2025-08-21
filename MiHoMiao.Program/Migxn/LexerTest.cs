@@ -1,9 +1,7 @@
 using MiHoMiao.Core.Collections.Tool;
-using MiHoMiao.Core.Collections.Unsafe;
 using MiHoMiao.Migxn.Syntax.Grammars;
 using MiHoMiao.Migxn.Syntax.Lexers;
 using MiHoMiao.Migxn.Syntax.Parser;
-using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Program.Migxn;
 
@@ -11,9 +9,9 @@ public static class LexerTest
 {
     public const string Input =
         """
-        var num1 = 1
+        var num1 : i64
         var num2 = 1
-        var nextNum = num1 and num2
+        var nextNum = num1 and (num1 or num2)
         """;
    
     public static void Run()
@@ -22,21 +20,11 @@ public static class LexerTest
         // Console.WriteLine(lexer.MigxnTokens.GenericViewer("", "", "\n"));
         // Console.WriteLine(lexer.Exceptions.GenericViewer("", "", "\n"));
         MigxnGrammar grammar = MigxnGrammar.Parse(lexer);
+        // Console.WriteLine(grammar.CodeFormat());
         // Console.WriteLine(grammar.MigxnTrees.GenericViewer("", "", "\n"));
-        Console.WriteLine(grammar.Exceptions.GenericViewer(item => item.Message, "", "", "\n"));
-        using InterpolatedString ilCode = new InterpolatedString(512);
-        using InterpolatedString formatCode = new InterpolatedString(512);
-        foreach (MigxnTree migxnTree in grammar.MigxnTrees)
-        {
-            formatCode.Append(migxnTree.Text);
-            formatCode.Append('\n');
-            foreach (MigxnOpCode migxnOpCode in migxnTree.AsOpCodes())
-            {
-                ilCode.Append(migxnOpCode.ToString());
-                ilCode.Append('\n');
-            }
-        }
-        Console.Write(formatCode.ToString());
-        Console.Write(ilCode.ToString());
+        // Console.WriteLine(grammar.Exceptions.GenericViewer(item => item.Message, "", "", "\n"));
+        MigxnParser parser = MigxnParser.Parse(grammar);
+        Console.WriteLine(parser.CodeFormat());
+        Console.WriteLine(parser.Exceptions.GenericViewer(item => item.Message, "", "", "\n"));
     }
 }

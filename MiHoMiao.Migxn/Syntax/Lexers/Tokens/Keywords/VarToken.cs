@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis.Grammar;
+using MiHoMiao.Migxn.Reflection;
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Statements;
@@ -18,7 +20,7 @@ internal record VarToken(int Index, (int Line, int Column) Position)
 
     public static AbstractKeyword Create(int index, (int Line, int Column) position) => new VarToken(index, position);
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotSupportedException();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => throw new NotSupportedException();
     
     public IResult<MigxnStmt> TryCollectToken(MigxnGrammar migxnGrammar)
     {
@@ -38,21 +40,20 @@ internal record VarToken(int Index, (int Line, int Column) Position)
             if (varType is null) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(varType),this, varName, colon);
         }
         
-        // 情况 2：var item = expr
+        // var item = expr
         EqualToken? equal = migxnGrammar.TryMatchToken<EqualToken>();
         if (equal == null)
         {
             // error: var item
             if (varType == null) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(varName), this, varName);
             // var item : type = default
-            DefaultExpr defaultExpr = new DefaultExpr(new DefaultToken(Index, Position));
-            return new Diagnostic<MigxnStmt>(new VarStmt(this, varName, defaultExpr));
+            return new Diagnostic<MigxnStmt>(new VarDeclareStmt(this, varName, varType.Text.ToString()));
         }
 
         IResult<MigxnExpr> initialExpr = migxnGrammar.TryParse<MigxnExpr>();
         // var item : type = expr
-        if (initialExpr.IsSuccess) return new Diagnostic<MigxnStmt>(new VarStmt(this, varName, initialExpr.Result!));
-        // var item : type = 
+        if (initialExpr.IsSuccess) return new Diagnostic<MigxnStmt>(new VarInitialStmt(this, varName, initialExpr.Result!));
+        // error: var item : type = 
         return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(initialExpr), this, varName, equal);
         
     }

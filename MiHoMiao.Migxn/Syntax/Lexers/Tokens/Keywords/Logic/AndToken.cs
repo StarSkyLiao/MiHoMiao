@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
@@ -15,17 +16,17 @@ internal record AndToken(int Index, (int Line, int Column) Position)
 
     public static AbstractKeyword Create(int index, (int Line, int Column) position) => new AndToken(index, position);
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotSupportedException();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => throw new NotSupportedException();
     
-    public IEnumerable<MigxnOpCode> BinaryOp(MigxnExpr left, MigxnExpr right)
+    public IEnumerable<MigxnOpCode> BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context)
     {
-        if (right is TokenExpr rightToken) return [..left.AsOpCodes(), ..rightToken.Token.AsOpCodes(), new OpAnd()];
+        if (right is TokenExpr rightToken) return [..left.AsOpCodes(context), ..rightToken.Token.AsOpCodes(context), new OpAnd()];
         ReadOnlyMemory<char> labelLeft = $"<label>.or_left_{Position}".AsMemory();
         ReadOnlyMemory<char> labelRight = $"<label>.or_right_{Position}".AsMemory();
         return
         [
-            ..left.AsOpCodes(), new OpBrFalse(labelLeft),
-            ..right.AsOpCodes(), new OpGoto(labelRight),
+            ..left.AsOpCodes(context), new OpBrFalse(labelLeft),
+            ..right.AsOpCodes(context), new OpGoto(labelRight),
             new OpLabel(labelLeft), new OpLdcI4S(0), new OpLabel(labelRight), 
         ];
     }

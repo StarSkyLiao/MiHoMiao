@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
@@ -13,9 +14,9 @@ internal record LogicXor(int Index, (int Line, int Column) Position)
 
     public static MigxnOperator Create(int index, (int Line, int Column) position) => new LogicXor(index, position);
 
-    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right)
+    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context)
     {
-        return left.AsOpCodes().Concat(right.AsOpCodes()).Concat([new OpXor()]);
+        return left.AsOpCodes(context).Concat(right.AsOpCodes(context)).Concat([new OpXor()]);
     }
     
     int IBinaryToken.Priority => 10;

@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
@@ -13,7 +14,7 @@ internal record LoopStmt(LoopToken LoopToken, ParenthesizedExpr LoopTimes, Migxn
 {
     internal override IEnumerable<MigxnNode> Children() => [LoopToken, LoopTimes, ContainedStmt];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes()
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
     {
         ReadOnlyMemory<char> varLoopN = $"<var>.loop_n_{LoopToken.Position}".AsMemory();
         ReadOnlyMemory<char> varLength = $"<var>.loop_length_{LoopToken.Position}".AsMemory();
@@ -28,18 +29,18 @@ internal record LoopStmt(LoopToken LoopToken, ParenthesizedExpr LoopTimes, Migxn
         ReadOnlyMemory<char> label7 = $"<label>.loop_case_7_{LoopToken.Position}".AsMemory();
         
         return [
-            ..LoopTimes.AsOpCodes(), new OpDup(), new OpStVar(varLength), new OpLdcI4S(0),
+            ..LoopTimes.AsOpCodes(context), new OpDup(), new OpStVar(varLength), new OpLdcI4S(0),
             new OpBlt(labelEnd),
             new OpLdVar(varLength), new OpLdcI4S(7), new OpAdd(), new OpLdcI4S(8), new OpDiv(), new OpStVar(varLoopN),
             new OpSwitch([label0, label1, label2, label3, label4, label5, label6, label7]),
-            new OpLabel(label0), ..ContainedStmt.AsOpCodes(),
-            new OpLabel(label7), ..ContainedStmt.AsOpCodes(),
-            new OpLabel(label6), ..ContainedStmt.AsOpCodes(),
-            new OpLabel(label5), ..ContainedStmt.AsOpCodes(),
-            new OpLabel(label4), ..ContainedStmt.AsOpCodes(),
-            new OpLabel(label3), ..ContainedStmt.AsOpCodes(),
-            new OpLabel(label2), ..ContainedStmt.AsOpCodes(),
-            new OpLabel(label1), ..ContainedStmt.AsOpCodes(),
+            new OpLabel(label0), ..ContainedStmt.AsOpCodes(context),
+            new OpLabel(label7), ..ContainedStmt.AsOpCodes(context),
+            new OpLabel(label6), ..ContainedStmt.AsOpCodes(context),
+            new OpLabel(label5), ..ContainedStmt.AsOpCodes(context),
+            new OpLabel(label4), ..ContainedStmt.AsOpCodes(context),
+            new OpLabel(label3), ..ContainedStmt.AsOpCodes(context),
+            new OpLabel(label2), ..ContainedStmt.AsOpCodes(context),
+            new OpLabel(label1), ..ContainedStmt.AsOpCodes(context),
             new OpLdVar(varLoopN), new OpLdcI4S(-1), new OpSub(), new OpDup(), new OpStVar(varLoopN), new OpLdcI4S(0),
             new OpBgt(label0),
             new OpLabel(labelEnd),

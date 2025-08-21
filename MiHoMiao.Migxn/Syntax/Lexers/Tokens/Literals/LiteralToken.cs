@@ -9,6 +9,6 @@ internal abstract record LiteralToken(ReadOnlyMemory<char> Text, int Index, (int
     
     public abstract Type LiteralType(MigxnContext context);
     
-    public abstract override IEnumerable<MigxnOpCode> AsOpCodes();
+    public abstract override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context);
     
 }

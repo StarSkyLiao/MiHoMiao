@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
@@ -10,7 +11,7 @@ internal interface IBinaryToken : ILeaderOpToken
     /// </summary>
     int Priority { get; }
 
-    IEnumerable<MigxnOpCode> BinaryOp(MigxnExpr left, MigxnExpr right) => [];
+    IEnumerable<MigxnOpCode> BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context) => [];
 }
 
 /// <summary>

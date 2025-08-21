@@ -18,7 +18,7 @@ internal record BinaryExpr(MigxnExpr Left, IBinaryToken BinaryToken, MigxnExpr R
     
     internal override IEnumerable<MigxnNode> Children() => [Left, BinaryToken.MigxnNode, Right];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => BinaryToken.BinaryOp(Left, Right);
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => BinaryToken.BinaryOp(Left, Right, context);
 
     internal static IResult<MigxnExpr> ParseForward(MigxnExpr current, MigxnGrammar grammar)
     {

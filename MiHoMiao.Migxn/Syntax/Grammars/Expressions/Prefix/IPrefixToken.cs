@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
@@ -10,5 +11,5 @@ internal interface IPrefixToken : ILeaderOpToken
     /// </summary>
     int Priority { get; }
 
-    IEnumerable<MigxnOpCode> PrefixOp(MigxnExpr right) => [];
+    IEnumerable<MigxnOpCode> PrefixOp(MigxnExpr right, MigxnContext context) => [];
 }

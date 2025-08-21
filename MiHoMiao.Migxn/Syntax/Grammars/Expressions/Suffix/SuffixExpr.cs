@@ -12,7 +12,7 @@ internal record SuffixExpr(MigxnExpr Left, ISuffixToken SuffixToken)
 
     internal override IEnumerable<MigxnNode> Children() => [Left, SuffixToken.MigxnNode];
     
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotImplementedException();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => throw new NotImplementedException();
     
     internal static IResult<MigxnExpr> ParseForward(MigxnExpr current, MigxnGrammar grammar)
     {

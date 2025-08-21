@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Data.Store;
@@ -9,6 +10,6 @@ internal record AssignStmt(MigxnExpr VarName, MigxnExpr VarValue)
 {
     internal override IEnumerable<MigxnNode> Children() => [VarName, VarValue];
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => [..VarValue.AsOpCodes(), new OpStVar(VarName.Text)];
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => [..VarValue.AsOpCodes(context), new OpStVar(VarName.Text)];
     
 }

@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
@@ -13,9 +14,9 @@ internal record RemToken(int Index, (int Line, int Column) Position)
 
     public static MigxnOperator Create(int index, (int Line, int Column) position) => new RemToken(index, position);
 
-    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right)
+    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context)
     {
-        return left.AsOpCodes().Concat(right.AsOpCodes()).Concat([new OpRem()]);
+        return left.AsOpCodes(context).Concat(right.AsOpCodes(context)).Concat([new OpRem()]);
     }
     
     int IBinaryToken.Priority => 4;

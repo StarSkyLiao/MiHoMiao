@@ -9,6 +9,6 @@ internal record BadToken(ReadOnlyMemory<char> Text, int Index, (int Line, int Co
 {
     public override Type LiteralType(MigxnContext context) => typeof(void);
 
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotSupportedException();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => throw new NotSupportedException();
 
 }

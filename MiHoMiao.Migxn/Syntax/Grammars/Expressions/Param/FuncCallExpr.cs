@@ -19,7 +19,7 @@ internal record FuncCallExpr(MigxnExpr Method, RoundOpenToken Left, List<MigxnNo
 
     internal override IEnumerable<MigxnNode> Children() => [Method, Left, ..ParamList, Right];
     
-    public override IEnumerable<MigxnOpCode> AsOpCodes() => throw new NotImplementedException();
+    public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => throw new NotImplementedException();
     
     internal static IResult<MigxnExpr> ParseForward(MigxnExpr method, MigxnGrammar grammar)
     {

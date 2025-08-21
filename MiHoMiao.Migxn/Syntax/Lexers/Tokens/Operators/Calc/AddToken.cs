@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
@@ -14,11 +15,11 @@ internal record AddToken(int Index, (int Line, int Column) Position)
 
     public static MigxnOperator Create(int index, (int Line, int Column) position) => new AddToken(index, position);
 
-    public IEnumerable<MigxnOpCode> PrefixOp(MigxnExpr right) => right.AsOpCodes();
+    public IEnumerable<MigxnOpCode> PrefixOp(MigxnExpr right, MigxnContext context) => right.AsOpCodes(context);
     
-    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right)
+    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context)
     {
-        return left.AsOpCodes().Concat(right.AsOpCodes()).Concat([new OpAdd()]);
+        return left.AsOpCodes(context).Concat(right.AsOpCodes(context)).Concat([new OpAdd()]);
     }
 
     int IPrefixToken.Priority => 1;

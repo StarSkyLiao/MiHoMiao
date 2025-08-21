@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
+using MiHoMiao.Core.Collections.Unsafe;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis.Grammar;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
@@ -8,6 +9,7 @@ using MiHoMiao.Migxn.Syntax.Lexers;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Comments;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars;
 
@@ -118,6 +120,18 @@ internal class MigxnGrammar
         if (Current is not T token) return null;
         MoveNext();
         return token;
+    }
+
+    public string CodeFormat()
+    {
+        using InterpolatedString formatCode = new InterpolatedString(512);
+        foreach (MigxnTree migxnTree in MigxnTrees)
+        {
+            formatCode.Append(migxnTree.Text);
+            formatCode.Append('\n');
+        }
+
+        return formatCode.ToString();
     }
     //
     // internal bool TryParseTree<T>([MaybeNullWhen(false)]out T result) where T : MigxnTree?
