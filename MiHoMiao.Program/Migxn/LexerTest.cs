@@ -12,13 +12,7 @@ public static class LexerTest
         """
         var num1 = 1
         var num2 = 1
-        loop(n)
-        {
-            var nextNum = num1 + num2
-            num1 = num2
-            num2 = nextNum
-            1 = 1
-        }
+        var nextNum = num1 and num2
         """;
    
     public static void Run()

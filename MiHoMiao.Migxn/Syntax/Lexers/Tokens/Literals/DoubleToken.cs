@@ -1,5 +1,4 @@
 using MiHoMiao.Migxn.Syntax.Intermediate;
-using MiHoMiao.Migxn.Syntax.Intermediate.Data;
 using MiHoMiao.Migxn.Syntax.Intermediate.Data.Load;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
