@@ -7,7 +7,7 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Pair;
 
-public record CurlyOpenToken(int Index, (int Line, int Column) Position)
+internal record CurlyOpenToken(int Index, (int Line, int Column) Position)
     : MigxnOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, ILeadToken
 {
     public static string UniqueName => "{";

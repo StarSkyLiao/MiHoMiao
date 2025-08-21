@@ -1,7 +1,7 @@
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis.Grammar;
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Param;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
@@ -11,11 +11,10 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Pair;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 
-public abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position) 
+internal abstract record MigxnExpr(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position) 
     : MigxnTree(Text, Index, Position), IExprParser<MigxnExpr>
 {
-    [field: AllowNull, MaybeNull]
-    public Type ExprType { get => field ??= typeof(object); set; } 
+    public abstract Type ExprType(MigxnContext context);
     
     static IResult<MigxnExpr> IExprParser<MigxnExpr>.TryParse(MigxnGrammar grammar)
     {

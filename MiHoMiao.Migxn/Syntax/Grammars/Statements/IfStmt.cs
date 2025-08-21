@@ -1,7 +1,7 @@
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
-using MiHoMiao.Migxn.Syntax.Intermediate;
-using MiHoMiao.Migxn.Syntax.Intermediate.Flow;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Flow;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Statements;
 

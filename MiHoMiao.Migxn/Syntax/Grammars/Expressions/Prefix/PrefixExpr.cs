@@ -1,13 +1,15 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
-using MiHoMiao.Migxn.Syntax.Intermediate;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 
 internal record PrefixExpr(IPrefixToken PrefixToken, MigxnExpr Right)
     : MigxnExpr($"({PrefixToken.MigxnNode.Text}{Right.Text})".AsMemory(), Right.Index, Right.Position)
 {
+    public override Type ExprType(MigxnContext context) => Right.ExprType(context);
 
     internal override IEnumerable<MigxnNode> Children() => [PrefixToken.MigxnNode, Right];
 

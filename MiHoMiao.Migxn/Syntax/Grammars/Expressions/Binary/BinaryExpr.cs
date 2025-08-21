@@ -1,8 +1,9 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
+using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Param;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
-using MiHoMiao.Migxn.Syntax.Intermediate;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 
@@ -12,6 +13,9 @@ internal record BinaryExpr(MigxnExpr Left, IBinaryToken BinaryToken, MigxnExpr R
             : $"({Left.Text} {BinaryToken.MigxnNode.Text} {Right.Text})"
         ).AsMemory(), Left.Index, Left.Position)
 {
+    // todo
+    public override Type ExprType(MigxnContext context) => Left.ExprType(context);
+    
     internal override IEnumerable<MigxnNode> Children() => [Left, BinaryToken.MigxnNode, Right];
 
     public override IEnumerable<MigxnOpCode> AsOpCodes() => BinaryToken.BinaryOp(Left, Right);
@@ -50,5 +54,4 @@ internal record BinaryExpr(MigxnExpr Left, IBinaryToken BinaryToken, MigxnExpr R
         }
         return new BinaryExpr(left, binary, right);
     }
-    
 }

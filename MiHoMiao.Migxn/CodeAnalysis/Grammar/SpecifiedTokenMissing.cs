@@ -3,7 +3,7 @@ using MiHoMiao.Migxn.Syntax.Grammars;
 
 namespace MiHoMiao.Migxn.CodeAnalysis.Grammar;
 
-public class SpecifiedTokenMissing(string target, List<MigxnNode> badTree) : BadMigxnTree
+internal class SpecifiedTokenMissing(string target, List<MigxnNode> badTree) : BadMigxnTree
 {
     public override List<MigxnNode> MigxnTree => badTree;
     

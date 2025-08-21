@@ -3,7 +3,7 @@ using MiHoMiao.Migxn.Syntax.Grammars;
 
 namespace MiHoMiao.Migxn.CodeAnalysis.Grammar;
 
-public class BadStatement(MigxnTree tree) : BadMigxnTree
+internal class BadStatement(MigxnTree tree) : BadMigxnTree
 {
 
     public override string Message => $"Unexpected statement:{tree.Text}. Only assignment, call, declaration are regarded as statements.";

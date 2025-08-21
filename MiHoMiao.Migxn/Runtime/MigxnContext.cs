@@ -1,26 +1,16 @@
 using System.Reflection.Emit;
+using MiHoMiao.Migxn.Syntax.Parser;
 
 namespace MiHoMiao.Migxn.Runtime;
 
-public class MigxnContext
+internal class MigxnContext(MigxnParser parser, MigxnContext? parent = null)
 {
-    internal MigxnSymbols<MigxnVariable> Variables = new MigxnSymbols<MigxnVariable>();
+    internal MigxnParser MigxnParser => parser;
     
-    internal MigxnSymbols<Label> Labels = new MigxnSymbols<Label>();
+    private MigxnContext? Parent { get; set; } = parent;
     
-    internal readonly Stack<MigxnFrame> CallingTree = [];
+    internal readonly MigxnSymbols<MigxnVariable> Variables = new MigxnSymbols<MigxnVariable>(parent?.Variables);
     
-    internal void PushStack(MigxnFrame frame)
-    {
-        Variables = new MigxnSymbols<MigxnVariable>(Variables);
-        Labels = new MigxnSymbols<Label>(Labels);
-        CallingTree.Push(frame);
-    }
-    
-    internal void PopStack()
-    {
-        if (!CallingTree.TryPop(out _)) throw new NotSupportedException("Calling tree is invalid!");
-        Variables = Variables.ParentTable!;
-        Labels = Labels.ParentTable!;
-    }
+    internal readonly MigxnSymbols<Label> Labels = new MigxnSymbols<Label>(parent?.Labels);
+
 }

@@ -1,12 +1,14 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
-using MiHoMiao.Migxn.Syntax.Intermediate;
+using MiHoMiao.Migxn.Runtime;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
 
 internal record SuffixExpr(MigxnExpr Left, ISuffixToken SuffixToken)
     : MigxnExpr($"({Left.Text}{SuffixToken.MigxnNode.Text})".AsMemory(), Left.Index, Left.Position)
 {
+    public override Type ExprType(MigxnContext context) => Left.ExprType(context);
 
     internal override IEnumerable<MigxnNode> Children() => [Left, SuffixToken.MigxnNode];
     

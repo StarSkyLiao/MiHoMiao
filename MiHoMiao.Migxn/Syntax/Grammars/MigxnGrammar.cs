@@ -11,7 +11,7 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars;
 
-public class MigxnGrammar
+internal class MigxnGrammar
 {
     
     #region Information

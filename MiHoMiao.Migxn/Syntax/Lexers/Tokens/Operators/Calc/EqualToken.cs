@@ -1,13 +1,13 @@
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
-using MiHoMiao.Migxn.Syntax.Intermediate;
-using MiHoMiao.Migxn.Syntax.Intermediate.Data.Store;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Data.Store;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
 
-public record EqualToken(int Index, (int Line, int Column) Position)
+internal record EqualToken(int Index, (int Line, int Column) Position)
     : MigxnOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IBinaryToken
 {
     public static string UniqueName => "=";

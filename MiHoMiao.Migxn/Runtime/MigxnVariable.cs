@@ -3,7 +3,7 @@ using System.Reflection.Emit;
 
 namespace MiHoMiao.Migxn.Runtime;
 
-public record MigxnVariable(string Name, Type Type)
+public record MigxnVariable(ReadOnlyMemory<char> Name, Type Type)
 {
     public int? ParamIndex = null;
     

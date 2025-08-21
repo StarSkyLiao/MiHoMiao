@@ -1,10 +1,10 @@
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
-using MiHoMiao.Migxn.Syntax.Intermediate;
-using MiHoMiao.Migxn.Syntax.Intermediate.Algorithm;
-using MiHoMiao.Migxn.Syntax.Intermediate.Data.Load;
-using MiHoMiao.Migxn.Syntax.Intermediate.Flow;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Algorithm;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Data.Load;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Flow;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords.Logic;
 

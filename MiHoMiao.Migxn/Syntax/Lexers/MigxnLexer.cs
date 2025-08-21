@@ -8,7 +8,7 @@ using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers;
 
-public class MigxnLexer
+internal class MigxnLexer
 {
 
     [field: AllowNull, MaybeNull]

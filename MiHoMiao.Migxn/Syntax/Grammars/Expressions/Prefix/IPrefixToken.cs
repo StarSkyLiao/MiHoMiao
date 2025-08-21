@@ -1,5 +1,5 @@
-using MiHoMiao.Migxn.Syntax.Intermediate;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 

@@ -1,6 +1,6 @@
 using MiHoMiao.Core.Collections.Tool;
-using MiHoMiao.Migxn.Syntax.Intermediate;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Pair;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Statements;
 

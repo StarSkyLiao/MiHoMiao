@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MiHoMiao.Migxn.CodeAnalysis;
 
-public readonly record struct Diagnostic<T> : IResult<T> where T : class
+internal readonly record struct Diagnostic<T> : IResult<T> where T : class
 {
     public object Value { get; }
     

@@ -1,6 +1,6 @@
 namespace MiHoMiao.Migxn.CodeAnalysis;
 
-public interface IResult<out TResult> where TResult : class
+internal interface IResult<out TResult> where TResult : class
 {
     /// <summary>
     /// 包含的值

@@ -1,8 +1,9 @@
 using MiHoMiao.Core.Collections.Tool;
 using MiHoMiao.Core.Collections.Unsafe;
 using MiHoMiao.Migxn.Syntax.Grammars;
-using MiHoMiao.Migxn.Syntax.Intermediate;
 using MiHoMiao.Migxn.Syntax.Lexers;
+using MiHoMiao.Migxn.Syntax.Parser;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Program.Migxn;
 

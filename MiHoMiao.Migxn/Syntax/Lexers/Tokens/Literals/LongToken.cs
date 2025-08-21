@@ -1,11 +1,14 @@
-using MiHoMiao.Migxn.Syntax.Intermediate;
-using MiHoMiao.Migxn.Syntax.Intermediate.Data.Load;
+using MiHoMiao.Migxn.Runtime;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Data.Load;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
 
-public record LongToken(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)
+internal record LongToken(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)
     : LiteralToken(Text, Index, Position)
 {
+    public override Type LiteralType(MigxnContext context) => typeof(long);
+    
     public override IEnumerable<MigxnOpCode> AsOpCodes()
     {
         long value = long.Parse(Text.ToString());

@@ -1,8 +1,9 @@
-using MiHoMiao.Migxn.Syntax.Intermediate;
-
+using System.Runtime.CompilerServices;
+using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
+[assembly:InternalsVisibleTo("MiHoMiao.Program")]
 namespace MiHoMiao.Migxn.Syntax;
 
-public abstract record MigxnNode(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)
+internal abstract record MigxnNode(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)
 {
     public abstract int NextColumn { get; }
 
