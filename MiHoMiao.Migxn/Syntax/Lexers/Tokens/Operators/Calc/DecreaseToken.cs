@@ -1,8 +1,5 @@
-using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Prefix;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Suffix;
-using MiHoMiao.Migxn.Syntax.Intermediate;
-using MiHoMiao.Migxn.Syntax.Intermediate.Algorithm;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;

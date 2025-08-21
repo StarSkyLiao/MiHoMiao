@@ -5,9 +5,6 @@ using MiHoMiao.Migxn.Syntax.Grammars;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Statements;
 using MiHoMiao.Migxn.Syntax.Intermediate;
-using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Literals;
-using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators;
-using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 
