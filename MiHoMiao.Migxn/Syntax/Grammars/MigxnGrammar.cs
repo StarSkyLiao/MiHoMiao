@@ -9,7 +9,6 @@ using MiHoMiao.Migxn.Syntax.Lexers;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Comments;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
-using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars;
 
@@ -101,7 +100,7 @@ internal class MigxnGrammar
         Debug.Assert(pointer.Result != null);
         
         MigxnToken? token = MoveNext();
-        if (token is EqualToken)
+        if (token is AssignToken)
         {
             IResult<MigxnExpr> expr = MigxnExpr.ParseUnitExpr(this);
             if (!expr.IsSuccess) return new Diagnostic<MigxnStmt>(expr.Exception!);

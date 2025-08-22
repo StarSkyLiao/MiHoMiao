@@ -15,13 +15,13 @@ internal class ReflectTool
 
     private static readonly Dictionary<string, Type> s_CoreType = new Dictionary<string, Type>
     {
-        ["char"] = typeof(long),
-        ["i32"] = typeof(long),
+        ["char"] = typeof(char),
+        ["i32"] = typeof(int),
         ["i64"] = typeof(long),
-        ["r32"] = typeof(double),
-        ["r64"] = typeof(bool),
+        ["r32"] = typeof(float),
+        ["r64"] = typeof(double),
         ["bool"] = typeof(bool),
-        ["string"] = typeof(bool),
+        ["string"] = typeof(string),
     };
     
     private static Type? ParseCoreType(string typeName) => s_CoreType.GetValueOrDefault(typeName);
@@ -51,6 +51,89 @@ internal class ReflectTool
 
     #endregion
 
+    #region TypeMap
+    
+    private static readonly Dictionary<(Type, Type), Type> s_IntLogicTypeMap = new Dictionary<(Type, Type), Type>
+    {
+        [(typeof(bool), typeof(bool))] = typeof(bool),
+            
+        [(typeof(char), typeof(char))] = typeof(char),
+        [(typeof(char), typeof(int))] = typeof(int),
+        [(typeof(char), typeof(long))] = typeof(long),
+    
+        [(typeof(int), typeof(char))] = typeof(int),
+        [(typeof(int), typeof(int))] = typeof(int),
+        [(typeof(int), typeof(long))] = typeof(long),
+            
+        [(typeof(long), typeof(char))] = typeof(long),
+        [(typeof(long), typeof(int))] = typeof(long),
+        [(typeof(long), typeof(long))] = typeof(long),
+    };
+    
+    private static readonly Dictionary<(Type, Type), Type> s_IntShiftTypeMap = new Dictionary<(Type, Type), Type>
+    {
+        [(typeof(char), typeof(char))] = typeof(int),
+        [(typeof(char), typeof(int))] = typeof(int),
+        [(typeof(char), typeof(long))] = typeof(int),
+
+        [(typeof(int), typeof(char))] = typeof(int),
+        [(typeof(int), typeof(int))] = typeof(int),
+        [(typeof(int), typeof(long))] = typeof(int),
+        
+        [(typeof(long), typeof(char))] = typeof(long),
+        [(typeof(long), typeof(int))] = typeof(long),
+        [(typeof(long), typeof(long))] = typeof(long),
+    };
+    
+    private static readonly Dictionary<(Type, Type), Type> s_CalculationTypeMap = new Dictionary<(Type, Type), Type>
+    {
+        [(typeof(char), typeof(char))] = typeof(char),
+        [(typeof(char), typeof(int))] = typeof(int),
+        [(typeof(char), typeof(long))] = typeof(long),
+        [(typeof(char), typeof(float))] = typeof(float),
+        [(typeof(char), typeof(double))] = typeof(double),
+
+        [(typeof(int), typeof(char))] = typeof(int),
+        [(typeof(int), typeof(int))] = typeof(int),
+        [(typeof(int), typeof(long))] = typeof(long),
+        [(typeof(int), typeof(float))] = typeof(float),
+        [(typeof(int), typeof(double))] = typeof(double),
+        
+        [(typeof(long), typeof(char))] = typeof(long),
+        [(typeof(long), typeof(int))] = typeof(long),
+        [(typeof(long), typeof(long))] = typeof(long),
+        [(typeof(long), typeof(float))] = typeof(float),
+        [(typeof(long), typeof(double))] = typeof(double),
+        
+        [(typeof(float), typeof(char))] = typeof(float),
+        [(typeof(float), typeof(int))] = typeof(float),
+        [(typeof(float), typeof(long))] = typeof(float),
+        [(typeof(float), typeof(float))] = typeof(float),
+        [(typeof(float), typeof(double))] = typeof(double),
+        
+        [(typeof(double), typeof(char))] = typeof(double),
+        [(typeof(double), typeof(int))] = typeof(double),
+        [(typeof(double), typeof(long))] = typeof(double),
+        [(typeof(double), typeof(float))] = typeof(double),
+        [(typeof(double), typeof(double))] = typeof(double),
+    };
+
+    #endregion
+    
+    /// <summary>
+    /// 返回两个整形逻辑运算的结果类型
+    /// </summary>
+    public static Type? IntLogicType(Type left, Type right) => s_IntLogicTypeMap.GetValueOrDefault((left, right));
+
+    /// <summary>
+    /// 返回两个整形位移运算的结果类型
+    /// </summary>
+    public static Type? IntShiftType(Type left, Type right) => s_IntShiftTypeMap.GetValueOrDefault((left, right));
+    
+    /// <summary>
+    /// 返回两个整形位移运算的结果类型
+    /// </summary>
+    public static Type? CalculationType(Type left, Type right) => s_CalculationTypeMap.GetValueOrDefault((left, right));
     
     public static Delegate? LoadMethod(string methodFullName, IList<string>? parameterTypeNames = null)
     {

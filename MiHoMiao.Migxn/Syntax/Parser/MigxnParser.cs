@@ -34,7 +34,7 @@ internal class MigxnParser
         }
     }
     
-    public string CodeFormat()
+    public string IlCodeFormat()
     {
         using InterpolatedString formatCode = new InterpolatedString(512);
         foreach (MigxnOpCode migxnCode in MigxnOpCodes)

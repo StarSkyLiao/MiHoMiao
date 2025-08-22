@@ -8,13 +8,15 @@ using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Data.Store;
 
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
 
-internal record EqualToken(int Index, (int Line, int Column) Position)
+internal record AssignToken(int Index, (int Line, int Column) Position)
     : MigxnOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IBinaryToken
 {
     public static string UniqueName => "=";
 
-    public static MigxnOperator Create(int index, (int Line, int Column) position) => new EqualToken(index, position);
+    public static MigxnOperator Create(int index, (int Line, int Column) position) => new AssignToken(index, position);
 
+    public Type BinaryType(MigxnExpr left, MigxnExpr right, MigxnContext context) => left.ExprType(context);
+    
     IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context)
     {
         if (left is not TokenExpr { Token: SymbolToken symbol }) throw new NotSupportedException();

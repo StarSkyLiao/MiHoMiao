@@ -9,9 +9,10 @@ public static class LexerTest
 {
     public const string Input =
         """
-        var num1 : i64
-        var num2 = 1
-        var nextNum = num1 and (num1 or num2)
+        var num1 : r64 = 2.1
+        var num2 = 2
+        var num3 : i64
+        var nextNum = num1 + (num2 + num3)
         """;
    
     public static void Run()
@@ -20,11 +21,11 @@ public static class LexerTest
         // Console.WriteLine(lexer.MigxnTokens.GenericViewer("", "", "\n"));
         // Console.WriteLine(lexer.Exceptions.GenericViewer("", "", "\n"));
         MigxnGrammar grammar = MigxnGrammar.Parse(lexer);
-        // Console.WriteLine(grammar.CodeFormat());
+        Console.WriteLine(grammar.CodeFormat());
         // Console.WriteLine(grammar.MigxnTrees.GenericViewer("", "", "\n"));
         // Console.WriteLine(grammar.Exceptions.GenericViewer(item => item.Message, "", "", "\n"));
         MigxnParser parser = MigxnParser.Parse(grammar);
-        Console.WriteLine(parser.CodeFormat());
+        Console.WriteLine(parser.IlCodeFormat());
         Console.WriteLine(parser.Exceptions.GenericViewer(item => item.Message, "", "", "\n"));
     }
 }
