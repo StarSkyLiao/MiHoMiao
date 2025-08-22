@@ -1,5 +1,3 @@
-using MiHoMiao.Migxn.Runtime;
-using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
 using MiHoMiao.Migxn.Syntax.Lexers.Tokens.Keywords;
 using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
@@ -8,16 +6,13 @@ using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Algorithm;
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Logic;
 
 internal record LogicXor(int Index, (int Line, int Column) Position)
-    : MigxnOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IBinaryToken
+    : MigxnOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IIntLogicBinary<LogicXor>
 {
     public static string UniqueName => "^";
 
     public static MigxnOperator Create(int index, (int Line, int Column) position) => new LogicXor(index, position);
 
-    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context)
-    {
-        return left.AsOpCodes(context).Concat(right.AsOpCodes(context)).Concat([new OpXor()]);
-    }
+    static MigxnOpCode IIntLogicBinary<LogicXor>.Operator { get; } = new OpOr();
     
     int IBinaryToken.Priority => 10;
     
