@@ -13,8 +13,8 @@ internal record BinaryExpr(MigxnExpr Left, IBinaryToken BinaryToken, MigxnExpr R
             : $"({Left.Text} {BinaryToken.MigxnNode.Text} {Right.Text})"
         ).AsMemory(), Left.Index, Left.Position)
 {
-    // todo
-    public override Type ExprType(MigxnContext context) => Left.ExprType(context);
+
+    public override Type ExprType(MigxnContext context) => BinaryToken.BinaryType(Left, Right, context);
     
     internal override IEnumerable<MigxnNode> Children() => [Left, BinaryToken.MigxnNode, Right];
 
