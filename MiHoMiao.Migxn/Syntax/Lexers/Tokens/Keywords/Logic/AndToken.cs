@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.CodeAnalysis.Parser;
 using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions.Binary;
@@ -18,6 +19,17 @@ internal record AndToken(int Index, (int Line, int Column) Position)
 
     public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context) => throw new NotSupportedException();
     
+    public Type BinaryType(MigxnExpr left, MigxnExpr right, MigxnContext context)
+    {
+        Type typeLeft = left.ExprType(context);
+        Type typeRight = right.ExprType(context);
+        Type binaryType = typeof(bool);
+        if (typeLeft == binaryType && typeRight == binaryType) return binaryType;
+        ErrorTypeExpr exception = new ErrorTypeExpr(left.Children().First(), typeLeft, typeRight, UniqueName);
+        context.MigxnParser.Exceptions.Add(exception);
+        return typeof(void);
+    }
+    
     public IEnumerable<MigxnOpCode> BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context)
     {
         if (right is TokenExpr rightToken) return [..left.AsOpCodes(context), ..rightToken.Token.AsOpCodes(context), new OpAnd()];
@@ -30,7 +42,7 @@ internal record AndToken(int Index, (int Line, int Column) Position)
             new OpLabel(labelLeft), new OpLdcI4S(0), new OpLabel(labelRight), 
         ];
     }
-    
+
     int IBinaryToken.Priority => 12;
     
     MigxnNode ILeaderOpToken.MigxnNode => this;
