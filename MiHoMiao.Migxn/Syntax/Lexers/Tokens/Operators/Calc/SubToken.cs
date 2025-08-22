@@ -9,7 +9,7 @@ using MiHoMiao.Migxn.Syntax.Parser.Intermediate.Algorithm;
 namespace MiHoMiao.Migxn.Syntax.Lexers.Tokens.Operators.Calc;
 
 internal record SubToken(int Index, (int Line, int Column) Position)
-    : MigxnOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, IBinaryToken, IPrefixToken
+    : MigxnOperator(UniqueName.AsMemory(), Index, Position), IOperatorToken, ICalculationBinary<SubToken>, IPrefixToken
 {
     public static string UniqueName => "-";
 
@@ -17,10 +17,7 @@ internal record SubToken(int Index, (int Line, int Column) Position)
     
     public IEnumerable<MigxnOpCode> PrefixOp(MigxnExpr right, MigxnContext context) => right.AsOpCodes(context).Concat([new OpNeg()]);
     
-    IEnumerable<MigxnOpCode> IBinaryToken.BinaryOp(MigxnExpr left, MigxnExpr right, MigxnContext context)
-    {
-        return left.AsOpCodes(context).Concat(right.AsOpCodes(context)).Concat([new OpSub()]);
-    }
+    static MigxnOpCode ICalculationBinary<SubToken>.Operator { get; } = new OpSub();
     
     int IPrefixToken.Priority => 1;
     
