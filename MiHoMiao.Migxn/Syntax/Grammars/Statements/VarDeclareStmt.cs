@@ -6,19 +6,20 @@ using MiHoMiao.Migxn.Syntax.Parser.Intermediate;
 
 namespace MiHoMiao.Migxn.Syntax.Grammars.Statements;
 
-internal record VarDeclareStmt(VarToken Var, SymbolToken Identifier, string VarType) 
-    : MigxnStmt($"var {Identifier.Text} = {VarType}".AsMemory(), Var.Index, Var.Position)
+internal record VarDeclareStmt(VarToken Var, SymbolToken Identifier, SymbolToken VarType) 
+    : MigxnStmt($"var {Identifier.Text} : {VarType.Text}".AsMemory(), Var.Index, Var.Position)
 {
-    internal override IEnumerable<MigxnNode> Children() => [Var, Identifier];
+    internal override IEnumerable<MigxnNode> Children() => [Var, Identifier, VarType];
 
     public override IEnumerable<MigxnOpCode> AsOpCodes(MigxnContext context)
     {
         try
         {
-            Type? baseType = context.ParseType(VarType);
+            string type = VarType.Text.ToString();
+            Type? baseType = context.ParseType(type);
             if (baseType is null)
             {
-                UndefinedType exception = new UndefinedType(Identifier.Position with { Column = Identifier.NextColumn }, VarType);
+                UndefinedType exception = new UndefinedType(Identifier.Position with { Column = Identifier.NextColumn }, type);
                 context.MigxnParser.Exceptions.Add(exception);
                 return [];
             }

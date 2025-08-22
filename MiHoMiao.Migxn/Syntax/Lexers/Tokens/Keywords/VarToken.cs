@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeAnalysis.Grammar;
-using MiHoMiao.Migxn.Reflection;
 using MiHoMiao.Migxn.Runtime;
 using MiHoMiao.Migxn.Syntax.Grammars;
 using MiHoMiao.Migxn.Syntax.Grammars.Expressions;
@@ -41,18 +40,18 @@ internal record VarToken(int Index, (int Line, int Column) Position)
         }
         
         // var item = expr
-        EqualToken? equal = migxnGrammar.TryMatchToken<EqualToken>();
+        AssignToken? equal = migxnGrammar.TryMatchToken<AssignToken>();
         if (equal == null)
         {
             // error: var item
             if (varType == null) return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(varName), this, varName);
-            // var item : type = default
-            return new Diagnostic<MigxnStmt>(new VarDeclareStmt(this, varName, varType.Text.ToString()));
+            // var item : type
+            return new Diagnostic<MigxnStmt>(new VarDeclareStmt(this, varName, varType));
         }
 
         IResult<MigxnExpr> initialExpr = migxnGrammar.TryParse<MigxnExpr>();
         // var item : type = expr
-        if (initialExpr.IsSuccess) return new Diagnostic<MigxnStmt>(new VarInitialStmt(this, varName, initialExpr.Result!));
+        if (initialExpr.IsSuccess) return new Diagnostic<MigxnStmt>(new VarInitialStmt(this, varName, varType, initialExpr.Result!));
         // error: var item : type = 
         return SpecifiedTokenMissing.Create<MigxnStmt>(nameof(initialExpr), this, varName, equal);
         
