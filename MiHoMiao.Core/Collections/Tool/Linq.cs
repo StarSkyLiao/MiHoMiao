@@ -16,7 +16,7 @@ public static class Linq
     
     public static void AddRange<T>(this HashSet<T> collection, IEnumerable<T> items)
     {
-        collection.UnionWith(items);
+        foreach (T item in items) collection.Add(item);
     }
     
     public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
