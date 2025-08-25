@@ -6,7 +6,7 @@ namespace MiHoMiao.Core.Numerics.GameDesign;
 /// 一个存储 double 类型数据的盒子.
 /// 访问一个不存在的数据时, 自动创建新项并返回 0.
 /// </summary>
-public class DataBox<T> : IEnumerable<(T, double)> where T : notnull
+public class DataBox<T> : ICollection<(T, double)> where T : notnull
 {
 
     private readonly Dictionary<T, double> m_DataBox = [];
@@ -47,4 +47,16 @@ public class DataBox<T> : IEnumerable<(T, double)> where T : notnull
     public IEnumerator<(T, double)> GetEnumerator() => m_DataBox.Select(pair => (pair.Key, pair.Value)).GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    public void Add((T, double) item) => m_DataBox.Add(item.Item1, item.Item2);
+
+    public void Clear() => m_DataBox.Clear();
+
+    public bool Contains((T, double) item) => m_DataBox.Contains(new KeyValuePair<T, double>(item.Item1, item.Item2));
+
+    public void CopyTo((T, double)[] array, int arrayIndex) => m_DataBox.Select(item => (item.Key, item.Value)).ToArray().CopyTo(array, arrayIndex);
+
+    public bool Remove((T, double) item) => m_DataBox.Remove(item.Item1);
+
+    public int Count => m_DataBox.Count;
+    public bool IsReadOnly => false;
 }
