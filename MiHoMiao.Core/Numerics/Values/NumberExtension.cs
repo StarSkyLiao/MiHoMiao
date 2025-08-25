@@ -98,5 +98,15 @@ public static class NumberExtension
     /// 返回 rate 对应的 T 类型的数字
     /// </summary>
     public static T Number<T>(uint rate) where T : INumber<T> => T.CreateChecked(rate);
+
+    /// <summary>
+    /// 将浮点数四舍五入到整数
+    /// </summary>
+    public static int Round(this float value) => (int)Math.Round(value);
     
+    /// <summary>
+    /// 将浮点数四舍五入到整数
+    /// </summary>
+    public static int Round(this double value) => (int)Math.Round(value);
+
 }
