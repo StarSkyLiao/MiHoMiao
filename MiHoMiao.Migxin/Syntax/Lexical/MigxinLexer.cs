@@ -1,6 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.SymbolStore;
+using MiHoMiao.Core.Numerics.Values;
+using MiHoMiao.Core.Reflection;
 using MiHoMiao.Migxin.CodeAnalysis;
+using MiHoMiao.Migxin.CodeAnalysis.Lexical;
 using MiHoMiao.Migxin.Syntax.Lexical.Literals;
 using MiHoMiao.Migxin.Syntax.Lexical.Trivia;
 
@@ -110,23 +113,22 @@ public class MigxinLexer
     /// <summary>
     /// 返回 [start, tail) 之间的字符跨度
     /// </summary>
-    internal ReadOnlyMemory<char> AsMemory(int start, int tail) => m_Input.AsMemory()[start..tail];
+    internal ReadOnlyMemory<char> AsMemory(int start, int tail) => m_Input.AsMemory()[start..tail.Max(m_Input.Length)];
     
     /// <summary>
     /// 返回 [start, tail) 之间的字符跨度
     /// </summary>
-    internal ReadOnlySpan<char> AsSpan(int start, int tail) => m_Input.AsSpan()[start..tail];
+    internal ReadOnlySpan<char> AsSpan(int start, int tail) => m_Input.AsSpan()[start..tail.Max(m_Input.Length)];
 
     private IEnumerable<MigxinToken> Lex()
     {
         while (char.IsWhiteSpace(Current)) MoveNext();
         while (Current != '\0')
         {
-            int startIndex = CharIndex;
-            int startLine = LineNumber;
-            int startColumn = ColumnNumber;
-            
-            yield return m_MigxnTokens[startIndex];
+            IEnumerable<MigxinToken?> matchResult = MigxinToken.TokenLists.Select(func => func(this));
+            MigxinToken? result = matchResult.OfType<MigxinToken>().FirstOrDefault();
+            if (result is not null) yield return result;
+            else Exceptions.Add(new UnknownToken(Position, MoveNext().ToString()));
             while (char.IsWhiteSpace(Current)) MoveNext();
         }
     }

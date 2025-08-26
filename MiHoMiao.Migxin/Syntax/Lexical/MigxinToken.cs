@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+
 namespace MiHoMiao.Migxin.Syntax.Lexical;
 
 public abstract record MigxinToken(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)
@@ -5,5 +8,37 @@ public abstract record MigxinToken(ReadOnlyMemory<char> Text, int Index, (int Li
 {
     public override int NextColumn => Position.Column + Text.Length;
 
-    public abstract MigxinToken? TryMatch(MigxinLexer migxinLexer);
+    [field: AllowNull, MaybeNull]
+    private static List<Type> TokenTypes => field ??=
+    [
+        ..
+        from type in typeof(MigxinToken).Assembly.GetTypes()
+        where type.IsAssignableTo(typeof(ITokenMatcher)) && !type.IsAbstract
+        select type
+    ];    
+    
+    [field: AllowNull, MaybeNull]
+    private static SortedList<ulong, Func<MigxinLexer, MigxinToken?>> TokenParsers
+    {
+        get
+        {
+            if (field != null) return field;
+
+            field = [];
+            foreach (Type type in TokenTypes)
+            {
+                object? priority = type.GetProperty(nameof(ITokenMatcher.Priority))?.GetValue(null);
+                Debug.Assert(priority != null);
+                var func = type.GetMethod(nameof(ITokenMatcher.TryMatch))?.CreateDelegate<Func<MigxinLexer, MigxinToken?>>();
+                Debug.Assert(func != null);
+                field.Add(((ulong)(uint)priority << 32) + (uint)type.GetHashCode(), func);
+            }
+
+            return field;
+        }
+    }
+
+    [field: AllowNull, MaybeNull]
+    internal static Func<MigxinLexer, MigxinToken?>[] TokenLists => field ??= TokenParsers.Values.Reverse().ToArray();
+    
 }
