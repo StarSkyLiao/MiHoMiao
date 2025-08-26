@@ -1,6 +1,6 @@
 namespace MiHoMiao.Migxin.Syntax.Lexical;
 
-public interface IKeyword
+public interface IKeywordToken
 {
     /// <summary>
     /// 关键字对应的原始文本
@@ -12,7 +12,7 @@ public interface IKeyword
     /// </summary>
     static abstract MigxinToken LoadToken(int start, (int Line, int Column) position);
     
-    public static MigxinToken? TryMatch<T>(MigxinLexer migxinLexer) where T : IKeyword
+    public static MigxinToken? TryMatch<T>(MigxinLexer migxinLexer) where T : IKeywordToken
     {
         if (migxinLexer.Current != T.Keyword[0]) return null;
         (int start, (int Line, int Column) position) = migxinLexer.CreateFrame();
