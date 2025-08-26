@@ -167,6 +167,16 @@ public ref struct InterpolatedString : IDisposable
     }
     
     /// <summary>
+    /// 将指定字符串追加到字符跨度
+    /// </summary>
+    public void AppendLine(string value)
+    {
+        if (value.TryCopyTo(m_CharSpan[Length..])) Length += value.Length;
+        else GrowThenCopyString(value);
+        Append('\n');
+    }
+    
+    /// <summary>
     /// 将指定字符跨度追加到字符跨度
     /// </summary>
     public void Append(scoped ReadOnlySpan<char> value)
