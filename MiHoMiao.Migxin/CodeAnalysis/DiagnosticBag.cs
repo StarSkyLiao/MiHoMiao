@@ -8,6 +8,8 @@ public sealed class DiagnosticBag : Exception
 
     internal readonly List<MigxinDiagnostic> DiagnosticsContained;
 
+    internal void Attach(MigxinDiagnostic diagnostic) => DiagnosticsContained.Add(diagnostic);
+
     public override string Message => DiagnosticsContained.GenericViewer(
         item => item.Message, "", "", "\nat:   "
     );
