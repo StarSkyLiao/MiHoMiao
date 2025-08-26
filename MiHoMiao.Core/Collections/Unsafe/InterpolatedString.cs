@@ -326,7 +326,7 @@ public ref struct InterpolatedString : IDisposable
     /// </summary>
     private void GrowThenCopyString(string value)
     {
-        GrowCore(1 << (BitOperations.Log2((uint)value.Length) + 1));
+        GrowCore(1 << (BitOperations.Log2((uint)Length + (uint)value.Length) + 1));
         value.CopyTo(m_CharSpan[Length..]);
         Length += value.Length;
     }
