@@ -1,4 +1,4 @@
-using MiHoMiao.Migxin.Syntax.Lexical;
+using MiHoMiao.Migxin.Syntax.Lexical.Names;
 
 namespace MiHoMiao.Migxin.Syntax.Grammar.Expr;
 

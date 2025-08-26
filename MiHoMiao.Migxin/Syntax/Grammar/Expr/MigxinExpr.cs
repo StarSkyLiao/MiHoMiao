@@ -2,6 +2,7 @@ using MiHoMiao.Migxin.CodeAnalysis;
 using MiHoMiao.Migxin.CodeAnalysis.Grammar;
 using MiHoMiao.Migxin.Syntax.Lexical;
 using MiHoMiao.Migxin.Syntax.Lexical.Literals;
+using MiHoMiao.Migxin.Syntax.Lexical.Names;
 
 namespace MiHoMiao.Migxin.Syntax.Grammar.Expr;
 

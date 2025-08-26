@@ -1,5 +1,4 @@
 using MiHoMiao.Core.Serialization.IO;
-using MiHoMiao.Migxin.CodeAnalysis;
 using MiHoMiao.Migxin.CodeAnalysis.Lexical;
 
 namespace MiHoMiao.Migxin.Syntax.Lexical.Trivia;

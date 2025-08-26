@@ -1,4 +1,4 @@
-namespace MiHoMiao.Migxin.Syntax.Lexical;
+namespace MiHoMiao.Migxin.Syntax.Lexical.Names;
 
 internal record NameToken(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)
     : MigxinToken(Text, Index, Position), ITokenMatcher
@@ -7,11 +7,16 @@ internal record NameToken(ReadOnlyMemory<char> Text, int Index, (int Line, int C
     public static uint Priority => 0;
     public static MigxinToken? TryMatch(MigxinLexer migxinLexer)
     {
-        if (!StartChars.Contains(migxinLexer.Current) && !char.IsLetter(migxinLexer.Current)) return null;
+        if (!IsNameStart(migxinLexer.Current)) return null;
         (int start, (int Line, int Column) position) = migxinLexer.CreateFrame();
         migxinLexer.MoveNext();
-        while (StartChars.Contains(migxinLexer.Current) || char.IsLetter(migxinLexer.Current) || char.IsDigit(migxinLexer.Current)) migxinLexer.MoveNext();
+        while (IsNameChar(migxinLexer.Current)) migxinLexer.MoveNext();
         ReadOnlyMemory<char> read = migxinLexer.AsMemory(start, migxinLexer.CharIndex);
         return new NameToken(read, start, position);
     }
+
+    protected static bool IsNameStart(char value) => value is '_' || char.IsLetter(value);
+    
+    protected static bool IsNameChar(char value) => value is '_' || char.IsDigit(value) || char.IsLetter(value);
+    
 }
