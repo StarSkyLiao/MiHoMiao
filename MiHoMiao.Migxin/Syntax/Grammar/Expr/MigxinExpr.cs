@@ -1,5 +1,6 @@
 using MiHoMiao.Migxin.CodeAnalysis;
 using MiHoMiao.Migxin.CodeAnalysis.Grammar;
+using MiHoMiao.Migxin.Syntax.Grammar.Expr.Binary;
 using MiHoMiao.Migxin.Syntax.Lexical;
 using MiHoMiao.Migxin.Syntax.Lexical.Literals;
 using MiHoMiao.Migxin.Syntax.Lexical.Names;
@@ -31,7 +32,7 @@ internal abstract record MigxinExpr(ReadOnlyMemory<char> Text, int Index, (int L
             goto start;
         }
 
-        if (BinaryExpr.BinaryParsers.TryGetValue(token.GetType(), out IBinarySymbol.BinaryParser? parser))
+        if (BinaryExpr.BinaryParsers.TryGetValue(token.GetType(), out IOperatorSymbol.BinaryParser? parser))
         {
             migxinGrammar.MoveNext();
             curr = parser(curr, migxinGrammar);

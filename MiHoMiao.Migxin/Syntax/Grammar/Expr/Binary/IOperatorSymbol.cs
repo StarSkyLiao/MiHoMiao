@@ -1,9 +1,9 @@
 using MiHoMiao.Migxin.CodeAnalysis;
 using MiHoMiao.Migxin.CodeAnalysis.Grammar;
 
-namespace MiHoMiao.Migxin.Syntax.Grammar.Expr;
+namespace MiHoMiao.Migxin.Syntax.Grammar.Expr.Binary;
 
-internal interface IBinarySymbol
+internal interface IOperatorSymbol
 {
     /// <summary>
     /// 优先级越小, 实际优先级越高
@@ -23,13 +23,14 @@ internal interface IBinarySymbol
     /// <summary>
     /// 生成指定的 Symbol.
     /// </summary>
-    public static abstract IBinarySymbol LoadSymbol();
+    public static abstract IOperatorSymbol LoadSymbol();
 
     public delegate MigxinResult<MigxinExpr> BinaryParser(MigxinExpr? left, MigxinGrammar migxinGrammar);
 
     public static abstract MigxinResult<MigxinExpr> TryMatch(MigxinExpr? left, MigxinGrammar migxinGrammar);
     
-    protected static MigxinResult<MigxinExpr> SymbolTryMatch<T>(MigxinExpr? left, MigxinGrammar migxinGrammar) where T : IBinarySymbol
+    protected static MigxinResult<MigxinExpr> SymbolTryMatch<T>(MigxinExpr? left, MigxinGrammar migxinGrammar)
+        where T : IOperatorSymbol
     {
         if (left == null) return new DiagnosticBag(new ShouldBe(migxinGrammar.Position, nameof(MigxinExpr)));
         MigxinResult<MigxinExpr> right = MigxinExpr.TryParse(migxinGrammar);
