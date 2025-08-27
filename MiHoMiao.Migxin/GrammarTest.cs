@@ -1,6 +1,6 @@
 using MiHoMiao.Core.Collections.Tool;
-using MiHoMiao.Migxin.FrontEnd.Lexical;
-using MiHoMiao.Migxin.FrontEnd.Syntax;
+using MiHoMiao.Migxin.Compiler.Lexical;
+using MiHoMiao.Migxin.Compiler.Syntax;
 
 namespace MiHoMiao.Migxin;
 

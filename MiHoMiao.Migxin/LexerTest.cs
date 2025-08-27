@@ -1,5 +1,5 @@
 using MiHoMiao.Core.Collections.Tool;
-using MiHoMiao.Migxin.FrontEnd.Lexical;
+using MiHoMiao.Migxin.Compiler.Lexical;
 
 namespace MiHoMiao.Migxin;
 

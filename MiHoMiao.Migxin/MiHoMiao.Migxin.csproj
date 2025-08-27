@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="FrontEnd\CodeGen\" />
-      <Folder Include="FrontEnd\Semantic\" />
+      <Folder Include="Compiler\CodeGen\" />
+      <Folder Include="Compiler\Semantic\" />
     </ItemGroup>
 
 </Project>
