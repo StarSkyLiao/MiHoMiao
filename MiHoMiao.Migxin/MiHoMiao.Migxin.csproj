@@ -11,4 +11,9 @@
       <ProjectReference Include="..\MiHoMiao.Core\MiHoMiao.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="FrontEnd\CodeGen\" />
+      <Folder Include="FrontEnd\Semantic\" />
+    </ItemGroup>
+
 </Project>
