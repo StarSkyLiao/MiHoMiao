@@ -215,6 +215,15 @@ public ref struct InterpolatedString : IDisposable
     }
     
     /// <summary>
+    /// 将指定内存跨度追加到字符跨度
+    /// </summary>
+    public void AppendLine(ReadOnlyMemory<char> value)
+    {
+        Append(value);
+        Append('\n');
+    }
+    
+    /// <summary>
     /// 将指定值追加到字符跨度
     /// </summary>
     public void Append<T>(T value) where T : notnull
