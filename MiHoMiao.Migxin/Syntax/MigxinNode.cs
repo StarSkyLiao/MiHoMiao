@@ -1,6 +1,3 @@
-using System.Runtime.CompilerServices;
-
-[assembly:InternalsVisibleTo("MiHoMiao.Program")]
 namespace MiHoMiao.Migxin.Syntax;
 
 public abstract record MigxinNode(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)

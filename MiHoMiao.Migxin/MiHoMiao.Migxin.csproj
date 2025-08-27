@@ -11,4 +11,8 @@
       <ProjectReference Include="..\MiHoMiao.Core\MiHoMiao.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Syntax\Grammar\Stmt\" />
+    </ItemGroup>
+
 </Project>
