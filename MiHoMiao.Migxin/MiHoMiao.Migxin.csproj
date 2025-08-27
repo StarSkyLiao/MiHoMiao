@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <Folder Include="Compiler\CodeGen\" />
-      <Folder Include="Compiler\Semantic\" />
     </ItemGroup>
 
 </Project>

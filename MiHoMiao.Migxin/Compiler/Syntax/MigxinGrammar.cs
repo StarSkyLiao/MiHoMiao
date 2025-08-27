@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
+using MiHoMiao.Core.Collections.Unsafe;
 using MiHoMiao.Migxin.CodeAnalysis;
 using MiHoMiao.Migxin.CodeAnalysis.Grammar;
 using MiHoMiao.Migxin.Compiler.Lexical;
@@ -22,7 +23,7 @@ internal class MigxinGrammar
     {
         MigxinGrammar result = new MigxinGrammar(input);
         IEnumerable<MigxinNode> migxinNodes = result.BuildTree();
-        result.m_MigxinTrees.AddRange(migxinNodes);
+        result.m_MigxinNodes.AddRange(migxinNodes);
         return result;
     }
     
@@ -35,9 +36,9 @@ internal class MigxinGrammar
     /// </summary>
     private int m_Index;
     
-    private readonly List<DiagnosticBag> m_Exceptions = [];
+    private readonly List<DiagnosticBag> m_Exceptions;
 
-    private readonly List<MigxinNode> m_MigxinTrees = [];
+    private readonly List<MigxinNode> m_MigxinNodes = [];
     
     /// <summary>
     /// 解析过程中的异常
@@ -47,7 +48,7 @@ internal class MigxinGrammar
     /// <summary>
     /// 解析到的 Token.
     /// </summary>
-    public IList<MigxinNode> MigxinTrees => m_MigxinTrees;
+    public IList<MigxinNode> MigxinNodes => m_MigxinNodes;
     
     #endregion
     
@@ -118,46 +119,23 @@ internal class MigxinGrammar
         if (current == Current) MoveNext();
         return result;
     }
-
-    // internal IResult<MigxnStmt> ParseStmt()
-    // {
-    //     if (Current is ILeadToken leadToken) return leadToken.TryCollectToken(this);
-    //     IResult<MigxnExpr> pointer = MigxnExpr.ParseUnitExpr(this);
-    //     if (!pointer.IsSuccess) return new Diagnostic<MigxnStmt>(pointer.Exception!);
-    //     Debug.Assert(pointer.Result != null);
-    //     
-    //     MigxinToken? token = MoveNext();
-    //     if (token is AssignToken)
-    //     {
-    //         IResult<MigxnExpr> expr = MigxnExpr.ParseUnitExpr(this);
-    //         if (!expr.IsSuccess) return new Diagnostic<MigxnStmt>(expr.Exception!);
-    //         Debug.Assert(expr.Result != null);
-    //         AssignStmt assign = new AssignStmt(pointer.Result, expr.Result);
-    //         return new Diagnostic<MigxnStmt>(assign);
-    //     }
-    //
-    //     return new Diagnostic<MigxnStmt>(new BadAssignment(new BadTree([pointer.Result, token])));
-    // }
-    //
-
-    //
+    
     // public T? TryMatchToken<T>() where T : MigxinToken
     // {
     //     if (Current is not T token) return null;
     //     MoveNext();
     //     return token;
     // }
-    //
-    // public string CodeFormat()
-    // {
-    //     using InterpolatedString formatCode = new InterpolatedString(512);
-    //     foreach (MigxnTree migxnTree in MigxnTrees)
-    //     {
-    //         formatCode.Append(migxnTree.Text);
-    //         formatCode.Append('\n');
-    //     }
-    //
-    //     return formatCode.ToString();
-    // }
+    
+    /// <summary>
+    /// 输出格式化的代码
+    /// </summary>
+    /// <returns></returns>
+    public string CodeFormat()
+    {
+        using InterpolatedString formatCode = new InterpolatedString(512);
+        foreach (MigxinNode migxnTree in m_MigxinNodes) formatCode.AppendLine(migxnTree.Text);
+        return formatCode.ToString();
+    }
     
 }
