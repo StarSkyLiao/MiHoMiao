@@ -16,7 +16,7 @@ public class RandomPool<T>((T, double)[] entries)
     /// <summary>
     /// 根据权重，随机返回一个对象.
     /// </summary>
-    public T GetRandomly()
+    public T? GetRandomly()
     {
         if (m_VersionChanged) m_AliasPool.Update(m_List);
         m_VersionChanged = false;

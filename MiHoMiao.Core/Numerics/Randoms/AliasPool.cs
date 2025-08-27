@@ -74,8 +74,9 @@ public class AliasPool<T>
     /// <summary>
     /// 按照权重, 随机返回一个元素
     /// </summary>
-    public T GetRandomly()
+    public T? GetRandomly()
     {
+        if (Count == 0) return default;
         int n = Randomization.Range(0, Count);
         return Randomization.Try(m_Alias[n].Prob) ? m_ChanceTable[n].item : m_ChanceTable[m_Alias[n].Index].item;
     }
