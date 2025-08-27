@@ -25,6 +25,8 @@ internal class MigxinResult<TResult> where TResult : class
     
     public static implicit operator TResult?(MigxinResult<TResult> result) => result.Value as TResult;
     
+    public MigxinResult<TOther> As<TOther>() where TOther : class => IsSuccess ? (Result as TOther)! : Exception!;
+
     public MigxinResult(TResult value)
     {
         Value = value;

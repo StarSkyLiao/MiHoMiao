@@ -11,5 +11,5 @@ internal class MulSymbol : IOperatorSymbol
     public static IOperatorSymbol LoadSymbol() => new MulSymbol();
 
     public static MigxinResult<MigxinExpr> TryMatch(MigxinExpr? left, MigxinGrammar migxinGrammar)
-        => IOperatorSymbol.SymbolTryMatch<MulSymbol>(left, migxinGrammar);
+        => IOperatorSymbol.TryMatchSymbol<MulSymbol>(left, migxinGrammar);
 }

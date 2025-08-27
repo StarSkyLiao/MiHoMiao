@@ -11,5 +11,5 @@ internal class DotSymbol : IOperatorSymbol
     public static IOperatorSymbol LoadSymbol() => new DotSymbol();
 
     public static MigxinResult<MigxinExpr> TryMatch(MigxinExpr? left, MigxinGrammar migxinGrammar)
-        => IOperatorSymbol.SymbolTryMatch<DotSymbol>(left, migxinGrammar);
+        => IOperatorSymbol.TryMatchSymbol<DotSymbol>(left, migxinGrammar);
 }

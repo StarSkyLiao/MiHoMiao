@@ -29,7 +29,7 @@ internal interface IOperatorSymbol
 
     public static abstract MigxinResult<MigxinExpr> TryMatch(MigxinExpr? left, MigxinGrammar migxinGrammar);
     
-    protected static MigxinResult<MigxinExpr> SymbolTryMatch<T>(MigxinExpr? left, MigxinGrammar migxinGrammar)
+    protected static MigxinResult<MigxinExpr> TryMatchSymbol<T>(MigxinExpr? left, MigxinGrammar migxinGrammar)
         where T : IOperatorSymbol
     {
         if (left == null) return new DiagnosticBag(new ShouldBe(migxinGrammar.Position, nameof(MigxinExpr)));

@@ -9,7 +9,6 @@ namespace MiHoMiao.Migxin.Syntax.Grammar.Expr.Binary;
 internal record BinaryExpr(MigxinExpr Left, IOperatorSymbol OperatorSymbol, MigxinExpr Right)
     : MigxinExpr($"({Left.Text}{OperatorSymbol.Text}{Right.Text})".AsMemory(), Left.Index, Left.Position), ISymbolConnected
 {
-    public IOperatorSymbol OperatorSymbol { get; init; } = OperatorSymbol;
     internal override IEnumerable<MigxinTree> Children() => [Left, Right];
     
     internal static MigxinExpr CombineBinary(MigxinExpr? left, IOperatorSymbol operatorSymbol, MigxinExpr right)
@@ -46,7 +45,7 @@ internal record BinaryExpr(MigxinExpr Left, IOperatorSymbol OperatorSymbol, Migx
     [
         ..
         from type in typeof(MigxinToken).Assembly.GetTypes()
-        where type.IsAssignableTo(typeof(IOperatorSymbol)) && !type.IsAbstract
+        where type.IsAssignableTo(typeof(IOperatorSymbol)) && !type.IsAbstract && !type.IsInterface
         select type
     ];    
     
@@ -72,7 +71,5 @@ internal record BinaryExpr(MigxinExpr Left, IOperatorSymbol OperatorSymbol, Migx
     }
 
     #endregion
-    
-
 
 }

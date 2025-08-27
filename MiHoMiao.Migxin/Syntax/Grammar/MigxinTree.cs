@@ -7,7 +7,7 @@ public abstract record MigxinTree(ReadOnlyMemory<char> Text, int Index, (int Lin
 {
     public override int NextColumn => Children().Last().NextColumn;
     
-    internal abstract IEnumerable<MigxinTree> Children();
+    internal abstract IEnumerable<MigxinNode> Children();
     
     internal override string ToStringImpl(int level)
     {
@@ -18,11 +18,11 @@ public abstract record MigxinTree(ReadOnlyMemory<char> Text, int Index, (int Lin
         sb.AppendLine(SelfString());
 
         // 处理子节点
-        List<MigxinTree> children = Children().ToList();
+        List<MigxinNode> children = Children().ToList();
         if (children.Count == 0) return sb.ToString();
         for (int i = 0; i < children.Count; i++)
         {
-            MigxinTree child = children[i];
+            MigxinNode child = children[i];
             bool isLast = i == children.Count - 1;
             string childPrefix = isLast ? "└── " : "├── ";
             // 递归调用子节点的 ToStringImpl

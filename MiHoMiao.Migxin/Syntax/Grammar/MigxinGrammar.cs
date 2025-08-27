@@ -1,6 +1,10 @@
 using System.Collections.Immutable;
+using System.Diagnostics;
 using MiHoMiao.Migxin.CodeAnalysis;
+using MiHoMiao.Migxin.CodeAnalysis.Grammar;
 using MiHoMiao.Migxin.Syntax.Grammar.Expr;
+using MiHoMiao.Migxin.Syntax.Grammar.Expr.Binary;
+using MiHoMiao.Migxin.Syntax.Grammar.Stmt;
 using MiHoMiao.Migxin.Syntax.Lexical;
 using MiHoMiao.Migxin.Syntax.Lexical.Trivia;
 
@@ -17,7 +21,8 @@ internal class MigxinGrammar
     public static MigxinGrammar Parse(MigxinLexer input)
     {
         MigxinGrammar result = new MigxinGrammar(input);
-        result.m_MigxinTrees.AddRange(result.BuildTree());
+        IEnumerable<MigxinNode> migxinNodes = result.BuildTree();
+        result.m_MigxinTrees.AddRange(migxinNodes);
         return result;
     }
     
@@ -32,7 +37,7 @@ internal class MigxinGrammar
     
     private readonly List<DiagnosticBag> m_Exceptions = [];
 
-    private readonly List<MigxinTree> m_MigxinTrees = [];
+    private readonly List<MigxinNode> m_MigxinTrees = [];
     
     /// <summary>
     /// 解析过程中的异常
@@ -42,11 +47,13 @@ internal class MigxinGrammar
     /// <summary>
     /// 解析到的 Token.
     /// </summary>
-    public IList<MigxinTree> MigxinTrees => m_MigxinTrees;
+    public IList<MigxinNode> MigxinTrees => m_MigxinTrees;
     
     #endregion
     
     #region Parsing
+
+    private int m_Frame;
     
     internal MigxinToken? Current => m_Index >= m_Tokens.Length ? null : m_Tokens[m_Index];
     
@@ -66,25 +73,52 @@ internal class MigxinGrammar
         if (index >= m_Tokens.Length) return null;
         MigxinToken token = m_Tokens[index];
         return token;
-    }    
+    }
+    
+    internal T? TryMatchToken<T>() where T : MigxinToken
+    {
+        if (Current is not T token) return null;
+        MoveNext();
+        return token;
+    }
+    
+    internal int CreateFrame() => m_Frame = m_Index;
+
+    internal void RestoreFrame() => m_Index = m_Frame;
     
     #endregion
 
-    private IEnumerable<MigxinTree> BuildTree()
+    private IEnumerable<MigxinNode> BuildTree()
     {
         m_Index = 0;
         while (Current != null)
         {
-            MigxinResult<MigxinExpr> result = MigxinExpr.TryParse(this);
-            if (result.IsSuccess) yield return result.Result!;
-            else
-            {
-                MoveNext();
-                m_Exceptions.Add(result.Exception!);
-            }
+            MigxinResult<MigxinStmt> migxinNode = ParseStmt();
+            if (migxinNode.IsSuccess) yield return migxinNode.Result!;
+            else m_Exceptions.Add(migxinNode.Exception!);
         }
     }
-    
+
+    private MigxinResult<MigxinStmt> ParseStmt()
+    {
+        MigxinToken? current = Current;
+        Debug.Assert(current != null);
+        ITokenGrammar.StmtParser? parser = MigxinStmt.StmtParsers.GetValueOrDefault(current.GetType());
+        if (parser is null)
+        {
+            MigxinResult<MigxinExpr> expr = MigxinExpr.TryParse(this);
+            if (!expr.IsSuccess) return expr.Exception!;
+
+            if (expr.Result is BinaryExpr { OperatorSymbol: AssignSymbol assignSymbol } binaryExpr)
+                return new AssignStmt(binaryExpr.Left, assignSymbol, binaryExpr.Right);
+
+            return new MigxinResult<MigxinStmt>(new NotStmt(expr.Result!.Position));
+        }
+        MigxinResult<MigxinStmt> result = parser(this);
+        if (current == Current) MoveNext();
+        return result;
+    }
+
     // internal IResult<MigxnStmt> ParseStmt()
     // {
     //     if (Current is ILeadToken leadToken) return leadToken.TryCollectToken(this);
