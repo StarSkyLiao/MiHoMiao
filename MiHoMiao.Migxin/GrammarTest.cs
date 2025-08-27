@@ -8,7 +8,7 @@ public class GrammarTest
 {
     public const string Input =
         """
-        a.a! + ++a.a + ++ 3
+        a.a + ++a.a + ++ 3!
         """;
    
     public static void Run()

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using MiHoMiao.Migxin.Syntax.Grammar.Expr.Prefix;
+using MiHoMiao.Migxin.Syntax.Grammar.Expr.Suffix;
 using MiHoMiao.Migxin.Syntax.Lexical;
 
 namespace MiHoMiao.Migxin.Syntax.Grammar.Expr.Binary;
@@ -19,6 +20,14 @@ internal record BinaryExpr(MigxinExpr Left, IOperatorSymbol OperatorSymbol, Migx
             {
                 MigxinExpr binaryExpr = CombineBinary(left, operatorSymbol, nextBinary.Left);
                 return new BinaryExpr(binaryExpr, nextBinary.OperatorSymbol, nextBinary.Right);
+            }
+            case SuffixExpr nextSuffix when nextSuffix.OperatorSymbol.Priority >= operatorSymbol.Priority:
+            {
+                MigxinExpr front = (left == null)
+                    ? new PrefixExpr(operatorSymbol, nextSuffix.Left)
+                    : new BinaryExpr(left, operatorSymbol, nextSuffix.Left);
+                return new SuffixExpr(front, nextSuffix.OperatorSymbol);
+
             }
             // case FuncCallExpr funcCallExpr when binary.Priority == 0:
             // {

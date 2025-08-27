@@ -5,7 +5,7 @@ namespace MiHoMiao.Migxin.Syntax.Grammar.Expr.Suffix;
 
 internal class NotNullSymbol : ISuffixSymbol
 {
-    public uint Priority => 10;
+    public uint Priority => 0;
     public string Text => "!";
     public static Type TokenType => typeof(ExclamationToken);
     
