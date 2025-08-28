@@ -51,5 +51,10 @@ public class DataProperty(double baseValue, double rate = 1)
     public static DataProperty One => new DataProperty(1);
     
     public static DataProperty Zero => new DataProperty(0);
+    
+    /// <summary>
+    /// 一个未被使用的属性, 其中的值允许随意更改, 而不被任何人在意.
+    /// </summary>
+    public static DataProperty Unused => new DataProperty(0);
 
 }
