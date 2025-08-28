@@ -6,6 +6,7 @@ internal record Float64Token(ReadOnlyMemory<char> Text, int Index, (int Line, in
     : LiteralToken(Text, Index, Position), ITokenMatcher
 {
     public required double Value { get; init; }
+    public override Type LiteralType => typeof(double);
     public static HashSet<char> StartChars => [..".0123456789"];
     public static uint Priority => 2;
     public static MigxinToken? TryMatch(MigxinLexer migxinLexer)

@@ -3,6 +3,7 @@ namespace MiHoMiao.Migxin.Compiler.Lexical.Literals;
 internal abstract record LiteralToken(ReadOnlyMemory<char> Text, int Index, (int Line, int Column) Position)
     : MigxinToken(Text, Index, Position)
 {
+    public abstract Type LiteralType { get; }
 
     protected static bool IsPunctuation(char c) => "~`!@#$%^&*()-+={}[]|\\:;\"\'<>,.?/".Contains(c);
     

@@ -4,6 +4,7 @@ internal record Int64Token(ReadOnlyMemory<char> Text, int Index, (int Line, int 
     : LiteralToken(Text, Index, Position), ITokenMatcher
 {
     public required long Value { get; init; }
+    public override Type LiteralType => typeof(long);
     public static HashSet<char> StartChars => [.."0123456789"];
     public static uint Priority => 1;
     public static MigxinToken? TryMatch(MigxinLexer migxinLexer)

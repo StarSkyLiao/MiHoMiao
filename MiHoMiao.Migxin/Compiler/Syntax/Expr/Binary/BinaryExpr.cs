@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using MiHoMiao.Migxin.Compiler.Lexical;
 using MiHoMiao.Migxin.Compiler.Syntax.Expr.Prefix;
 using MiHoMiao.Migxin.Compiler.Syntax.Expr.Suffix;
 
@@ -44,7 +43,7 @@ internal record BinaryExpr(MigxinExpr Left, IOperatorSymbol OperatorSymbol, Migx
     private static List<Type> BinaryTypes => field ??=
     [
         ..
-        from type in typeof(MigxinToken).Assembly.GetTypes()
+        from type in typeof(BinaryExpr).Assembly.GetTypes()
         where type.IsAssignableTo(typeof(IOperatorSymbol)) && !type.IsAbstract && !type.IsInterface
         select type
     ];    

@@ -28,7 +28,7 @@ public abstract record MigxinToken(ReadOnlyMemory<char> Text, int Index, (int Li
             foreach (Type type in TokenTypes)
             {
                 object? priority = type.GetProperty(nameof(ITokenMatcher.Priority))?.GetValue(null);
-                Debug.Assert(priority != null);
+                if (priority is null) continue;
                 var func = type.GetMethod(nameof(ITokenMatcher.TryMatch))?.CreateDelegate<Func<MigxinLexer, MigxinToken?>>();
                 Debug.Assert(func != null);
                 field.Add(((ulong)(uint)priority << 32) + (uint)type.GetHashCode(), func);
