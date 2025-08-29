@@ -1,3 +1,4 @@
+using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.Runtime.Members;
 
 namespace MiHoMiao.Migxn.Runtime;
@@ -12,11 +13,11 @@ internal class MigxnContext
     /// <summary>
     /// 抛出的解析错误
     /// </summary>
-    internal readonly List<Exception> Exceptions = [];
+    internal readonly List<MigxinDiagnostic> Exceptions = [];
     
     /// <summary>
     /// 发现的解析警告
     /// </summary>
-    internal readonly List<Exception> Warnings = [];
+    internal readonly List<MigxinDiagnostic> Warnings = [];
     
 }

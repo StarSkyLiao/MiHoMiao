@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using MiHoMiao.Core.Diagnostics;
 using MiHoMiao.Migxn.Antlr.Generated;
+using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeGen;
 using MiHoMiao.Migxn.CodeGen.Data.Load;
 using MiHoMiao.Migxn.Runtime.Variable;
@@ -23,8 +24,8 @@ internal partial class MigxnLanguage
             Result<MigxnVariable> variable = MigxnMethod.Context.MigxnScope.LoadVariable(varName);
             if (!variable.IsSuccess)
             {
-                MigxnMethod.Context.Exceptions.Add(variable.Exception!);
-                MigxnMethod.Codes.Add(new OpError($"Non-Exist var:{varName}"));
+                MigxnMethod.Context.Exceptions.Add(MigxinDiagnostic.Create(context.value, variable.Exception!));
+                MigxnMethod.Codes.Add(new OpError(variable.Exception!.Message));
                 return null;
             }
 
