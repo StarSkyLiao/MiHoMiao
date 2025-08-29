@@ -14,8 +14,7 @@ internal partial class MigxnLanguage
         Type? varType = Visit(context.Expression);
         
         string name = context.VarName.Text;
-        MigxnScope scope = MigxnMethod.Context.MigxnScope;
-        Exception? exception = scope.DeclareVariable(new LocalVariable(name, varType) { IsWritable = true });
+        Exception? exception = Scopes.DeclareVariable(new LocalVariable(name, varType) { IsWritable = true });
         
         if (exception is null)
         {

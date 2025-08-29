@@ -8,9 +8,11 @@ options {
 }
 
 statement
-    : Var VarName = (Name | RawName)                               Assign Expression = expression      #VarStmt
+    : LCurly Children = statement* RCurly                                                              #BlockStmt
+    | Var VarName = (Name | RawName)                               Assign Expression = expression      #VarStmt
     | Var VarName = (Name | RawName) Colon Type = (Name | RawName)                                     #VarStmt
     | Var VarName = (Name | RawName) Colon Type = (Name | RawName) Assign Expression = expression      #VarStmt
     | Val VarName = (Name | RawName)                               Assign Expression = expression      #ValStmt
     | Val VarName = (Name | RawName) Colon Type = (Name | RawName) Assign Expression = expression      #ValStmt
+    | expression                                                                                       #ExprStmt
     ;

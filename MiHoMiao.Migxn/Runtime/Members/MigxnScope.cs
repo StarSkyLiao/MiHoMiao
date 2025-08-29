@@ -19,6 +19,11 @@ internal record MigxnScope
     public readonly Stack<ScopedTable> ScopedVariables = new Stack<ScopedTable>([[]]);
 
     /// <summary>
+    /// 该作用域中存储的需要写入的变量
+    /// </summary>
+    public readonly Stack<MigxnVariable> ScopedWriter = new Stack<MigxnVariable>();
+
+    /// <summary>
     /// 进入一个子作用域
     /// </summary>
     public void EnterScope() => ScopedVariables.Push(s_ScopedTablePool.TryDequeue(out ScopedTable? table) ? table : []);
@@ -26,8 +31,13 @@ internal record MigxnScope
     /// <summary>
     /// 离开当前作用域
     /// </summary>
-    public void ExitScope() => s_ScopedTablePool.Enqueue(ScopedVariables.Pop());
-    
+    public void ExitScope()
+    {
+        ScopedTable released = ScopedVariables.Pop();
+        released.Clear();
+        s_ScopedTablePool.Enqueue(released);
+    }
+
     /// <summary>
     /// 检查在此处是否允许声明指定的变量
     /// </summary>

@@ -38,6 +38,17 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IMigxnStmtVisitor<Result> {
 	/// <summary>
+	/// Visit a parse tree produced by the <c>BlockStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitBlockStmt([NotNull] MigxnStmt.BlockStmtContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>VarStmt</c>
 	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
 	/// <para>
@@ -59,6 +70,17 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitValStmt([NotNull] MigxnStmt.ValStmtContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ExprStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitExprStmt([NotNull] MigxnStmt.ExprStmtContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
@@ -92,4 +114,15 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitSingleExpr([NotNull] MigxnStmt.SingleExprContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AssignExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitAssignExpr([NotNull] MigxnStmt.AssignExprContext context) { return VisitChildren(context); }
 }

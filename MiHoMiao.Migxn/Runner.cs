@@ -9,13 +9,26 @@ namespace MiHoMiao.Migxn;
 
 public static class Runner
 {
+    private const string Input =
+        """
+        {
+            {
+                var a = 2 + 3 * 4 + 1
+                a = 12 + a
+            }
+            {
+                var a = 2 + 3 * 4 + 1
+                a = 12 + a
+            }
+        }
+        """;
+    
     public static void Run()
     {
         MigxnMethod method = new MigxnMethod(new MigxnContext(), "", typeof(void));
         MigxnLanguage language = new MigxnLanguage(method);
         
-        string expression = "var a = 2 + 3 * 4 + a";
-        MigxnLiteral lexer = new MigxnLiteral(CharStreams.fromString(expression));
+        MigxnLiteral lexer = new MigxnLiteral(CharStreams.fromString(Input));
         MigxnStmt parser = new MigxnStmt(new CommonTokenStream(lexer));
         language.Visit(parser.statement());
         Console.Write(language.Codes.GenericViewer("", "\n", "\n"));

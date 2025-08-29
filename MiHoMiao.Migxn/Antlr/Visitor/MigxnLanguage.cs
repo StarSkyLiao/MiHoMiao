@@ -13,4 +13,6 @@ internal sealed partial class MigxnLanguage(MigxnMethod method) : MigxnStmtBaseV
 
     public readonly List<MigxnOpCode> Codes = method.Codes;
     
+    public readonly MigxnScope Scopes = method.Context.MigxnScope;
+    
 }

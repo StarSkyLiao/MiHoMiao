@@ -33,6 +33,8 @@ Colon:     ':';
 SemiColon: ';';
 LRound:    '(';
 RRound:    ')';
+LCurly:    '{';
+RCurly:    '}';
 
 Eql:       '==';
 Ueql:      '!=';

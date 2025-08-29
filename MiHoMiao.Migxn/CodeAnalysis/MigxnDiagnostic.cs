@@ -10,5 +10,7 @@ internal class MigxnDiagnostic((int Line, int Column) position, string message) 
     public sealed override string Message => $"{position}->{message}";
 
     public static MigxnDiagnostic Create(IToken token, Exception exception) => new MigxnDiagnostic((token.Line, token.Column), exception.Message);
+    
+    public static MigxnDiagnostic Create(IToken token, string message) => new MigxnDiagnostic((token.Line, token.Column), message);
 
 }

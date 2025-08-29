@@ -35,6 +35,13 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IMigxnStmtVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
+	/// Visit a parse tree produced by the <c>BlockStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBlockStmt([NotNull] MigxnStmt.BlockStmtContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>VarStmt</c>
 	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
 	/// </summary>
@@ -48,6 +55,13 @@ public interface IMigxnStmtVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitValStmt([NotNull] MigxnStmt.ValStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ExprStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExprStmt([NotNull] MigxnStmt.ExprStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
@@ -69,4 +83,11 @@ public interface IMigxnStmtVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSingleExpr([NotNull] MigxnStmt.SingleExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AssignExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignExpr([NotNull] MigxnStmt.AssignExprContext context);
 }

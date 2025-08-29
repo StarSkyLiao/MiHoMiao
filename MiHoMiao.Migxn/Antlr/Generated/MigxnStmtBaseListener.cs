@@ -39,6 +39,20 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class MigxnStmtBaseListener : IMigxnStmtListener {
 	/// <summary>
+	/// Enter a parse tree produced by the <c>BlockStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBlockStmt([NotNull] MigxnStmt.BlockStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BlockStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBlockStmt([NotNull] MigxnStmt.BlockStmtContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>VarStmt</c>
 	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -66,6 +80,20 @@ public partial class MigxnStmtBaseListener : IMigxnStmtListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitValStmt([NotNull] MigxnStmt.ValStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ExprStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExprStmt([NotNull] MigxnStmt.ExprStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ExprStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExprStmt([NotNull] MigxnStmt.ExprStmtContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
@@ -108,6 +136,20 @@ public partial class MigxnStmtBaseListener : IMigxnStmtListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSingleExpr([NotNull] MigxnStmt.SingleExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AssignExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignExpr([NotNull] MigxnStmt.AssignExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AssignExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignExpr([NotNull] MigxnStmt.AssignExprContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
