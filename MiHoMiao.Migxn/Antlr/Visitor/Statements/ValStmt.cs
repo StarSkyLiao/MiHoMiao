@@ -9,13 +9,13 @@ namespace MiHoMiao.Migxn.Antlr.Visitor;
 
 internal partial class MigxnLanguage
 {
-    public override Type? VisitVarStmt(VarStmtContext context)
+    public override Type? VisitValStmt(ValStmtContext context)
     {
         Type? varType = Visit(context.Expression);
         
         string name = context.VarName.Text;
         MigxnScope scope = MigxnMethod.Context.MigxnScope;
-        Exception? exception = scope.DeclareVariable(new LocalVariable(name, varType) { IsWritable = true });
+        Exception? exception = scope.DeclareVariable(new LocalVariable(name, varType) { IsWritable = false });
         
         if (exception is null)
         {

@@ -24,12 +24,12 @@ internal partial class MigxnLanguage
             Result<MigxnVariable> variable = MigxnMethod.Context.MigxnScope.LoadVariable(varName);
             if (!variable.IsSuccess)
             {
-                MigxnMethod.Context.Exceptions.Add(MigxinDiagnostic.Create(context.value, variable.Exception!));
-                MigxnMethod.Codes.Add(new OpError(variable.Exception!.Message));
+                Exceptions.Add(MigxnDiagnostic.Create(context.value, variable.Exception!));
+                Codes.Add(new OpError(variable.Exception!.Message));
                 return null;
             }
 
-            MigxnMethod.Codes.Add(new OpLdVar(varName));
+            Codes.Add(new OpLdVar(varName));
             return variable.Value.Type;
         }
 
@@ -40,7 +40,7 @@ internal partial class MigxnLanguage
             _ => new ValueTuple<Type?, MigxnOpCode>(null, null!)
         };
         if (type == null) throw new UnreachableException();
-        MigxnMethod.Codes.Add(opCode);
+        Codes.Add(opCode);
         return type;
         
     }

@@ -18,7 +18,7 @@ internal partial class MigxnLanguage
         Visit(context.Right); // 右操作数
 
         // 根据操作符类型将对应操作符推入栈
-        MigxnMethod.Codes.Add(context.op.Type switch
+        Codes.Add(context.op.Type switch
         {
             MigxnLiteral.Add => new OpAdd(),
             MigxnLiteral.Sub => new OpSub(),

@@ -13,11 +13,11 @@ internal class MigxnContext
     /// <summary>
     /// 抛出的解析错误
     /// </summary>
-    internal readonly List<MigxinDiagnostic> Exceptions = [];
+    internal readonly List<MigxnDiagnostic> Exceptions = [];
     
     /// <summary>
     /// 发现的解析警告
     /// </summary>
-    internal readonly List<MigxinDiagnostic> Warnings = [];
+    internal readonly List<MigxnDiagnostic> Warnings = [];
     
 }

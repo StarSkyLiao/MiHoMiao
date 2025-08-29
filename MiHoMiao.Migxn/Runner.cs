@@ -18,7 +18,7 @@ public static class Runner
         MigxnLiteral lexer = new MigxnLiteral(CharStreams.fromString(expression));
         MigxnStmt parser = new MigxnStmt(new CommonTokenStream(lexer));
         language.Visit(parser.statement());
-        Console.Write(language.MigxnMethod.Codes.GenericViewer("", "\n", "\n"));
-        Console.Write(language.MigxnMethod.Context.Exceptions.GenericViewer("", "\n", "\n"));
+        Console.Write(language.Codes.GenericViewer("", "\n", "\n"));
+        Console.Write(language.Exceptions.GenericViewer("", "\n", "\n"));
     }
 }
