@@ -105,8 +105,9 @@ public partial class MigxnStmt : Parser {
 		}
 	}
 	public partial class VarStmtContext : StatementContext {
-		public IToken name;
-		public IToken type;
+		public IToken VarName;
+		public ExpressionContext Expression;
+		public IToken Type;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Var() { return GetToken(MigxnStmt.Var, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Assign() { return GetToken(MigxnStmt.Assign, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
@@ -140,8 +141,9 @@ public partial class MigxnStmt : Parser {
 		}
 	}
 	public partial class ValStmtContext : StatementContext {
-		public IToken name;
-		public IToken type;
+		public IToken VarName;
+		public ExpressionContext Expression;
+		public IToken Type;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Val() { return GetToken(MigxnStmt.Val, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Assign() { return GetToken(MigxnStmt.Assign, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
@@ -191,10 +193,10 @@ public partial class MigxnStmt : Parser {
 				State = 4;
 				Match(Var);
 				State = 5;
-				((VarStmtContext)_localctx).name = TokenStream.LT(1);
+				((VarStmtContext)_localctx).VarName = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
 				if ( !(_la==RawName || _la==Name) ) {
-					((VarStmtContext)_localctx).name = ErrorHandler.RecoverInline(this);
+					((VarStmtContext)_localctx).VarName = ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
@@ -203,7 +205,7 @@ public partial class MigxnStmt : Parser {
 				State = 6;
 				Match(Assign);
 				State = 7;
-				expression(0);
+				((VarStmtContext)_localctx).Expression = expression(0);
 				}
 				break;
 			case 2:
@@ -213,10 +215,10 @@ public partial class MigxnStmt : Parser {
 				State = 8;
 				Match(Var);
 				State = 9;
-				((VarStmtContext)_localctx).name = TokenStream.LT(1);
+				((VarStmtContext)_localctx).VarName = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
 				if ( !(_la==RawName || _la==Name) ) {
-					((VarStmtContext)_localctx).name = ErrorHandler.RecoverInline(this);
+					((VarStmtContext)_localctx).VarName = ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
@@ -225,10 +227,10 @@ public partial class MigxnStmt : Parser {
 				State = 10;
 				Match(Colon);
 				State = 11;
-				((VarStmtContext)_localctx).type = TokenStream.LT(1);
+				((VarStmtContext)_localctx).Type = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
 				if ( !(_la==RawName || _la==Name) ) {
-					((VarStmtContext)_localctx).type = ErrorHandler.RecoverInline(this);
+					((VarStmtContext)_localctx).Type = ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
@@ -243,10 +245,10 @@ public partial class MigxnStmt : Parser {
 				State = 12;
 				Match(Var);
 				State = 13;
-				((VarStmtContext)_localctx).name = TokenStream.LT(1);
+				((VarStmtContext)_localctx).VarName = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
 				if ( !(_la==RawName || _la==Name) ) {
-					((VarStmtContext)_localctx).name = ErrorHandler.RecoverInline(this);
+					((VarStmtContext)_localctx).VarName = ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
@@ -255,10 +257,10 @@ public partial class MigxnStmt : Parser {
 				State = 14;
 				Match(Colon);
 				State = 15;
-				((VarStmtContext)_localctx).type = TokenStream.LT(1);
+				((VarStmtContext)_localctx).Type = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
 				if ( !(_la==RawName || _la==Name) ) {
-					((VarStmtContext)_localctx).type = ErrorHandler.RecoverInline(this);
+					((VarStmtContext)_localctx).Type = ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
@@ -267,7 +269,7 @@ public partial class MigxnStmt : Parser {
 				State = 16;
 				Match(Assign);
 				State = 17;
-				expression(0);
+				((VarStmtContext)_localctx).Expression = expression(0);
 				}
 				break;
 			case 4:
@@ -277,10 +279,10 @@ public partial class MigxnStmt : Parser {
 				State = 18;
 				Match(Val);
 				State = 19;
-				((ValStmtContext)_localctx).name = TokenStream.LT(1);
+				((ValStmtContext)_localctx).VarName = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
 				if ( !(_la==RawName || _la==Name) ) {
-					((ValStmtContext)_localctx).name = ErrorHandler.RecoverInline(this);
+					((ValStmtContext)_localctx).VarName = ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
@@ -289,7 +291,7 @@ public partial class MigxnStmt : Parser {
 				State = 20;
 				Match(Assign);
 				State = 21;
-				expression(0);
+				((ValStmtContext)_localctx).Expression = expression(0);
 				}
 				break;
 			case 5:
@@ -299,10 +301,10 @@ public partial class MigxnStmt : Parser {
 				State = 22;
 				Match(Val);
 				State = 23;
-				((ValStmtContext)_localctx).name = TokenStream.LT(1);
+				((ValStmtContext)_localctx).VarName = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
 				if ( !(_la==RawName || _la==Name) ) {
-					((ValStmtContext)_localctx).name = ErrorHandler.RecoverInline(this);
+					((ValStmtContext)_localctx).VarName = ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
@@ -311,10 +313,10 @@ public partial class MigxnStmt : Parser {
 				State = 24;
 				Match(Colon);
 				State = 25;
-				((ValStmtContext)_localctx).type = TokenStream.LT(1);
+				((ValStmtContext)_localctx).Type = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
 				if ( !(_la==RawName || _la==Name) ) {
-					((ValStmtContext)_localctx).type = ErrorHandler.RecoverInline(this);
+					((ValStmtContext)_localctx).Type = ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
@@ -323,7 +325,7 @@ public partial class MigxnStmt : Parser {
 				State = 26;
 				Match(Assign);
 				State = 27;
-				expression(0);
+				((ValStmtContext)_localctx).Expression = expression(0);
 				}
 				break;
 			}
@@ -413,6 +415,7 @@ public partial class MigxnStmt : Parser {
 		public IToken value;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Integer() { return GetToken(MigxnStmt.Integer, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Float() { return GetToken(MigxnStmt.Float, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Name() { return GetToken(MigxnStmt.Name, 0); }
 		public SingleExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
@@ -468,6 +471,7 @@ public partial class MigxnStmt : Parser {
 				break;
 			case Integer:
 			case Float:
+			case Name:
 				{
 				_localctx = new SingleExprContext(_localctx);
 				Context = _localctx;
@@ -475,7 +479,7 @@ public partial class MigxnStmt : Parser {
 				State = 35;
 				((SingleExprContext)_localctx).value = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
-				if ( !(_la==Integer || _la==Float) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1072L) != 0)) ) {
 					((SingleExprContext)_localctx).value = ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -594,19 +598,19 @@ public partial class MigxnStmt : Parser {
 		4,1,28,53,2,0,7,0,2,1,7,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
 		1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,3,0,29,8,0,1,1,1,1,
 		1,1,1,1,1,1,1,1,3,1,37,8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,1,48,
-		8,1,10,1,12,1,51,9,1,1,1,0,1,2,2,0,2,0,4,1,0,9,10,1,0,4,5,1,0,23,25,1,
-		0,21,22,58,0,28,1,0,0,0,2,36,1,0,0,0,4,5,5,6,0,0,5,6,7,0,0,0,6,7,5,20,
-		0,0,7,29,3,2,1,0,8,9,5,6,0,0,9,10,7,0,0,0,10,11,5,14,0,0,11,29,7,0,0,0,
-		12,13,5,6,0,0,13,14,7,0,0,0,14,15,5,14,0,0,15,16,7,0,0,0,16,17,5,20,0,
-		0,17,29,3,2,1,0,18,19,5,7,0,0,19,20,7,0,0,0,20,21,5,20,0,0,21,29,3,2,1,
-		0,22,23,5,7,0,0,23,24,7,0,0,0,24,25,5,14,0,0,25,26,7,0,0,0,26,27,5,20,
-		0,0,27,29,3,2,1,0,28,4,1,0,0,0,28,8,1,0,0,0,28,12,1,0,0,0,28,18,1,0,0,
-		0,28,22,1,0,0,0,29,1,1,0,0,0,30,31,6,1,-1,0,31,32,5,16,0,0,32,33,3,2,1,
-		0,33,34,5,17,0,0,34,37,1,0,0,0,35,37,7,1,0,0,36,30,1,0,0,0,36,35,1,0,0,
-		0,37,49,1,0,0,0,38,39,10,4,0,0,39,40,7,2,0,0,40,48,3,2,1,5,41,42,10,3,
-		0,0,42,43,5,11,0,0,43,48,3,2,1,3,44,45,10,2,0,0,45,46,7,3,0,0,46,48,3,
-		2,1,3,47,38,1,0,0,0,47,41,1,0,0,0,47,44,1,0,0,0,48,51,1,0,0,0,49,47,1,
-		0,0,0,49,50,1,0,0,0,50,3,1,0,0,0,51,49,1,0,0,0,4,28,36,47,49
+		8,1,10,1,12,1,51,9,1,1,1,0,1,2,2,0,2,0,4,1,0,9,10,2,0,4,5,10,10,1,0,23,
+		25,1,0,21,22,58,0,28,1,0,0,0,2,36,1,0,0,0,4,5,5,6,0,0,5,6,7,0,0,0,6,7,
+		5,20,0,0,7,29,3,2,1,0,8,9,5,6,0,0,9,10,7,0,0,0,10,11,5,14,0,0,11,29,7,
+		0,0,0,12,13,5,6,0,0,13,14,7,0,0,0,14,15,5,14,0,0,15,16,7,0,0,0,16,17,5,
+		20,0,0,17,29,3,2,1,0,18,19,5,7,0,0,19,20,7,0,0,0,20,21,5,20,0,0,21,29,
+		3,2,1,0,22,23,5,7,0,0,23,24,7,0,0,0,24,25,5,14,0,0,25,26,7,0,0,0,26,27,
+		5,20,0,0,27,29,3,2,1,0,28,4,1,0,0,0,28,8,1,0,0,0,28,12,1,0,0,0,28,18,1,
+		0,0,0,28,22,1,0,0,0,29,1,1,0,0,0,30,31,6,1,-1,0,31,32,5,16,0,0,32,33,3,
+		2,1,0,33,34,5,17,0,0,34,37,1,0,0,0,35,37,7,1,0,0,36,30,1,0,0,0,36,35,1,
+		0,0,0,37,49,1,0,0,0,38,39,10,4,0,0,39,40,7,2,0,0,40,48,3,2,1,5,41,42,10,
+		3,0,0,42,43,5,11,0,0,43,48,3,2,1,3,44,45,10,2,0,0,45,46,7,3,0,0,46,48,
+		3,2,1,3,47,38,1,0,0,0,47,41,1,0,0,0,47,44,1,0,0,0,48,51,1,0,0,0,49,47,
+		1,0,0,0,49,50,1,0,0,0,50,3,1,0,0,0,51,49,1,0,0,0,4,28,36,47,49
 	};
 
 	public static readonly ATN _ATN =

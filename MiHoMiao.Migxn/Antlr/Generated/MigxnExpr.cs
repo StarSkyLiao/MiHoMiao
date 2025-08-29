@@ -166,6 +166,7 @@ public partial class MigxnExpr : Parser {
 		public IToken value;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Integer() { return GetToken(MigxnExpr.Integer, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Float() { return GetToken(MigxnExpr.Float, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Name() { return GetToken(MigxnExpr.Name, 0); }
 		public SingleExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
@@ -221,6 +222,7 @@ public partial class MigxnExpr : Parser {
 				break;
 			case Integer:
 			case Float:
+			case Name:
 				{
 				_localctx = new SingleExprContext(_localctx);
 				Context = _localctx;
@@ -228,7 +230,7 @@ public partial class MigxnExpr : Parser {
 				State = 7;
 				((SingleExprContext)_localctx).value = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
-				if ( !(_la==Integer || _la==Float) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1072L) != 0)) ) {
 					((SingleExprContext)_localctx).value = ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -345,13 +347,13 @@ public partial class MigxnExpr : Parser {
 
 	private static int[] _serializedATN = {
 		4,1,28,25,2,0,7,0,1,0,1,0,1,0,1,0,1,0,1,0,3,0,9,8,0,1,0,1,0,1,0,1,0,1,
-		0,1,0,1,0,1,0,1,0,5,0,20,8,0,10,0,12,0,23,9,0,1,0,0,1,0,1,0,0,3,1,0,4,
-		5,1,0,23,25,1,0,21,22,27,0,8,1,0,0,0,2,3,6,0,-1,0,3,4,5,16,0,0,4,5,3,0,
-		0,0,5,6,5,17,0,0,6,9,1,0,0,0,7,9,7,0,0,0,8,2,1,0,0,0,8,7,1,0,0,0,9,21,
-		1,0,0,0,10,11,10,4,0,0,11,12,7,1,0,0,12,20,3,0,0,5,13,14,10,3,0,0,14,15,
-		5,11,0,0,15,20,3,0,0,3,16,17,10,2,0,0,17,18,7,2,0,0,18,20,3,0,0,3,19,10,
-		1,0,0,0,19,13,1,0,0,0,19,16,1,0,0,0,20,23,1,0,0,0,21,19,1,0,0,0,21,22,
-		1,0,0,0,22,1,1,0,0,0,23,21,1,0,0,0,3,8,19,21
+		0,1,0,1,0,1,0,1,0,5,0,20,8,0,10,0,12,0,23,9,0,1,0,0,1,0,1,0,0,3,2,0,4,
+		5,10,10,1,0,23,25,1,0,21,22,27,0,8,1,0,0,0,2,3,6,0,-1,0,3,4,5,16,0,0,4,
+		5,3,0,0,0,5,6,5,17,0,0,6,9,1,0,0,0,7,9,7,0,0,0,8,2,1,0,0,0,8,7,1,0,0,0,
+		9,21,1,0,0,0,10,11,10,4,0,0,11,12,7,1,0,0,12,20,3,0,0,5,13,14,10,3,0,0,
+		14,15,5,11,0,0,15,20,3,0,0,3,16,17,10,2,0,0,17,18,7,2,0,0,18,20,3,0,0,
+		3,19,10,1,0,0,0,19,13,1,0,0,0,19,16,1,0,0,0,20,23,1,0,0,0,21,19,1,0,0,
+		0,21,22,1,0,0,0,22,1,1,0,0,0,23,21,1,0,0,0,3,8,19,21
 	};
 
 	public static readonly ATN _ATN =

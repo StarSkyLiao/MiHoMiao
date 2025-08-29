@@ -8,9 +8,9 @@ options {
 }
 
 statement
-    : Var name = (Name | RawName) Assign expression                                    #VarStmt
-    | Var name = (Name | RawName) Colon type = (Name | RawName)                        #VarStmt
-    | Var name = (Name | RawName) Colon type = (Name | RawName) Assign expression      #VarStmt
-    | Val name = (Name | RawName) Assign expression                                    #ValStmt
-    | Val name = (Name | RawName) Colon type = (Name | RawName) Assign expression      #ValStmt
+    : Var VarName = (Name | RawName)                               Assign Expression = expression      #VarStmt
+    | Var VarName = (Name | RawName) Colon Type = (Name | RawName)                                     #VarStmt
+    | Var VarName = (Name | RawName) Colon Type = (Name | RawName) Assign Expression = expression      #VarStmt
+    | Val VarName = (Name | RawName)                               Assign Expression = expression      #ValStmt
+    | Val VarName = (Name | RawName) Colon Type = (Name | RawName) Assign Expression = expression      #ValStmt
     ;

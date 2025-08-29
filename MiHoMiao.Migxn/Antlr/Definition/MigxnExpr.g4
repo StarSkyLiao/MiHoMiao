@@ -10,9 +10,9 @@ options {
 }
 
 expression
-    : LRound expression RRound                      #ParenthesesExpr
+    : LRound expression RRound                                     #ParenthesesExpr
     | Left = expression op = (Mul | Div | Rem)  Right = expression #BinaryExpr
     | <assoc=right> Left = expression op = Pow  Right = expression #BinaryExpr
     | Left = expression    op = (Add | Sub)     Right = expression #BinaryExpr
-    | value = (Integer | Float)                     #SingleExpr
+    | value = (Integer | Float | Name)                             #SingleExpr
     ;
