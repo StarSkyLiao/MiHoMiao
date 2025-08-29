@@ -1,16 +1,28 @@
+using MiHoMiao.Migxn.CodeGen.Data.Store;
+using MiHoMiao.Migxn.Runtime.Members;
+using MiHoMiao.Migxn.Runtime.Variable;
 using static MiHoMiao.Migxn.Antlr.Generated.MigxnStmt;
 
-namespace MiHoMiao.Migxn.Antlr.Visitor.Statements;
+namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-/// <summary>
-/// Var 语句
-/// </summary>
-public partial class StmtVisitor
+internal partial class MigxnLanguage
 {
-    public override object VisitVarStmt(VarStmtContext context)
+    public override Type? VisitVarStmt(VarStmtContext context)
     {
-
-
-        return null!; // 无需返回值
+        Type? varType = Visit(context.Expression);
+        
+        string name = context.VarName.Text;
+        MigxnScope scope = MigxnMethod.Context.MigxnScope;
+        if (scope.IsAbleToDeclareVariable(name))
+        {
+            scope.DeclareVariable(new LocalVariable(name, varType));
+            MigxnMethod.Codes.Add(new OpStVar(name));
+        }
+        else
+        {
+            
+        }
+        return null;
     }
+    
 }
