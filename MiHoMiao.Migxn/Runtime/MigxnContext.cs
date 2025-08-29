@@ -1,26 +1,22 @@
-using System.Reflection.Emit;
+using MiHoMiao.Migxn.Runtime.Members;
 
 namespace MiHoMiao.Migxn.Runtime;
 
-public class MigxnContext
+internal class MigxnContext
 {
-    internal MigxnSymbols<MigxnVariable> Variables = new MigxnSymbols<MigxnVariable>();
+    /// <summary>
+    /// 该上下文环境的的作用域
+    /// </summary>
+    internal readonly MigxnScope MigxnScope = new MigxnScope();
     
-    internal MigxnSymbols<Label> Labels = new MigxnSymbols<Label>();
+    /// <summary>
+    /// 抛出的解析错误
+    /// </summary>
+    internal readonly List<Exception> Exceptions = [];
     
-    internal readonly Stack<MigxnFrame> CallingTree = [];
+    /// <summary>
+    /// 发现的解析警告
+    /// </summary>
+    internal readonly List<Exception> Warnings = [];
     
-    internal void PushStack(MigxnFrame frame)
-    {
-        Variables = new MigxnSymbols<MigxnVariable>(Variables);
-        Labels = new MigxnSymbols<Label>(Labels);
-        CallingTree.Push(frame);
-    }
-    
-    internal void PopStack()
-    {
-        if (!CallingTree.TryPop(out _)) throw new NotSupportedException("Calling tree is invalid!");
-        Variables = Variables.ParentTable!;
-        Labels = Labels.ParentTable!;
-    }
 }
