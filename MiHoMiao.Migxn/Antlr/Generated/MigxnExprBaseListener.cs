@@ -80,20 +80,6 @@ public partial class MigxnExprBaseListener : IMigxnExprListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSingleExpr([NotNull] MigxnExpr.SingleExprContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssignExpr([NotNull] MigxnExpr.AssignExprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssignExpr([NotNull] MigxnExpr.AssignExprContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

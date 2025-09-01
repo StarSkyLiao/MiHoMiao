@@ -6,23 +6,23 @@ using static MiHoMiao.Migxn.Antlr.Generated.MigxnLanguage;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal partial class MigxnCommonParser
+internal partial class MigxnMethodParser
 {
     public override Type? VisitValStmt(ValStmtContext context)
     {
         Type? varType = Visit(context.Expression);
         
         string name = context.VarName.Text;
-        Exception? exception = Scopes.DeclareVariable(new LocalVariable(name, varType) { IsWritable = false });
+        Exception? exception = MigxnContext.MigxnScope.DeclareVariable(new LocalVariable(name, varType) { IsWritable = false });
         
         if (exception is null)
         {
-            Codes.Add(new OpStVar(name));
+            MigxnContext.EmitCode(new OpStVar(name));
         }
         else
         {
-            Codes.Add(new OpError(exception.Message));
-            Exceptions.Add(MigxnDiagnostic.Create(context.VarName, exception));
+            MigxnContext.EmitCode(new OpError(exception.Message));
+            MigxnContext.Exceptions.Add(MigxnDiagnostic.Create(context.VarName, exception));
         }
         return null;
     }

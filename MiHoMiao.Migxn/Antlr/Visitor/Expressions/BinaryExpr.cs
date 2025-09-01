@@ -5,7 +5,7 @@ using static MiHoMiao.Migxn.Antlr.Generated.MigxnLanguage;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal partial class MigxnCommonParser
+internal partial class MigxnMethodParser
 {
     
     /// <summary>
@@ -18,7 +18,7 @@ internal partial class MigxnCommonParser
         Visit(context.Right); // 右操作数
 
         // 根据操作符类型将对应操作符推入栈
-        Codes.Add(context.op.Type switch
+        MigxnContext.EmitCode(context.op.Type switch
         {
             MigxnLiteral.Add => new OpAdd(),
             MigxnLiteral.Sub => new OpSub(),

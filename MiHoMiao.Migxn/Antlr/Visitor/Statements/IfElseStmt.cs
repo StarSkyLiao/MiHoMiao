@@ -3,15 +3,15 @@ using static MiHoMiao.Migxn.Antlr.Generated.MigxnLanguage;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal partial class MigxnCommonParser
+internal partial class MigxnMethodParser
 {
     public override Type? VisitIfStmt(IfStmtContext context)
     {
         Visit(context.Condition);
         string falseLabel = $"<label>.if.false.{(context.Start.Line, context.Start.Column)}";
-        Codes.Add(new OpBrFalse(falseLabel));
+        MigxnContext.EmitCode(new OpBrFalse(falseLabel));
         Visit(context.TrueBody);
-        Codes.Add(new OpLabel(falseLabel));
+        MigxnContext.EmitCode(new OpLabel(falseLabel));
         return null;
     }
     
@@ -20,13 +20,13 @@ internal partial class MigxnCommonParser
         Visit(context.Condition);
         string trueLabel = $"<label>.if.true.{(context.Start.Line, context.Start.Column)}";
         string falseLabel = $"<label>.if.false.{(context.Start.Line, context.Start.Column)}";
-        Codes.Add(new OpBrFalse(falseLabel));
+        MigxnContext.EmitCode(new OpBrFalse(falseLabel));
         Visit(context.TrueBody);
-        Codes.Add(new OpGoto(trueLabel));
+        MigxnContext.EmitCode(new OpGoto(trueLabel));
         
-        Codes.Add(new OpLabel(falseLabel));
+        MigxnContext.EmitCode(new OpLabel(falseLabel));
         Visit(context.FalseBody);
-        Codes.Add(new OpLabel(trueLabel));
+        MigxnContext.EmitCode(new OpLabel(trueLabel));
         return null;
     }
     

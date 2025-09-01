@@ -118,17 +118,29 @@ public interface IMigxnStmtListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitLoopStmt([NotNull] MigxnStmt.LoopStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>ExprStmt</c>
+	/// Enter a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterExprStmt([NotNull] MigxnStmt.ExprStmtContext context);
+	void EnterReturnStmt([NotNull] MigxnStmt.ReturnStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>ExprStmt</c>
+	/// Exit a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitExprStmt([NotNull] MigxnStmt.ExprStmtContext context);
+	void ExitReturnStmt([NotNull] MigxnStmt.ReturnStmtContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssignStmt([NotNull] MigxnStmt.AssignStmtContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssignStmt([NotNull] MigxnStmt.AssignStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
@@ -165,16 +177,4 @@ public interface IMigxnStmtListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSingleExpr([NotNull] MigxnStmt.SingleExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAssignExpr([NotNull] MigxnStmt.AssignExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAssignExpr([NotNull] MigxnStmt.AssignExprContext context);
 }

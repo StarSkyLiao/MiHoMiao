@@ -51,6 +51,18 @@ public partial class MigxnLanguageBaseListener : IMigxnLanguageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLanguage([NotNull] MigxnLanguage.LanguageContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnLanguage.method"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMethod([NotNull] MigxnLanguage.MethodContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnLanguage.method"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMethod([NotNull] MigxnLanguage.MethodContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>BlockStmt</c>
 	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -149,19 +161,33 @@ public partial class MigxnLanguageBaseListener : IMigxnLanguageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLoopStmt([NotNull] MigxnLanguage.LoopStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>ExprStmt</c>
+	/// Enter a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterExprStmt([NotNull] MigxnLanguage.ExprStmtContext context) { }
+	public virtual void EnterReturnStmt([NotNull] MigxnLanguage.ReturnStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>ExprStmt</c>
+	/// Exit a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitExprStmt([NotNull] MigxnLanguage.ExprStmtContext context) { }
+	public virtual void ExitReturnStmt([NotNull] MigxnLanguage.ReturnStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignStmt([NotNull] MigxnLanguage.AssignStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignStmt([NotNull] MigxnLanguage.AssignStmtContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
@@ -204,20 +230,6 @@ public partial class MigxnLanguageBaseListener : IMigxnLanguageListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSingleExpr([NotNull] MigxnLanguage.SingleExprContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssignExpr([NotNull] MigxnLanguage.AssignExprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssignExpr([NotNull] MigxnLanguage.AssignExprContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

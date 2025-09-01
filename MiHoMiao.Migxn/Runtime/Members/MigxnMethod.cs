@@ -1,19 +1,27 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Emit;
-using MiHoMiao.Migxn.CodeGen;
+using MiHoMiao.Core.Collections.Tool;
+using MiHoMiao.Migxn.CodeGen.Flow;
 
 namespace MiHoMiao.Migxn.Runtime.Members;
 
-internal record MigxnMethod(MigxnContext Context, string Name, Type ReturnType, params Type[] MethodParams)
+internal record MigxnMethod(MigxnContext Context, string Name, Type ReturnType, params Type[] MethodParams) : MigxnMember
 {
-    /// <summary>
-    /// 该方法体的操作码
-    /// </summary>
-    internal List<MigxnOpCode> Codes = [];
+    public override string ToString() =>
+        $".method {ReturnType.Name} {Name}" +
+        $"{MethodParams.GenericViewer(type => type.Name, "(", ")")} cil managed\n" +
+        $"{Codes.GenericViewer("", "\n", "\n")}";
+
+    private string? m_ReturnLabel = null;
+
+    public string ReturnLabel => m_ReturnLabel ??= $"<ret>.{Name}";
     
-    
-    
-    
+    public void SetReturn()
+    {
+        if (m_ReturnLabel != null) EmitCode(new OpLabel(m_ReturnLabel));
+        EmitCode(new OpRet());
+    }
+
     /// <summary>
     /// 对应的动态方法
     /// </summary>

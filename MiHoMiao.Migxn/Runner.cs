@@ -1,9 +1,8 @@
 using Antlr4.Runtime;
 using MiHoMiao.Core.Collections.Tool;
+using MiHoMiao.Migxn.Antlr;
 using MiHoMiao.Migxn.Antlr.Generated;
-using MiHoMiao.Migxn.Antlr.Visitor;
 using MiHoMiao.Migxn.Runtime;
-using MiHoMiao.Migxn.Runtime.Members;
 
 namespace MiHoMiao.Migxn;
 
@@ -11,23 +10,28 @@ public static class Runner
 {
     private const string Input =
         """
-        {
+        fun Foo() : void -> {
             var a : int32 = 1
-            if (1) a = 2
-            else a = 3
-            loop (8) a = a + 1
+            while(a) {
+                if (a) ret a
+                a = a + 1
+            }
         }
         """;
     
     public static void Run()
     {
-        MigxnMethod method = new MigxnMethod(new MigxnContext(), "", typeof(void));
-        MigxnCommonParser commonParser = new MigxnCommonParser(method);
+        MigxnContext migxnContext = new MigxnContext();
+        // MigxnMethod method = new MigxnMethod(migxnContext, "", typeof(void));
+        MigxnMemberParser methodParser = new MigxnMemberParser(migxnContext);
         
         MigxnLiteral lexer = new MigxnLiteral(CharStreams.fromString(Input));
         MigxnLanguage parser = new MigxnLanguage(new CommonTokenStream(lexer));
-        commonParser.Visit(parser.statement());
-        Console.Write(commonParser.Codes.GenericViewer("", "\n", "\n"));
-        Console.Write(commonParser.Exceptions.GenericViewer("", "\n", "\n"));
+        
+        methodParser.Visit(parser.language());
+        
+        Console.Write(migxnContext.AllMembers.GenericViewer("", "\n", "\n"));
+        Console.Write(migxnContext.Exceptions.GenericViewer("", "\n", "\n"));
+        
     }
 }

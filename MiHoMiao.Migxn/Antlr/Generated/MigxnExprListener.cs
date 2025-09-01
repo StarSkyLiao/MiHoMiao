@@ -69,16 +69,4 @@ public interface IMigxnExprListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSingleExpr([NotNull] MigxnExpr.SingleExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAssignExpr([NotNull] MigxnExpr.AssignExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAssignExpr([NotNull] MigxnExpr.AssignExprContext context);
 }

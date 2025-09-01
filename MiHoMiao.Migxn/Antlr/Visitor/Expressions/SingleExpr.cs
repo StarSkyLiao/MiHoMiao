@@ -9,7 +9,7 @@ using static MiHoMiao.Migxn.Antlr.Generated.MigxnLanguage;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal partial class MigxnCommonParser
+internal partial class MigxnMethodParser
 {
     
     /// <summary>
@@ -18,29 +18,29 @@ internal partial class MigxnCommonParser
     public override Type? VisitSingleExpr(SingleExprContext context)
     {
         string text = context.GetText();
-        if (context.value.Type is MigxnLiteral.Name)
+        if (context.Value.Type is MigxnLiteral.Name)
         {
-            string varName = context.value.Text;
-            Result<MigxnVariable> variable = MigxnMethod.Context.MigxnScope.LoadVariable(varName);
+            string varName = context.Value.Text;
+            Result<MigxnVariable> variable = MigxnContext.MigxnScope.LoadVariable(varName);
             if (!variable.IsSuccess)
             {
-                Exceptions.Add(MigxnDiagnostic.Create(context.value, variable.Exception!));
-                Codes.Add(new OpError(variable.Exception!.Message));
+                MigxnContext.Exceptions.Add(MigxnDiagnostic.Create(context.Value, variable.Exception!));
+                MigxnContext.EmitCode(new OpError(variable.Exception!.Message));
                 return null;
             }
 
-            Codes.Add(new OpLdVar(varName));
+            MigxnContext.EmitCode(new OpLdVar(varName));
             return variable.Value.Type;
         }
 
-        (Type? type, MigxnOpCode opCode) = context.value.Type switch
+        (Type? type, MigxnOpCode opCode) = context.Value.Type switch
         {
             MigxnLiteral.Integer => (typeof(long), new OpLdcLong(long.Parse(text))),
             MigxnLiteral.Float => (typeof(double), new OpLdcFloat(double.Parse(text))),
             _ => new ValueTuple<Type?, MigxnOpCode>(null, null!)
         };
         if (type == null) throw new UnreachableException();
-        Codes.Add(opCode);
+        MigxnContext.EmitCode(opCode);
         return type;
         
     }

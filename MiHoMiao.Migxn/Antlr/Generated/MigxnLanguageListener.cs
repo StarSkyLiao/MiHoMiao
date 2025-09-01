@@ -44,6 +44,16 @@ public interface IMigxnLanguageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitLanguage([NotNull] MigxnLanguage.LanguageContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnLanguage.method"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMethod([NotNull] MigxnLanguage.MethodContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnLanguage.method"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMethod([NotNull] MigxnLanguage.MethodContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>BlockStmt</c>
 	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
@@ -128,17 +138,29 @@ public interface IMigxnLanguageListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitLoopStmt([NotNull] MigxnLanguage.LoopStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>ExprStmt</c>
+	/// Enter a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterExprStmt([NotNull] MigxnLanguage.ExprStmtContext context);
+	void EnterReturnStmt([NotNull] MigxnLanguage.ReturnStmtContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>ExprStmt</c>
+	/// Exit a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitExprStmt([NotNull] MigxnLanguage.ExprStmtContext context);
+	void ExitReturnStmt([NotNull] MigxnLanguage.ReturnStmtContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssignStmt([NotNull] MigxnLanguage.AssignStmtContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssignStmt([NotNull] MigxnLanguage.AssignStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
@@ -175,16 +197,4 @@ public interface IMigxnLanguageListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSingleExpr([NotNull] MigxnLanguage.SingleExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAssignExpr([NotNull] MigxnLanguage.AssignExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAssignExpr([NotNull] MigxnLanguage.AssignExprContext context);
 }

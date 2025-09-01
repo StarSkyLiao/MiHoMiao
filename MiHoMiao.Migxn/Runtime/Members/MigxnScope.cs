@@ -41,13 +41,18 @@ internal record MigxnScope
     /// <summary>
     /// 检查在此处是否允许声明指定的变量
     /// </summary>
-    public bool IsAbleToDeclareVariable(string name) => !ScopedVariables.Peek().ContainsKey(name);
-    
+    public bool IsAbleToDeclareVariable(string name)
+    {
+        if (name.StartsWith('@')) name = name[1..];
+        return !ScopedVariables.Peek().ContainsKey(name);
+    }
+
     /// <summary>
     /// 声明一个变量
     /// </summary>
     public Exception? DeclareVariable(MigxnVariable variable)
     {
+        if (variable.Name.StartsWith('@')) variable.Name = variable.Name[1..];
         if (variable.Name == "_" || ScopedVariables.Peek().TryAdd(variable.Name, variable)) return null;
         return new NotSupportedException($"Variable \"{variable.Name}\" is already declared!");
     }
@@ -57,6 +62,7 @@ internal record MigxnScope
     /// </summary>
     public Result<MigxnVariable> LoadVariable(string name)
     {
+        if (name.StartsWith('@')) name = name[1..];
         if (name == "_") return new NotSupportedException("Variable \"_\" is not declared!");
         foreach (ScopedTable table in ScopedVariables)
         {

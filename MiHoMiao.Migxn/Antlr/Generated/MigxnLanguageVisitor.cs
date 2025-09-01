@@ -41,6 +41,12 @@ public interface IMigxnLanguageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLanguage([NotNull] MigxnLanguage.LanguageContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MigxnLanguage.method"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMethod([NotNull] MigxnLanguage.MethodContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>BlockStmt</c>
 	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
@@ -90,12 +96,19 @@ public interface IMigxnLanguageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLoopStmt([NotNull] MigxnLanguage.LoopStmtContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>ExprStmt</c>
+	/// Visit a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExprStmt([NotNull] MigxnLanguage.ExprStmtContext context);
+	Result VisitReturnStmt([NotNull] MigxnLanguage.ReturnStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignStmt([NotNull] MigxnLanguage.AssignStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
@@ -117,11 +130,4 @@ public interface IMigxnLanguageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSingleExpr([NotNull] MigxnLanguage.SingleExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAssignExpr([NotNull] MigxnLanguage.AssignExprContext context);
 }

@@ -9,14 +9,15 @@ options {
 
 statement
     : LCurly Children = statement* RCurly                                                              #BlockStmt
-    | Var VarName = (Name | RawName)                               Assign Expression = expression      #VarStmt
-    | Var VarName = (Name | RawName) Colon Type = (Name | RawName)                                     #VarStmt
-    | Var VarName = (Name | RawName) Colon Type = (Name | RawName) Assign Expression = expression      #VarStmt
-    | Val VarName = (Name | RawName)                               Assign Expression = expression      #ValStmt
-    | Val VarName = (Name | RawName) Colon Type = (Name | RawName) Assign Expression = expression      #ValStmt
+    | Var VarName = Name                               Assign Expression = expression                  #VarStmt
+    | Var VarName = Name Colon Type = Name                                                             #VarStmt
+    | Var VarName = Name Colon Type = Name Assign Expression = expression                              #VarStmt
+    | Val VarName = Name                               Assign Expression = expression                  #ValStmt
+    | Val VarName = Name Colon Type = Name Assign Expression = expression                              #ValStmt
     | If LRound Condition = expression RRound TrueBody = statement                                     #IfStmt
     | If LRound Condition = expression RRound TrueBody = statement Else FalseBody = statement          #IfElseStmt
     | While LRound Condition = expression RRound WhileBody = statement                                 #WhileStmt
-    | Loop LRound LoopTimes = expression RRound LoopBody = statement                                  #LoopStmt
-    | expression                                                                                       #ExprStmt
+    | Loop LRound LoopTimes = expression RRound LoopBody = statement                                   #LoopStmt
+    | Return Result = expression?                                                                      #ReturnStmt
+    | <assoc=right> Left = expression op = (Assign | Assign) Right = expression                        #AssignStmt
     ;

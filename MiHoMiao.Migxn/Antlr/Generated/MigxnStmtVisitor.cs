@@ -84,12 +84,19 @@ public interface IMigxnStmtVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLoopStmt([NotNull] MigxnStmt.LoopStmtContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>ExprStmt</c>
+	/// Visit a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExprStmt([NotNull] MigxnStmt.ExprStmtContext context);
+	Result VisitReturnStmt([NotNull] MigxnStmt.ReturnStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignStmt([NotNull] MigxnStmt.AssignStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
@@ -111,11 +118,4 @@ public interface IMigxnStmtVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSingleExpr([NotNull] MigxnStmt.SingleExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAssignExpr([NotNull] MigxnStmt.AssignExprContext context);
 }

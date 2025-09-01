@@ -6,7 +6,7 @@ using static MiHoMiao.Migxn.Antlr.Generated.MigxnLanguage;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal partial class MigxnCommonParser
+internal partial class MigxnMethodParser
 {
     
     /// <summary>
@@ -16,16 +16,15 @@ internal partial class MigxnCommonParser
     {
         if (context is SingleExprContext single)
         {
-            Result<MigxnVariable>? result = single.value.Type switch
+            Result<MigxnVariable>? result = single.Value.Type switch
             {
-                MigxnLiteral.Name => Scopes.LoadVariable(single.value.Text),
-                MigxnLiteral.RawName => Scopes.LoadVariable(single.value.Text[1..]),
+                MigxnLiteral.Name => MigxnContext.MigxnScope.LoadVariable(single.Value.Text),
                 _ => default(Result<MigxnVariable>?)
             };
             if (result.HasValue)
             {
                 if (result.Value.IsSuccess) return result.Value;
-                Exceptions.Add(MigxnDiagnostic.Create(single.value, result.Value.Exception!));
+                MigxnContext.Exceptions.Add(MigxnDiagnostic.Create(single.Value, result.Value.Exception!));
                 return null;
             }
         }

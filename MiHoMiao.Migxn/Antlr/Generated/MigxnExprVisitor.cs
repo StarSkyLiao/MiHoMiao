@@ -55,11 +55,4 @@ public interface IMigxnExprVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSingleExpr([NotNull] MigxnExpr.SingleExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAssignExpr([NotNull] MigxnExpr.AssignExprContext context);
 }

@@ -2,13 +2,13 @@ using static MiHoMiao.Migxn.Antlr.Generated.MigxnLanguage;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal partial class MigxnCommonParser
+internal partial class MigxnMethodParser
 {
     public override Type? VisitBlockStmt(BlockStmtContext context)
     {
-        Scopes.EnterScope();
+        MigxnContext.MigxnScope.EnterScope();
         foreach (StatementContext statementContext in context.statement()) Visit(statementContext);
-        Scopes.ExitScope();
+        MigxnContext.MigxnScope.ExitScope();
         return null;
     }
     

@@ -8,4 +8,7 @@ options {
 }
 
 language
-    : statement;
+    : method;
+
+method
+    : Fun FuncName = Name LRound RRound Colon ReturnType = Name Arrow Body = statement;

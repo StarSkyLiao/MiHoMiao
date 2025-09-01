@@ -21,15 +21,16 @@ Float: Digit* Dot Digit+;
 Var:       'var';
 Val:       'val';
 Let:       'let';
+Fun:       'fun';
 
 If:        'if';
 Else:      'else';
 
 Loop:      'loop';
 While:     'while';
+Return:    'ret';
 
-RawName: '@'[\p{L}][\p{L}\p{N}]*;
-Name: [\p{L}][\p{L}\p{N}]*;
+Name: '@'?[\p{L}][\p{L}\p{N}]*;
 
 Pow:       '**';
 
@@ -41,6 +42,8 @@ LRound:    '(';
 RRound:    ')';
 LCurly:    '{';
 RCurly:    '}';
+
+Arrow:     '->';
 
 Eql:       '==';
 Ueql:      '!=';

@@ -2,7 +2,7 @@ using static MiHoMiao.Migxn.Antlr.Generated.MigxnLanguage;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal partial class MigxnCommonParser
+internal partial class MigxnMethodParser
 {
     public override Type? VisitParenthesesExpr(ParenthesesExprContext context)
     {

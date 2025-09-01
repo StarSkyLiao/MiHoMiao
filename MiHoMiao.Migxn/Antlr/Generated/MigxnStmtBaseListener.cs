@@ -137,19 +137,33 @@ public partial class MigxnStmtBaseListener : IMigxnStmtListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLoopStmt([NotNull] MigxnStmt.LoopStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>ExprStmt</c>
+	/// Enter a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterExprStmt([NotNull] MigxnStmt.ExprStmtContext context) { }
+	public virtual void EnterReturnStmt([NotNull] MigxnStmt.ReturnStmtContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>ExprStmt</c>
+	/// Exit a parse tree produced by the <c>ReturnStmt</c>
 	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitExprStmt([NotNull] MigxnStmt.ExprStmtContext context) { }
+	public virtual void ExitReturnStmt([NotNull] MigxnStmt.ReturnStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignStmt([NotNull] MigxnStmt.AssignStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignStmt([NotNull] MigxnStmt.AssignStmtContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
@@ -192,20 +206,6 @@ public partial class MigxnStmtBaseListener : IMigxnStmtListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSingleExpr([NotNull] MigxnStmt.SingleExprContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssignExpr([NotNull] MigxnStmt.AssignExprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssignExpr([NotNull] MigxnStmt.AssignExprContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
