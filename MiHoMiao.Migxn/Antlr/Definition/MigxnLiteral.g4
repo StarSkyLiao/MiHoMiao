@@ -22,6 +22,12 @@ Var:       'var';
 Val:       'val';
 Let:       'let';
 
+If:        'if';
+Else:      'else';
+
+Loop:      'loop';
+While:     'while';
+
 RawName: '@'[\p{L}][\p{L}\p{N}]*;
 Name: [\p{L}][\p{L}\p{N}]*;
 

@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using MiHoMiao.Migxn.Antlr.Generated;
 using MiHoMiao.Migxn.CodeGen.Algorithm;
-using static MiHoMiao.Migxn.Antlr.Generated.MigxnStmt;
+using static MiHoMiao.Migxn.Antlr.Generated.MigxnLanguage;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal partial class MigxnLanguage
+internal partial class MigxnCommonParser
 {
     
     /// <summary>

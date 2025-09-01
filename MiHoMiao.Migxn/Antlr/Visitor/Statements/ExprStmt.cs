@@ -1,9 +1,9 @@
 using MiHoMiao.Migxn.CodeAnalysis;
-using static MiHoMiao.Migxn.Antlr.Generated.MigxnStmt;
+using static MiHoMiao.Migxn.Antlr.Generated.MigxnLanguage;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal partial class MigxnLanguage
+internal partial class MigxnCommonParser
 {
     public override Type? VisitExprStmt(ExprStmtContext context)
     {

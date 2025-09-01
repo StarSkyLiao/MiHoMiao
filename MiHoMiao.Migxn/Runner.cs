@@ -12,26 +12,22 @@ public static class Runner
     private const string Input =
         """
         {
-            {
-                var a = 2 + 3 * 4 + 1
-                a = 12 + a
-            }
-            {
-                val a = 2 + 3 * 4 + 1
-                a = 12 + a
-            }
+            var a : int32 = 1
+            if (1) a = 2
+            else a = 3
+            loop (8) a = a + 1
         }
         """;
     
     public static void Run()
     {
         MigxnMethod method = new MigxnMethod(new MigxnContext(), "", typeof(void));
-        MigxnLanguage language = new MigxnLanguage(method);
+        MigxnCommonParser commonParser = new MigxnCommonParser(method);
         
         MigxnLiteral lexer = new MigxnLiteral(CharStreams.fromString(Input));
-        MigxnStmt parser = new MigxnStmt(new CommonTokenStream(lexer));
-        language.Visit(parser.statement());
-        Console.Write(language.Codes.GenericViewer("", "\n", "\n"));
-        Console.Write(language.Exceptions.GenericViewer("", "\n", "\n"));
+        MigxnLanguage parser = new MigxnLanguage(new CommonTokenStream(lexer));
+        commonParser.Visit(parser.statement());
+        Console.Write(commonParser.Codes.GenericViewer("", "\n", "\n"));
+        Console.Write(commonParser.Exceptions.GenericViewer("", "\n", "\n"));
     }
 }

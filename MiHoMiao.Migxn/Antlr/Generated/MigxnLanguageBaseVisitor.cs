@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from E:/C#Library/MiHoMiao/MiHoMiao.Migxn/Antlr/Definition/MigxnStmt.g4 by ANTLR 4.13.2
+// Generated from E:/C#Library/MiHoMiao/MiHoMiao.Migxn/Antlr/Definition/MigxnLanguage.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -28,7 +28,7 @@ using IToken = Antlr4.Runtime.IToken;
 using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 
 /// <summary>
-/// This class provides an empty implementation of <see cref="IMigxnStmtVisitor{Result}"/>,
+/// This class provides an empty implementation of <see cref="IMigxnLanguageVisitor{Result}"/>,
 /// which can be extended to create a visitor which only needs to handle a subset
 /// of the available methods.
 /// </summary>
@@ -36,10 +36,20 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.13.2")]
 [System.Diagnostics.DebuggerNonUserCode]
 [System.CLSCompliant(false)]
-public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IMigxnStmtVisitor<Result> {
+public partial class MigxnLanguageBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IMigxnLanguageVisitor<Result> {
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MigxnLanguage.language"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitLanguage([NotNull] MigxnLanguage.LanguageContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>BlockStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -47,10 +57,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitBlockStmt([NotNull] MigxnStmt.BlockStmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitBlockStmt([NotNull] MigxnLanguage.BlockStmtContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>VarStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -58,10 +68,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitVarStmt([NotNull] MigxnStmt.VarStmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitVarStmt([NotNull] MigxnLanguage.VarStmtContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ValStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -69,10 +79,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitValStmt([NotNull] MigxnStmt.ValStmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitValStmt([NotNull] MigxnLanguage.ValStmtContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IfStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -80,10 +90,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIfStmt([NotNull] MigxnStmt.IfStmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitIfStmt([NotNull] MigxnLanguage.IfStmtContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IfElseStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -91,10 +101,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIfElseStmt([NotNull] MigxnStmt.IfElseStmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitIfElseStmt([NotNull] MigxnLanguage.IfElseStmtContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>WhileStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -102,10 +112,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitWhileStmt([NotNull] MigxnStmt.WhileStmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitWhileStmt([NotNull] MigxnLanguage.WhileStmtContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>LoopStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -113,10 +123,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitLoopStmt([NotNull] MigxnStmt.LoopStmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitLoopStmt([NotNull] MigxnLanguage.LoopStmtContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ExprStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -124,10 +134,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitExprStmt([NotNull] MigxnStmt.ExprStmtContext context) { return VisitChildren(context); }
+	public virtual Result VisitExprStmt([NotNull] MigxnLanguage.ExprStmtContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -135,10 +145,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitBinaryExpr([NotNull] MigxnStmt.BinaryExprContext context) { return VisitChildren(context); }
+	public virtual Result VisitBinaryExpr([NotNull] MigxnLanguage.BinaryExprContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ParenthesesExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -146,10 +156,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitParenthesesExpr([NotNull] MigxnStmt.ParenthesesExprContext context) { return VisitChildren(context); }
+	public virtual Result VisitParenthesesExpr([NotNull] MigxnLanguage.ParenthesesExprContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>SingleExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -157,10 +167,10 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitSingleExpr([NotNull] MigxnStmt.SingleExprContext context) { return VisitChildren(context); }
+	public virtual Result VisitSingleExpr([NotNull] MigxnLanguage.SingleExprContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -168,5 +178,5 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitAssignExpr([NotNull] MigxnStmt.AssignExprContext context) { return VisitChildren(context); }
+	public virtual Result VisitAssignExpr([NotNull] MigxnLanguage.AssignExprContext context) { return VisitChildren(context); }
 }

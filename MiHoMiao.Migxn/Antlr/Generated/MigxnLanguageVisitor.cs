@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from E:/C#Library/MiHoMiao/MiHoMiao.Migxn/Antlr/Definition/MigxnStmt.g4 by ANTLR 4.13.2
+// Generated from E:/C#Library/MiHoMiao/MiHoMiao.Migxn/Antlr/Definition/MigxnLanguage.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -28,94 +28,100 @@ using IToken = Antlr4.Runtime.IToken;
 
 /// <summary>
 /// This interface defines a complete generic visitor for a parse tree produced
-/// by <see cref="MigxnStmt"/>.
+/// by <see cref="MigxnLanguage"/>.
 /// </summary>
 /// <typeparam name="Result">The return type of the visit operation.</typeparam>
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.13.2")]
 [System.CLSCompliant(false)]
-public interface IMigxnStmtVisitor<Result> : IParseTreeVisitor<Result> {
+public interface IMigxnLanguageVisitor<Result> : IParseTreeVisitor<Result> {
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MigxnLanguage.language"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLanguage([NotNull] MigxnLanguage.LanguageContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>BlockStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitBlockStmt([NotNull] MigxnStmt.BlockStmtContext context);
+	Result VisitBlockStmt([NotNull] MigxnLanguage.BlockStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>VarStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitVarStmt([NotNull] MigxnStmt.VarStmtContext context);
+	Result VisitVarStmt([NotNull] MigxnLanguage.VarStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ValStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitValStmt([NotNull] MigxnStmt.ValStmtContext context);
+	Result VisitValStmt([NotNull] MigxnLanguage.ValStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IfStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIfStmt([NotNull] MigxnStmt.IfStmtContext context);
+	Result VisitIfStmt([NotNull] MigxnLanguage.IfStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>IfElseStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIfElseStmt([NotNull] MigxnStmt.IfElseStmtContext context);
+	Result VisitIfElseStmt([NotNull] MigxnLanguage.IfElseStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>WhileStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitWhileStmt([NotNull] MigxnStmt.WhileStmtContext context);
+	Result VisitWhileStmt([NotNull] MigxnLanguage.WhileStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>LoopStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLoopStmt([NotNull] MigxnStmt.LoopStmtContext context);
+	Result VisitLoopStmt([NotNull] MigxnLanguage.LoopStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ExprStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExprStmt([NotNull] MigxnStmt.ExprStmtContext context);
+	Result VisitExprStmt([NotNull] MigxnLanguage.ExprStmtContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitBinaryExpr([NotNull] MigxnStmt.BinaryExprContext context);
+	Result VisitBinaryExpr([NotNull] MigxnLanguage.BinaryExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ParenthesesExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitParenthesesExpr([NotNull] MigxnStmt.ParenthesesExprContext context);
+	Result VisitParenthesesExpr([NotNull] MigxnLanguage.ParenthesesExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>SingleExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitSingleExpr([NotNull] MigxnStmt.SingleExprContext context);
+	Result VisitSingleExpr([NotNull] MigxnLanguage.SingleExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAssignExpr([NotNull] MigxnStmt.AssignExprContext context);
+	Result VisitAssignExpr([NotNull] MigxnLanguage.AssignExprContext context);
 }

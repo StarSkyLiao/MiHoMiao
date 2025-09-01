@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from E:/C#Library/MiHoMiao/MiHoMiao.Migxn/Antlr/Definition/MigxnStmt.g4 by ANTLR 4.13.2
+// Generated from E:/C#Library/MiHoMiao/MiHoMiao.Migxn/Antlr/Definition/MigxnLanguage.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -28,153 +28,163 @@ using IToken = Antlr4.Runtime.IToken;
 
 /// <summary>
 /// This interface defines a complete listener for a parse tree produced by
-/// <see cref="MigxnStmt"/>.
+/// <see cref="MigxnLanguage"/>.
 /// </summary>
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.13.2")]
 [System.CLSCompliant(false)]
-public interface IMigxnStmtListener : IParseTreeListener {
+public interface IMigxnLanguageListener : IParseTreeListener {
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnLanguage.language"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLanguage([NotNull] MigxnLanguage.LanguageContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnLanguage.language"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLanguage([NotNull] MigxnLanguage.LanguageContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>BlockStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBlockStmt([NotNull] MigxnStmt.BlockStmtContext context);
+	void EnterBlockStmt([NotNull] MigxnLanguage.BlockStmtContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>BlockStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBlockStmt([NotNull] MigxnStmt.BlockStmtContext context);
+	void ExitBlockStmt([NotNull] MigxnLanguage.BlockStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>VarStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterVarStmt([NotNull] MigxnStmt.VarStmtContext context);
+	void EnterVarStmt([NotNull] MigxnLanguage.VarStmtContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>VarStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitVarStmt([NotNull] MigxnStmt.VarStmtContext context);
+	void ExitVarStmt([NotNull] MigxnLanguage.VarStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ValStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterValStmt([NotNull] MigxnStmt.ValStmtContext context);
+	void EnterValStmt([NotNull] MigxnLanguage.ValStmtContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>ValStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitValStmt([NotNull] MigxnStmt.ValStmtContext context);
+	void ExitValStmt([NotNull] MigxnLanguage.ValStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>IfStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIfStmt([NotNull] MigxnStmt.IfStmtContext context);
+	void EnterIfStmt([NotNull] MigxnLanguage.IfStmtContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>IfStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIfStmt([NotNull] MigxnStmt.IfStmtContext context);
+	void ExitIfStmt([NotNull] MigxnLanguage.IfStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>IfElseStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIfElseStmt([NotNull] MigxnStmt.IfElseStmtContext context);
+	void EnterIfElseStmt([NotNull] MigxnLanguage.IfElseStmtContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>IfElseStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIfElseStmt([NotNull] MigxnStmt.IfElseStmtContext context);
+	void ExitIfElseStmt([NotNull] MigxnLanguage.IfElseStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>WhileStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterWhileStmt([NotNull] MigxnStmt.WhileStmtContext context);
+	void EnterWhileStmt([NotNull] MigxnLanguage.WhileStmtContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>WhileStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitWhileStmt([NotNull] MigxnStmt.WhileStmtContext context);
+	void ExitWhileStmt([NotNull] MigxnLanguage.WhileStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>LoopStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterLoopStmt([NotNull] MigxnStmt.LoopStmtContext context);
+	void EnterLoopStmt([NotNull] MigxnLanguage.LoopStmtContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>LoopStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitLoopStmt([NotNull] MigxnStmt.LoopStmtContext context);
+	void ExitLoopStmt([NotNull] MigxnLanguage.LoopStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterExprStmt([NotNull] MigxnStmt.ExprStmtContext context);
+	void EnterExprStmt([NotNull] MigxnLanguage.ExprStmtContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>ExprStmt</c>
-	/// labeled alternative in <see cref="MigxnStmt.statement"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitExprStmt([NotNull] MigxnStmt.ExprStmtContext context);
+	void ExitExprStmt([NotNull] MigxnLanguage.ExprStmtContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBinaryExpr([NotNull] MigxnStmt.BinaryExprContext context);
+	void EnterBinaryExpr([NotNull] MigxnLanguage.BinaryExprContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>BinaryExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBinaryExpr([NotNull] MigxnStmt.BinaryExprContext context);
+	void ExitBinaryExpr([NotNull] MigxnLanguage.BinaryExprContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ParenthesesExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterParenthesesExpr([NotNull] MigxnStmt.ParenthesesExprContext context);
+	void EnterParenthesesExpr([NotNull] MigxnLanguage.ParenthesesExprContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>ParenthesesExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitParenthesesExpr([NotNull] MigxnStmt.ParenthesesExprContext context);
+	void ExitParenthesesExpr([NotNull] MigxnLanguage.ParenthesesExprContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>SingleExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterSingleExpr([NotNull] MigxnStmt.SingleExprContext context);
+	void EnterSingleExpr([NotNull] MigxnLanguage.SingleExprContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>SingleExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitSingleExpr([NotNull] MigxnStmt.SingleExprContext context);
+	void ExitSingleExpr([NotNull] MigxnLanguage.SingleExprContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAssignExpr([NotNull] MigxnStmt.AssignExprContext context);
+	void EnterAssignExpr([NotNull] MigxnLanguage.AssignExprContext context);
 	/// <summary>
 	/// Exit a parse tree produced by the <c>AssignExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAssignExpr([NotNull] MigxnStmt.AssignExprContext context);
+	void ExitAssignExpr([NotNull] MigxnLanguage.AssignExprContext context);
 }

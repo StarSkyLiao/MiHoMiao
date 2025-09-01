@@ -40,10 +40,10 @@ public partial class MigxnExpr : Parser {
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		Space=1, MultiLineComment=2, SingleLineComment=3, Integer=4, Float=5, 
-		Var=6, Val=7, Let=8, RawName=9, Name=10, Pow=11, Dot=12, Comma=13, Colon=14, 
-		SemiColon=15, LRound=16, RRound=17, LCurly=18, RCurly=19, Eql=20, Ueql=21, 
-		Assign=22, Add=23, Sub=24, Mul=25, Div=26, Rem=27, LBRACKET=28, RBRACKET=29, 
-		GT=30;
+		Var=6, Val=7, Let=8, If=9, Else=10, RawName=11, Name=12, Pow=13, Dot=14, 
+		Comma=15, Colon=16, SemiColon=17, LRound=18, RRound=19, LCurly=20, RCurly=21, 
+		Eql=22, Ueql=23, Assign=24, Add=25, Sub=26, Mul=27, Div=28, Rem=29, LBRACKET=30, 
+		RBRACKET=31, GT=32;
 	public const int
 		RULE_expression = 0;
 	public static readonly string[] ruleNames = {
@@ -51,15 +51,16 @@ public partial class MigxnExpr : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, null, null, null, null, null, "'var'", "'val'", "'let'", null, null, 
-		"'**'", "'.'", "','", "':'", "';'", "'('", "')'", "'{'", "'}'", "'=='", 
-		"'!='", "'='", "'+'", "'-'", "'*'", "'/'", "'%'", "'['", "']'", "'>'"
+		null, null, null, null, null, null, "'var'", "'val'", "'let'", "'if'", 
+		"'else'", null, null, "'**'", "'.'", "','", "':'", "';'", "'('", "')'", 
+		"'{'", "'}'", "'=='", "'!='", "'='", "'+'", "'-'", "'*'", "'/'", "'%'", 
+		"'['", "']'", "'>'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "Space", "MultiLineComment", "SingleLineComment", "Integer", "Float", 
-		"Var", "Val", "Let", "RawName", "Name", "Pow", "Dot", "Comma", "Colon", 
-		"SemiColon", "LRound", "RRound", "LCurly", "RCurly", "Eql", "Ueql", "Assign", 
-		"Add", "Sub", "Mul", "Div", "Rem", "LBRACKET", "RBRACKET", "GT"
+		"Var", "Val", "Let", "If", "Else", "RawName", "Name", "Pow", "Dot", "Comma", 
+		"Colon", "SemiColon", "LRound", "RRound", "LCurly", "RCurly", "Eql", "Ueql", 
+		"Assign", "Add", "Sub", "Mul", "Div", "Rem", "LBRACKET", "RBRACKET", "GT"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -260,7 +261,7 @@ public partial class MigxnExpr : Parser {
 				State = 7;
 				((SingleExprContext)_localctx).value = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1072L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 4144L) != 0)) ) {
 					((SingleExprContext)_localctx).value = ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -295,7 +296,7 @@ public partial class MigxnExpr : Parser {
 						State = 11;
 						((BinaryExprContext)_localctx).op = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 234881024L) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 939524096L) != 0)) ) {
 							((BinaryExprContext)_localctx).op = ErrorHandler.RecoverInline(this);
 						}
 						else {
@@ -398,12 +399,12 @@ public partial class MigxnExpr : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,30,28,2,0,7,0,1,0,1,0,1,0,1,0,1,0,1,0,3,0,9,8,0,1,0,1,0,1,0,1,0,1,
+		4,1,32,28,2,0,7,0,1,0,1,0,1,0,1,0,1,0,1,0,3,0,9,8,0,1,0,1,0,1,0,1,0,1,
 		0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,5,0,23,8,0,10,0,12,0,26,9,0,1,0,0,1,0,1,
-		0,0,4,2,0,4,5,10,10,1,0,25,27,1,0,23,24,1,0,22,22,31,0,8,1,0,0,0,2,3,6,
-		0,-1,0,3,4,5,16,0,0,4,5,3,0,0,0,5,6,5,17,0,0,6,9,1,0,0,0,7,9,7,0,0,0,8,
+		0,0,4,2,0,4,5,12,12,1,0,27,29,1,0,25,26,1,0,24,24,31,0,8,1,0,0,0,2,3,6,
+		0,-1,0,3,4,5,18,0,0,4,5,3,0,0,0,5,6,5,19,0,0,6,9,1,0,0,0,7,9,7,0,0,0,8,
 		2,1,0,0,0,8,7,1,0,0,0,9,24,1,0,0,0,10,11,10,5,0,0,11,12,7,1,0,0,12,23,
-		3,0,0,6,13,14,10,4,0,0,14,15,5,11,0,0,15,23,3,0,0,4,16,17,10,3,0,0,17,
+		3,0,0,6,13,14,10,4,0,0,14,15,5,13,0,0,15,23,3,0,0,4,16,17,10,3,0,0,17,
 		18,7,2,0,0,18,23,3,0,0,4,19,20,10,2,0,0,20,21,7,3,0,0,21,23,3,0,0,2,22,
 		10,1,0,0,0,22,13,1,0,0,0,22,16,1,0,0,0,22,19,1,0,0,0,23,26,1,0,0,0,24,
 		22,1,0,0,0,24,25,1,0,0,0,25,1,1,0,0,0,26,24,1,0,0,0,3,8,22,24
