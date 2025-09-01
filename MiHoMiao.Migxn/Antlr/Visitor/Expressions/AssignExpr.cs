@@ -17,8 +17,8 @@ internal partial class MigxnLanguage
         Visit(context.Right);
         
         MigxnVariable? item = VisitWriter(context.Left);
-        if (item != null) Codes.Add(new OpStVar(item.Name));
-        else Exceptions.Add(MigxnDiagnostic.Create(context.Assign().Symbol, $"Left expression {context.Left.GetText()} should be writeable!"));
+        if (item is { IsWritable: true }) Codes.Add(new OpStVar(item.Name));
+        else Exceptions.Add(MigxnDiagnostic.Create(context.Assign().Symbol, $"Left expression \"{context.Left.GetText()}\" should be writeable!"));
         return null;
     }
     

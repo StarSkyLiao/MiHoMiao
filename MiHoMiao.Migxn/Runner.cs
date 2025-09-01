@@ -17,7 +17,7 @@ public static class Runner
                 a = 12 + a
             }
             {
-                var a = 2 + 3 * 4 + 1
+                val a = 2 + 3 * 4 + 1
                 a = 12 + a
             }
         }
