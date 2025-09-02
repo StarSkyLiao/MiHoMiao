@@ -13,10 +13,10 @@ MultiLineComment: '###' .*? '###' -> channel(HIDDEN);
 // 遇到 # 会当作注释跳过
 SingleLineComment:  '#' ~[\r\n]* ('\r'? '\n' | EOF) -> channel(HIDDEN);
 
-fragment Digit: [0-9]; 
-
-Integer: Digit+;
-Float: Digit* Dot Digit+;
+Integer:   Digit+;
+Float:     Digit* Dot Digit+;
+Char :     '\'' (~['\\\r\n\u0085\u2028\u2029] | CommonCharacter) '\'';
+String:    '"' (~["\\\r\n\u0085\u2028\u2029] | CommonCharacter)* '"';
 
 Var:       'var';
 Val:       'val';
@@ -30,7 +30,7 @@ Loop:      'loop';
 While:     'while';
 Return:    'ret';
 
-Name: '@'?[\p{L}][\p{L}\p{N}]*;
+Name:      '@'? (UnicodeChar | '_') (UnicodeChar | UnicodeNumber)*;
 
 Pow:       '**';
 
@@ -47,6 +47,10 @@ Arrow:     '->';
 
 Eql:       '==';
 Ueql:      '!=';
+Cgt:       '>';
+Cge:       '>=';
+Clt:       '<';
+Cle:       '<=';
 
 Assign:    '=';
 Add:       '+';
@@ -55,8 +59,27 @@ Mul:       '*';
 Div:       '/';
 Rem:       '%';
 
-
 LBRACKET: '[';
 RBRACKET: ']';
 
-GT: '>';
+fragment Digit: [0-9];
+
+fragment CommonCharacter: SimpleEscapeSequence | UnicodeChar;
+
+fragment UnicodeChar: [\p{L}];
+
+fragment UnicodeNumber: [\p{N}];
+
+fragment SimpleEscapeSequence:
+    '\\\''
+    | '\\"'
+    | '\\\\'
+    | '\\0'
+    | '\\a'
+    | '\\b'
+    | '\\f'
+    | '\\n'
+    | '\\r'
+    | '\\t'
+    | '\\v'
+;

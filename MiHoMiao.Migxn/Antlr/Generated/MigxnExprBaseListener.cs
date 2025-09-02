@@ -39,6 +39,20 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class MigxnExprBaseListener : IMigxnExprListener {
 	/// <summary>
+	/// Enter a parse tree produced by the <c>CompareExpr</c>
+	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCompareExpr([NotNull] MigxnExpr.CompareExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>CompareExpr</c>
+	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCompareExpr([NotNull] MigxnExpr.CompareExprContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
 	/// <para>The default implementation does nothing.</para>

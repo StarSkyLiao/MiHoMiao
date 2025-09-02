@@ -165,6 +165,20 @@ public partial class MigxnStmtBaseListener : IMigxnStmtListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAssignStmt([NotNull] MigxnStmt.AssignStmtContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>CompareExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCompareExpr([NotNull] MigxnStmt.CompareExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>CompareExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCompareExpr([NotNull] MigxnStmt.CompareExprContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
 	/// <para>The default implementation does nothing.</para>

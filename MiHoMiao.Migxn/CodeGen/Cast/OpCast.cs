@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Runtime.InteropServices;
 using MiHoMiao.Migxn.CodeGen.Data.Load;
 using MiHoMiao.Migxn.CodeGen.Flow;
 
@@ -21,7 +20,7 @@ internal class OpCast(Type from, Type to): MigxnOpCode
         else if (IsInteger(to) && last is OpLdcFloat loadFloat) codes[index - 1] = new OpLdcLong((long)loadFloat.Value);
         else if (to == typeof(string))
         {
-            if (codes[index - 1] is OpLdc loadConst and not OpLdcStr)
+            if (last is OpLdc loadConst and not OpLdcStr)
             {
                 codes[index - 1] = new OpLdcStr(loadConst.AsString());
             }

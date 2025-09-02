@@ -1,8 +1,5 @@
 using MiHoMiao.Migxn.Antlr.Generated;
-using MiHoMiao.Migxn.CodeAnalysis;
-using MiHoMiao.Migxn.CodeGen;
 using MiHoMiao.Migxn.Runtime;
-using MiHoMiao.Migxn.Runtime.Members;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 

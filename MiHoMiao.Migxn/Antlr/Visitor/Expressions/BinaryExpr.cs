@@ -34,7 +34,7 @@ internal partial class MigxnMethodParser
             _ => throw new UnreachableException("Unknown binary operator")
         };
         if (resultType != typeof(void)) return resultType;
-        string message = $"There is no add method between {leftType.Name} and {rightType.Name}!";
+        string message = $"There is no \"{context.op.Text}\" method between {leftType.Name} and {rightType.Name}!";
         MigxnContext.Exceptions.Add(MigxnDiagnostic.Create(context.Start, message));
         return resultType;
     }

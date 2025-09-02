@@ -23,6 +23,10 @@ expression
     | Left = expression
       op = (Add | Sub)
       Right = expression                                   #BinaryExpr
+
+    | Left = expression
+      op = (Eql | Ueql | Cgt | Cge | Clt | Cle)
+      Right = expression                                   #CompareExpr
       
     | Value = (Integer | Float | Name)                     #SingleExpr
     ;
