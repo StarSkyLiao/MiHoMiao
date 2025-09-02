@@ -522,7 +522,7 @@ public partial class MigxnLanguage : Parser {
 				State = 23;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 42193712L) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 42193904L) != 0)) {
 					{
 					{
 					State = 20;
@@ -842,6 +842,8 @@ public partial class MigxnLanguage : Parser {
 		public IToken Value;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Integer() { return GetToken(MigxnLanguage.Integer, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Float() { return GetToken(MigxnLanguage.Float, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode String() { return GetToken(MigxnLanguage.String, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Char() { return GetToken(MigxnLanguage.Char, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Name() { return GetToken(MigxnLanguage.Name, 0); }
 		public SingleExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
@@ -898,6 +900,8 @@ public partial class MigxnLanguage : Parser {
 				break;
 			case Integer:
 			case Float:
+			case Char:
+			case String:
 			case Name:
 				{
 				_localctx = new SingleExprContext(_localctx);
@@ -906,7 +910,7 @@ public partial class MigxnLanguage : Parser {
 				State = 92;
 				((SingleExprContext)_localctx).Value = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 131120L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 131312L) != 0)) ) {
 					((SingleExprContext)_localctx).Value = ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -1051,7 +1055,7 @@ public partial class MigxnLanguage : Parser {
 		2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,80,8,2,1,2,1,
 		2,1,2,1,2,3,2,86,8,2,1,3,1,3,1,3,1,3,1,3,1,3,3,3,94,8,3,1,3,1,3,1,3,1,
 		3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,5,3,108,8,3,10,3,12,3,111,9,3,1,3,0,
-		1,6,4,0,2,4,6,0,5,1,0,34,34,2,0,4,5,17,17,1,0,37,39,1,0,35,36,1,0,28,33,
+		1,6,4,0,2,4,6,0,5,1,0,34,34,2,0,4,7,17,17,1,0,37,39,1,0,35,36,1,0,28,33,
 		126,0,8,1,0,0,0,2,10,1,0,0,0,4,85,1,0,0,0,6,93,1,0,0,0,8,9,3,2,1,0,9,1,
 		1,0,0,0,10,11,5,11,0,0,11,12,5,17,0,0,12,13,5,23,0,0,13,14,5,24,0,0,14,
 		15,5,21,0,0,15,16,5,17,0,0,16,17,5,27,0,0,17,18,3,4,2,0,18,3,1,0,0,0,19,

@@ -28,5 +28,5 @@ expression
       op = (Eql | Ueql | Cgt | Cge | Clt | Cle)
       Right = expression                                   #CompareExpr
       
-    | Value = (Integer | Float | Name)                     #SingleExpr
+    | Value = (Integer | Float | String | Char | Name)     #SingleExpr
     ;

@@ -205,6 +205,8 @@ public partial class MigxnExpr : Parser {
 		public IToken Value;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Integer() { return GetToken(MigxnExpr.Integer, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Float() { return GetToken(MigxnExpr.Float, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode String() { return GetToken(MigxnExpr.String, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Char() { return GetToken(MigxnExpr.Char, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Name() { return GetToken(MigxnExpr.Name, 0); }
 		public SingleExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
@@ -261,6 +263,8 @@ public partial class MigxnExpr : Parser {
 				break;
 			case Integer:
 			case Float:
+			case Char:
+			case String:
 			case Name:
 				{
 				_localctx = new SingleExprContext(_localctx);
@@ -269,7 +273,7 @@ public partial class MigxnExpr : Parser {
 				State = 7;
 				((SingleExprContext)_localctx).Value = TokenStream.LT(1);
 				_la = TokenStream.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 131120L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 131312L) != 0)) ) {
 					((SingleExprContext)_localctx).Value = ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -409,7 +413,7 @@ public partial class MigxnExpr : Parser {
 	private static int[] _serializedATN = {
 		4,1,41,28,2,0,7,0,1,0,1,0,1,0,1,0,1,0,1,0,3,0,9,8,0,1,0,1,0,1,0,1,0,1,
 		0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,5,0,23,8,0,10,0,12,0,26,9,0,1,0,0,1,0,1,
-		0,0,4,2,0,4,5,17,17,1,0,37,39,1,0,35,36,1,0,28,33,31,0,8,1,0,0,0,2,3,6,
+		0,0,4,2,0,4,7,17,17,1,0,37,39,1,0,35,36,1,0,28,33,31,0,8,1,0,0,0,2,3,6,
 		0,-1,0,3,4,5,23,0,0,4,5,3,0,0,0,5,6,5,24,0,0,6,9,1,0,0,0,7,9,7,0,0,0,8,
 		2,1,0,0,0,8,7,1,0,0,0,9,24,1,0,0,0,10,11,10,5,0,0,11,12,7,1,0,0,12,23,
 		3,0,0,6,13,14,10,4,0,0,14,15,5,18,0,0,15,23,3,0,0,4,16,17,10,3,0,0,17,

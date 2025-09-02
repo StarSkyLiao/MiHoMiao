@@ -8,20 +8,11 @@ namespace MiHoMiao.Migxn;
 
 public static class Runner
 {
-    public static void Foo()
-    {
-        double a = 1;
-        a = 1 * a + 3;
-        while (a > 1)
-        {
-            if (a > 10) return;
-            a = a + 1;
-        }
-    }
     private const string Input =
         """
         fun Foo() : void -> {
-            var _ : r64 = 1
+            var input : string = "123\n"
+            var _ = 1 + input
             var a : r64 = 1
             a = 1 * a + 3
             while(a > 1) {

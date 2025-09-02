@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using MiHoMiao.Core.Diagnostics;
+using MiHoMiao.Core.Serialization.IO;
 using MiHoMiao.Migxn.Antlr.Generated;
 using MiHoMiao.Migxn.CodeAnalysis;
 using MiHoMiao.Migxn.CodeGen;
@@ -37,6 +38,8 @@ internal partial class MigxnMethodParser
         {
             MigxnLiteral.Integer => (typeof(long), new OpLdcLong(long.Parse(text))),
             MigxnLiteral.Float => (typeof(double), new OpLdcFloat(double.Parse(text))),
+            MigxnLiteral.String => (typeof(string), new OpLdcStr(text[1..^1].Unescape())),
+            MigxnLiteral.Char => (typeof(char), new OpLdcLong(char.Parse(text[1..^1].Unescape()))),
             _ => new ValueTuple<Type, MigxnOpCode>(typeof(void), null!)
         };
         if (type == typeof(void)) throw new UnreachableException();

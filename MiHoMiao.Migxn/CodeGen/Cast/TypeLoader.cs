@@ -13,6 +13,7 @@ public static class TypeLoader
 
     private static readonly Dictionary<string, Type> s_CoreType = new Dictionary<string, Type>
     {
+        ["void"] = typeof(void),
         ["char"] = typeof(char),
         ["i32"] = typeof(int),
         ["i64"] = typeof(long),
