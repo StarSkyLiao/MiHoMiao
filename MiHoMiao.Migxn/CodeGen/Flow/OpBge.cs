@@ -1,6 +1,6 @@
 namespace MiHoMiao.Migxn.CodeGen.Flow;
 
-internal class OpBge(ReadOnlyMemory<char> labelName) : MigxnOpCode
+internal class OpBge(string labelName) : MigxnOpCode
 {
     public override string ToString() => $"{"bge",-12}{labelName}";
 }

@@ -6,7 +6,7 @@ using MiHoMiao.Migxn.Runtime.Members;
 
 namespace MiHoMiao.Migxn.Antlr.Visitor;
 
-internal sealed partial class MigxnMethodParser(MigxnContext context) : MigxnLanguageBaseVisitor<Type?>
+internal sealed partial class MigxnMethodParser(MigxnContext context) : MigxnLanguageBaseVisitor<Type>
 {
     public readonly MigxnContext MigxnContext = context;
     // public readonly MigxnMethod MigxnMethod = method;

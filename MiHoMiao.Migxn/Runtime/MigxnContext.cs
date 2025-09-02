@@ -36,4 +36,9 @@ internal class MigxnContext
     /// </summary>
     internal void EmitCode(MigxnOpCode code) => MigxnMember.EmitCode(code);
     
+    /// <summary>
+    /// 向一个标记的指令位置插入代码
+    /// </summary>
+    internal void InsertEmitCode(int index, MigxnOpCode code) => MigxnMember.InsertEmitCode(index, code);
+    
 }

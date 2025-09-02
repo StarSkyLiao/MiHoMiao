@@ -11,7 +11,8 @@ public static class Runner
     private const string Input =
         """
         fun Foo() : void -> {
-            var a : int32 = 1
+            var a : r64 = 1
+            a = 1 * a + 3
             while(a) {
                 if (a) ret a
                 a = a + 1

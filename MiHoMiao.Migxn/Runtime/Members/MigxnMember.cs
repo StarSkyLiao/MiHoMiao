@@ -12,5 +12,10 @@ internal record MigxnMember
     /// <summary>
     /// 生成目标代码
     /// </summary>
-    internal void EmitCode(MigxnOpCode code) => Codes.Add(code);
+    internal void EmitCode(MigxnOpCode code) => code.OnEmitting(Codes, Codes.Count);
+
+    /// <summary>
+    /// 生成目标代码
+    /// </summary>
+    internal void InsertEmitCode(int index, MigxnOpCode code) => code.OnEmitting(Codes, index);
 }

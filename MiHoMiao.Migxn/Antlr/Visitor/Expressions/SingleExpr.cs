@@ -15,7 +15,7 @@ internal partial class MigxnMethodParser
     /// <summary>
     /// 处理单值表达式（整数或浮点数）
     /// </summary>
-    public override Type? VisitSingleExpr(SingleExprContext context)
+    public override Type VisitSingleExpr(SingleExprContext context)
     {
         string text = context.GetText();
         if (context.Value.Type is MigxnLiteral.Name)
@@ -26,20 +26,20 @@ internal partial class MigxnMethodParser
             {
                 MigxnContext.Exceptions.Add(MigxnDiagnostic.Create(context.Value, variable.Exception!));
                 MigxnContext.EmitCode(new OpError(variable.Exception!.Message));
-                return null;
+                return typeof(void);
             }
 
             MigxnContext.EmitCode(new OpLdVar(varName));
             return variable.Value.Type;
         }
 
-        (Type? type, MigxnOpCode opCode) = context.Value.Type switch
+        (Type type, MigxnOpCode opCode) = context.Value.Type switch
         {
             MigxnLiteral.Integer => (typeof(long), new OpLdcLong(long.Parse(text))),
             MigxnLiteral.Float => (typeof(double), new OpLdcFloat(double.Parse(text))),
-            _ => new ValueTuple<Type?, MigxnOpCode>(null, null!)
+            _ => new ValueTuple<Type, MigxnOpCode>(typeof(void), null!)
         };
-        if (type == null) throw new UnreachableException();
+        if (type == typeof(void)) throw new UnreachableException();
         MigxnContext.EmitCode(opCode);
         return type;
         
