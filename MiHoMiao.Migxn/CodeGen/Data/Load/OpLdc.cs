@@ -1,6 +1,6 @@
 namespace MiHoMiao.Migxn.CodeGen.Data.Load;
 
-internal abstract class OpLdc : MigxnOpCode
+internal abstract class OpLdc : OpLoad
 {
     public abstract string AsString();
 }

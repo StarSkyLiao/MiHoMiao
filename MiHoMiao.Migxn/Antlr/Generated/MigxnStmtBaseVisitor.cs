@@ -137,17 +137,6 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// <return>The visitor result.</return>
 	public virtual Result VisitAssignStmt([NotNull] MigxnStmt.AssignStmtContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitCompareExpr([NotNull] MigxnStmt.CompareExprContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
 	/// <para>
@@ -158,6 +147,17 @@ public partial class MigxnStmtBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitBinaryExpr([NotNull] MigxnStmt.BinaryExprContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitAndOrExpr([NotNull] MigxnStmt.AndOrExprContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ParenthesesExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.

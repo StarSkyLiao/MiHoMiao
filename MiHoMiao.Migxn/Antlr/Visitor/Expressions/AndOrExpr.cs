@@ -11,11 +11,7 @@ namespace MiHoMiao.Migxn.Antlr.Visitor;
 
 internal partial class MigxnMethodParser
 {
-    
-    /// <summary>
-    /// 处理二元表达式（加、减、乘、除、取模、幂）
-    /// </summary>
-    public override Type VisitBinaryExpr(BinaryExprContext context)
+    public override Type VisitAndOrExpr(AndOrExprContext context)
     {
         // 先访问左子节点和右子节点，确保操作数先入栈
         Type leftType = Visit(context.Left);
@@ -25,18 +21,8 @@ internal partial class MigxnMethodParser
         // 根据操作符类型将对应操作符推入栈
         Type resultType = context.op.Type switch
         {
-            MigxnLiteral.Add => EmitAdd(leftType, rightType, leftTail),
-            MigxnLiteral.Sub => EmitSub(leftType, rightType, leftTail),
-            MigxnLiteral.Mul => EmitMul(leftType, rightType, leftTail),
-            MigxnLiteral.Div => EmitDiv(leftType, rightType, leftTail),
-            MigxnLiteral.Rem => EmitRem(leftType, rightType, leftTail),
-            MigxnLiteral.Pow => EmitPow(leftType, rightType, leftTail),
-            MigxnLiteral.Eql => EmitEql(leftType, rightType, leftTail),
-            MigxnLiteral.Ueql => EmitNotEqual(leftType, rightType, leftTail),
-            MigxnLiteral.Cgt => EmitCgt(leftType, rightType, leftTail),
-            MigxnLiteral.Cge => EmitCge(leftType, rightType, leftTail),
-            MigxnLiteral.Clt => EmitClt(leftType, rightType, leftTail),
-            MigxnLiteral.Cle => EmitCle(leftType, rightType, leftTail),
+            MigxnLiteral.And => EmitAnd(leftType, rightType, leftTail, context.Start),
+            MigxnLiteral.Or => EmitOr(leftType, rightType, leftTail, context.Start),
             _ => throw new UnreachableException("Unknown binary operator")
         };
         if (resultType != typeof(void)) return resultType;
@@ -44,5 +30,5 @@ internal partial class MigxnMethodParser
         MigxnContext.Exceptions.Add(MigxnDiagnostic.Create(context.Start, message));
         return resultType;
     }
-
+    
 }

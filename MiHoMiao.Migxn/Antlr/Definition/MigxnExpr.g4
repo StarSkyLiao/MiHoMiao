@@ -25,8 +25,16 @@ expression
       Right = expression                                   #BinaryExpr
 
     | Left = expression
-      op = (Eql | Ueql | Cgt | Cge | Clt | Cle)
-      Right = expression                                   #CompareExpr
+      op = (Cgt | Cge | Clt | Cle)
+      Right = expression                                   #BinaryExpr
+      
+    | Left = expression
+          op = (Eql | Ueql)
+          Right = expression                               #BinaryExpr
+             
+    | Left = expression
+          op = (And | Or)
+          Right = expression                               #AndOrExpr      
       
     | Value = (Integer | Float | String | Char | Name)     #SingleExpr
     ;

@@ -34,18 +34,6 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IMigxnExprListener : IParseTreeListener {
 	/// <summary>
-	/// Enter a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCompareExpr([NotNull] MigxnExpr.CompareExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCompareExpr([NotNull] MigxnExpr.CompareExprContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
 	/// </summary>
@@ -57,6 +45,18 @@ public interface IMigxnExprListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitBinaryExpr([NotNull] MigxnExpr.BinaryExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAndOrExpr([NotNull] MigxnExpr.AndOrExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAndOrExpr([NotNull] MigxnExpr.AndOrExprContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ParenthesesExpr</c>
 	/// labeled alternative in <see cref="MigxnExpr.expression"/>.

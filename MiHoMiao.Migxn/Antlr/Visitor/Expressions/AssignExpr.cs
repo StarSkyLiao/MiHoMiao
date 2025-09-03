@@ -26,7 +26,6 @@ internal partial class MigxnMethodParser
         {
             if (item.Type != exprType) MigxnContext.EmitCode(new OpCast(exprType, item.Type));
             MigxnContext.EmitCode(new OpStVar(item.Name));
-            
         }
         else
         {

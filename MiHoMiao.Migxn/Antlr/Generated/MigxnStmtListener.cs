@@ -142,18 +142,6 @@ public interface IMigxnStmtListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAssignStmt([NotNull] MigxnStmt.AssignStmtContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCompareExpr([NotNull] MigxnStmt.CompareExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCompareExpr([NotNull] MigxnStmt.CompareExprContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
 	/// </summary>
@@ -165,6 +153,18 @@ public interface IMigxnStmtListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitBinaryExpr([NotNull] MigxnStmt.BinaryExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAndOrExpr([NotNull] MigxnStmt.AndOrExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAndOrExpr([NotNull] MigxnStmt.AndOrExprContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ParenthesesExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.

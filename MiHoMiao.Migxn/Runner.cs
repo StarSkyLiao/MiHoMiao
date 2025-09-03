@@ -11,12 +11,10 @@ public static class Runner
     private const string Input =
         """
         fun Foo() : void -> {
-            var input : string = "123\n"
-            var _ = 1 + input
             var a : r64 = 1
             a = 1 * a + 3
-            while(a > 1) {
-                if (a > 10) ret
+            while(a > 1 and a) {
+                if (a > 5) ret
                 a = a + 1
             }
         }

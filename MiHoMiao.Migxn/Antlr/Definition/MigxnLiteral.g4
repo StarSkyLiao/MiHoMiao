@@ -30,8 +30,6 @@ Loop:      'loop';
 While:     'while';
 Return:    'ret';
 
-Name:      '@'? (UnicodeChar | '_') (UnicodeChar | UnicodeNumber)*;
-
 Pow:       '**';
 
 Dot:       '.';
@@ -59,8 +57,10 @@ Mul:       '*';
 Div:       '/';
 Rem:       '%';
 
-LBRACKET: '[';
-RBRACKET: ']';
+And:       'and';
+Or:        'or';
+
+Name:      '@'? (UnicodeChar | '_') (UnicodeChar | UnicodeNumber)*;
 
 fragment Digit: [0-9];
 

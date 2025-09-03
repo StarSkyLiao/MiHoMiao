@@ -98,19 +98,19 @@ public interface IMigxnStmtVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAssignStmt([NotNull] MigxnStmt.AssignStmtContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCompareExpr([NotNull] MigxnStmt.CompareExprContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBinaryExpr([NotNull] MigxnStmt.BinaryExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnStmt.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAndOrExpr([NotNull] MigxnStmt.AndOrExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ParenthesesExpr</c>
 	/// labeled alternative in <see cref="MigxnStmt.expression"/>.

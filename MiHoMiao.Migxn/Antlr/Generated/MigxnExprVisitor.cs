@@ -35,19 +35,19 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IMigxnExprVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCompareExpr([NotNull] MigxnExpr.CompareExprContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBinaryExpr([NotNull] MigxnExpr.BinaryExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnExpr.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAndOrExpr([NotNull] MigxnExpr.AndOrExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ParenthesesExpr</c>
 	/// labeled alternative in <see cref="MigxnExpr.expression"/>.

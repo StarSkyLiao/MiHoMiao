@@ -110,19 +110,19 @@ public interface IMigxnLanguageVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAssignStmt([NotNull] MigxnLanguage.AssignStmtContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCompareExpr([NotNull] MigxnLanguage.CompareExprContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBinaryExpr([NotNull] MigxnLanguage.BinaryExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAndOrExpr([NotNull] MigxnLanguage.AndOrExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ParenthesesExpr</c>
 	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.

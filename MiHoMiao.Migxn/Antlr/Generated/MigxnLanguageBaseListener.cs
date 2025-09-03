@@ -189,20 +189,6 @@ public partial class MigxnLanguageBaseListener : IMigxnLanguageListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAssignStmt([NotNull] MigxnLanguage.AssignStmtContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCompareExpr([NotNull] MigxnLanguage.CompareExprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCompareExpr([NotNull] MigxnLanguage.CompareExprContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>BinaryExpr</c>
 	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -216,6 +202,20 @@ public partial class MigxnLanguageBaseListener : IMigxnLanguageListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBinaryExpr([NotNull] MigxnLanguage.BinaryExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAndOrExpr([NotNull] MigxnLanguage.AndOrExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AndOrExpr</c>
+	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAndOrExpr([NotNull] MigxnLanguage.AndOrExprContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ParenthesesExpr</c>
 	/// labeled alternative in <see cref="MigxnLanguage.expression"/>.
