@@ -13,8 +13,15 @@ internal partial class MigxnMethodParser
     {
         string name = context.VarName.Text;
         Type exprType = Visit(context.Expression);
-        Type varType = context.Type != null ? TypeLoader.LoadType(context.Type.Text) : exprType;
+        string? typeName = context.Type?.Text;
+        Type? varType = typeName != null ? TypeLoader.LoadType(typeName) : exprType;
 
+        if (varType is null)
+        {
+            string message = $"Undefined type \"{typeName}\"! This is not allowed!";
+            MigxnContext.Exceptions.Add(MigxnDiagnostic.Create(context.Assign().Symbol, message));
+            return typeof(void);
+        }
         if (varType == typeof(void))
         {
             string message = $"Type of right variable \"{name}\" is void! This is not allowed!";

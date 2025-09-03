@@ -2,12 +2,12 @@ using System.Reflection;
 
 namespace MiHoMiao.Migxn.CodeGen.Cast;
 
-public static class TypeLoader
+internal static class TypeLoader
 {
     /// <summary>
     /// 根据类型名称获取指定的类型
     /// </summary>
-    public static Type LoadType(string typeName) => ParseCoreType(typeName) ?? Type.GetType(typeName) ?? Type.GetType(ParseTypeName(typeName)) ?? typeof(void);
+    public static Type? LoadType(string typeName) => ParseCoreType(typeName) ?? Type.GetType(typeName) ?? Type.GetType(ParseTypeName(typeName)) ?? null;
 
     #region LoadType
 
@@ -21,6 +21,7 @@ public static class TypeLoader
         ["r64"] = typeof(double),
         ["bool"] = typeof(bool),
         ["string"] = typeof(string),
+        ["object"] = typeof(object),
     };
     
     private static Type? ParseCoreType(string typeName) => s_CoreType.GetValueOrDefault(typeName);
