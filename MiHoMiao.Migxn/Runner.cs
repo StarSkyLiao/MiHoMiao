@@ -20,7 +20,6 @@ public static class Runner
             }
         }
         """;
-    
     public static void Run()
     {
         MigxnContext migxnContext = new MigxnContext();
