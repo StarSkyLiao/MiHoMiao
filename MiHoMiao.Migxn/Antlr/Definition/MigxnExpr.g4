@@ -30,11 +30,15 @@ expression
       
     | Left = expression
           op = (Eql | Ueql)
-          Right = expression                               #BinaryExpr
+      Right = expression                                   #BinaryExpr
              
     | Left = expression
           op = (And | Or)
-          Right = expression                               #AndOrExpr      
-      
+      Right = expression                                   #AndOrExpr      
+     
+    | paramList                                            #ParamListExpr
+     
     | Value = (Integer | Float | String | Char | Name)     #SingleExpr
     ;
+
+paramList: LRound (expression (Comma expression)*)? RRound;
