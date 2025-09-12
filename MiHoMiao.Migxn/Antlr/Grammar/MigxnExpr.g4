@@ -10,49 +10,49 @@ options {
 }
     
 expression
-    : OpenParens expression CloseParens                    #ParenthesesExpr
+    : OpenParens expression CloseParens                             #ParenthesesExpr
     
-    | expression paramPassExpr                             #CallExpr
-    
-    | paramPassExpr '|>' expression                        #CallExpr
-    
-    | Left = expression
-          op = (Mul | Div | Rem)   
-      Right = expression                                   #BinaryExpr
-      
-    | <assoc=right> Left = expression
-          op = Pow
-      Right = expression                                   #BinaryExpr
-      
-    | Left = expression
-          op = (Add | Sub)
-      Right = expression                                   #BinaryExpr
+    | lambdaExpr                                                    #LambdaExpr
 
-    | Left = expression
-          op = (Cgt | Cge | Clt | Cle)
-      Right = expression                                   #BinaryExpr
+    | tupleListExpr                                                 #TupleExpr
+
+    | expression '[' expression (',' expression)* ']'               #IndexExpr
+    
+    | expression '.' Identifier                                     #FieldExpr
+    
+    | expression paramPassExpr                                      #CallExpr
+    
+    | expression '|>' expression                                    #CallExpr
+    
+    | Left = expression op = (Mul | Div | Rem) Right = expression   #BinaryExpr
       
-    | Left = expression
-          op = (Ceq | Cneq)
-      Right = expression                                   #BinaryExpr
+    | <assoc=right> Left = expression op = Pow Right = expression   #BinaryExpr
+      
+    | Left = expression op = (Add | Sub) Right = expression         #BinaryExpr
+
+    | Left = expression op = (Cgt | Cge | Clt | Cle) Right = expression   #BinaryExpr
+      
+    | Left = expression op = (Ceq | Cneq) Right = expression        #BinaryExpr
              
-    | Left = expression
-          op = (And | Or)
-      Right = expression                                   #AndOrExpr      
-     
-    | tupleListExpr                                        #TupleExpr
+    | Left = expression 'and' Right = expression                    #AndExpr    
+
+    | Left = expression 'or' Right = expression                     #OrExpr
     
-    | expression '.' Identifier                            #FieldExpr
+    | Left = expression '??' Right = expression                     #NullTestExpr      
     
-    | expression '[' expression (',' expression)* ']'      #IndexExpr
-     
-    | (integer | float | string | namespace_or_typeName)   #SingleExpr
+    | Left = expression '?' Then = expression ':' Else = expression       #NullTestExpr
+
+    | (integer | float | string | namespace_or_typeName)            #SingleExpr
     ;
 
-tupleListExpr: '(' expression (',' expression)+ ')';
+tupleListExpr: '{' expression (',' expression)+ '}';
 
 paramPassExpr: '(' (expression (',' expression)*)? ')';
 
+lambdaExpr
+    : paramDefinition (Colon ReturnType = fullType)? Arrow (expression | statement)
+    ;
+    
 integer
     : IntegerLiteral       #DecIntLiteral
     | HexIntegerLiteral    #HexIntLiteral
@@ -87,3 +87,9 @@ baseType
     ;
 
 tupleElement: fullType Identifier?;
+
+paramDefinition: '(' (paramElement (',' paramElement)*)? ')';
+
+paramElement: variableType Identifier ':' fullType;
+
+variableType: (Val | Var | Ref);

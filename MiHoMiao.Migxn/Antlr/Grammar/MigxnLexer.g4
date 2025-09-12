@@ -30,6 +30,7 @@ Feature:   'feature';
 Var:       'var';
 Val:       'val';
 Let:       'let';
+Ref:       'ref';
 Fun:       'fun';
 Get:       'get';
 Set:       'set';
@@ -131,6 +132,8 @@ OrAssign        : '|=';
 XorAssign       : '^=';
 Shl             : '<<';
 Shr             : '>>';
+NullField       : '?.';
+NullTest        : '??';
 NullAssign      : '??=';
 
 // Fragments
