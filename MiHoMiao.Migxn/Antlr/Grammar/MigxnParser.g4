@@ -11,19 +11,20 @@ options {
 
 // ============================================================Type============================================================//
 typeDefinition : accessAbility typeDeinition? TypeName = fullType                // 类型定义
-                 (':' BaseType = namespace_or_typeName)?                         // 基类型
+                 (':' Namespace = namespace)?                                    // 命名空间
+                 (From BaseType = fullType)?                                     // 基类型
                  (With featureList)?                                             // 实现的特性
                  memberDeclaration*                                              // 成员
                ;
 typeDeinition: ValType | Secured | Virtual | Concept | Toolset | Feature;
-featureList : namespace_or_typeName (',' namespace_or_typeName)*;
+featureList : fullType (',' fullType)*;
 // ------------------------------------------------------------Type------------------------------------------------------------//
 
 // ============================================================Member============================================================//
 memberDeclaration : memberAttribute? accessAbility memberKeyword MemberName = Identifier memberBody;
 memberBody : ':' fullType ('=' expression)?                                   #FieldMember
            | ':' fullType '->' (statement | expression)                       #GetOrSetMember
-           | ':' fullType '{' accessAbility? 'set''}' ('=' expression)?   #PropertyMember
+           | ':' fullType '{' accessAbility? 'set''}' ('=' expression)?       #PropertyMember
            | lambdaBody                                                       #MethodMember
            ;
 accessAbility : Public | Global | Asmbly | Family | Intern | Native;
@@ -37,9 +38,7 @@ param : (Val | Var)? ParamName = Identifier ':' ParamType = fullType;
 // ------------------------------------------------------------Member------------------------------------------------------------//
 
 // ============================================================Attribute============================================================//
-memberAttribute : '[' attributeParam (',' attributeParam)* ','? ']';
-attributeParam : namespace_or_typeName ('(' (attribute (',' attribute)*)? ')')?;
-attribute : (Identifier ':')? expression;
+memberAttribute : As (Identifier | Virtual | Concept | Secured)+ ':';
 // ------------------------------------------------------------Attribute------------------------------------------------------------//
 
 // ============================================================Statement============================================================//
@@ -51,12 +50,12 @@ statement : tuple '|>' expression #CallStatement
           | declaration           #DeclStmt
           | assignment            #AssignStmt
           ;
-declaration : Using? Var VarName = Identifier                          assignment Expression = expression     #VarStmt
-            | Using? Var VarName = Identifier  Colon Type = fullType  (assignment Expression = expression)?   #VarStmt
-            | Using? Val VarName = Identifier (Colon Type = fullType)? assignment Expression = expression     #ValStmt
+declaration : Using? Var VarName = Identifier                          assignOp Expression = expression     #VarStmt
+            | Using? Var VarName = Identifier  Colon Type = fullType  (assignOp Expression = expression)?   #VarStmt
+            | Using? Val VarName = Identifier (Colon Type = fullType)? assignOp Expression = expression     #ValStmt
             | Using? Get VarName = Identifier (Colon Type = fullType)?    Arrow   Expression = expression     #GetStmt
             ;
-assignment : (tuple | VarName = Identifier) (Colon Type = fullType)? assignOp Expression = expression;
+assignment  : (tuple | VarName = Identifier)  (Colon Type = fullType)?  assignOp  Expression = expression;
 assignOp : Assign | AddAssign | SubAssign | MulAssign | DivAssign | RemAssign | AndAssign | OrAssign | XorAssign;
 simpleStatement : If '(' expression ')' statement ('else' statement)?            #IfStatement
                 | When '(' expression ')' '{' when_case* '}'                     #WhenStatement
@@ -103,10 +102,10 @@ string : StringLiteral | VerbatimString;
 
 // ============================================================NameExpr============================================================//
 namespace_or_typeName : genericName ('.' genericName)*;
-genericName : Identifier genericList?;
-genericList : '<' fullType (',' fullType)* '>';
+namespace : Identifier ('.' Identifier)*;
 fullType : baseType ('?' | '['']' | '*')*;
-baseType : namespace_or_typeName                                               #NamedType
+genericName : Identifier ('<' Generic = fullType (',' Generic = fullType)* '>')?;
+baseType : genericName                                               #NamedType
          | Keyword = (Bool | Char | I32 | I64 | R32 | R64 | String | Any)      #KeywordType
          ;
 // ------------------------------------------------------------NameExpr------------------------------------------------------------//
