@@ -53,7 +53,7 @@ statement : tuple '|>' expression #CallStatement
 declaration : Using? Var VarName = Identifier                          assignOp Expression = expression     #VarStmt
             | Using? Var VarName = Identifier  Colon Type = fullType  (assignOp Expression = expression)?   #VarStmt
             | Using? Val VarName = Identifier (Colon Type = fullType)? assignOp Expression = expression     #ValStmt
-            | Using? Get VarName = Identifier (Colon Type = fullType)?    Arrow   Expression = expression     #GetStmt
+            | Using? Get VarName = Identifier (Colon Type = fullType)?  Arrow   Expression = expression     #GetStmt
             ;
 assignment  : (tuple | VarName = Identifier)  (Colon Type = fullType)?  assignOp  Expression = expression;
 assignOp : Assign | AddAssign | SubAssign | MulAssign | DivAssign | RemAssign | AndAssign | OrAssign | XorAssign;
@@ -105,7 +105,7 @@ namespace_or_typeName : genericName ('.' genericName)*;
 namespace : Identifier ('.' Identifier)*;
 fullType : baseType ('?' | '['']' | '*')*;
 genericName : Identifier ('<' Generic = fullType (',' Generic = fullType)* '>')?;
-baseType : genericName                                               #NamedType
+baseType : genericName                                                         #NamedType
          | Keyword = (Bool | Char | I32 | I64 | R32 | R64 | String | Any)      #KeywordType
          ;
 // ------------------------------------------------------------NameExpr------------------------------------------------------------//
