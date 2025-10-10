@@ -1,0 +1,350 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+
+namespace MiHoMiao.Core.Numerics.Values;
+
+/// <summary>
+/// 64-bit 定点数, 8 位小数.
+/// 底层: long, 十进制的后 8 位是代表小数部分
+/// </summary>
+public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinMaxValue<Fixed64>
+{
+    private const long Scale = 1_0000_0000;
+    private const long MaxLong = long.MaxValue / Scale;
+    private const long MinLong = long.MinValue / Scale;
+    private const double MaxFloat = (double)long.MaxValue / Scale;
+    private const double MinFloat = (double)long.MinValue / Scale;
+    private const decimal MaxDecimal = (decimal)long.MaxValue / Scale;
+    private const decimal MinDecimal = (decimal)long.MinValue / Scale;
+    
+    private const ulong MulFactor = ((1UL << 63) / Scale) << 1;
+    private const ulong MulRemain = ((1UL << 63) % Scale) << 1;
+
+    /// <summary>
+    /// 实际数值的 1e8 倍
+    /// </summary>
+    private readonly long m_InternalValue;
+
+    #region 构造
+    public Fixed64(int value) => m_InternalValue = value * Scale;
+    
+    public Fixed64(long value)
+    {
+        if (value is > MaxLong or < MinLong) ThrowOverflow();
+        m_InternalValue = value * Scale;
+    }
+    
+    public Fixed64(float value) : this((double)value)
+    {
+    }
+    
+    public Fixed64(double value) 
+    {
+        if (value is > MaxFloat or < MinFloat) ThrowOverflow();
+        m_InternalValue = (long)(value * Scale);
+    }
+    
+    public Fixed64(decimal value) 
+    {
+        if (value is > MaxDecimal or < MinDecimal) ThrowOverflow();
+        m_InternalValue = (long)(value * Scale);
+    }
+        
+    // ReSharper disable once UnusedParameter.Local
+    private Fixed64(long value, bool _) => m_InternalValue = value;
+    
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void ThrowOverflow() => throw new OverflowException("Fixed64 溢出");
+    
+    #endregion 构造
+    
+    #region NumberValue
+
+    public int AsInt32() => (int)(m_InternalValue / Scale);
+    
+    public long AsInt64() => m_InternalValue / Scale;
+    
+    public float AsFloat32() => (float)m_InternalValue / Scale;
+    
+    public double AsFloat64() => (double)m_InternalValue / Scale;
+    
+    public decimal AsDecimal() => (decimal)m_InternalValue / Scale;
+    
+    #endregion NumberValue
+    
+    #region Math
+
+    public static Fixed64 One => new Fixed64(1);
+    public static Fixed64 Zero => new Fixed64(0);
+    public static Fixed64 NegativeOne => new Fixed64(-1);
+    public static Fixed64 MaxValue => new Fixed64(long.MaxValue, true);
+    public static Fixed64 MinValue => new Fixed64(long.MinValue, true);
+    public static int Radix => 10;
+    
+    public static Fixed64 AdditiveIdentity => new Fixed64(0);
+
+    public static Fixed64 MultiplicativeIdentity => new Fixed64(1);
+    
+    public static Fixed64 operator +(Fixed64 value) => value;
+
+    public static Fixed64 operator -(Fixed64 value) => new Fixed64(-value.m_InternalValue, true);
+    
+    public static Fixed64 operator ++(Fixed64 value) 
+        => new Fixed64(value.m_InternalValue + Scale, true);
+    
+    public static Fixed64 operator --(Fixed64 value) 
+        => new Fixed64(value.m_InternalValue - Scale, true);
+    
+    public static Fixed64 operator +(Fixed64 left, Fixed64 right) 
+        => new Fixed64(left.m_InternalValue + right.m_InternalValue, true);
+
+    public static Fixed64 operator -(Fixed64 left, Fixed64 right) 
+        => new Fixed64(left.m_InternalValue - right.m_InternalValue, true);
+
+    public static Fixed64 operator *(Fixed64 left, Fixed64 right)
+    {
+        ulong upper = Math.BigMul((ulong)left.m_InternalValue, (ulong)right.m_InternalValue, out ulong lower);
+        ulong result = MulFactor * upper + (MulRemain * upper + lower) / Scale;
+        return new Fixed64((long)result, true);
+    }
+    
+    public static Fixed64 operator /(Fixed64 left, Fixed64 right)
+    {
+        long rightValue = right.m_InternalValue;
+        long div = Math.DivRem(left.m_InternalValue, rightValue, out long rem);
+        long other = (rightValue is > MaxLong or < MinLong) ? (long)((double)Scale * rem / rightValue) : (Scale * rem / rightValue);
+        return new Fixed64(Scale * div + other, true);
+    }
+
+    public static Fixed64 operator %(Fixed64 left, Fixed64 right)
+        => new Fixed64(left.m_InternalValue % right.m_InternalValue, true);
+    
+    public static Fixed64 Abs(Fixed64 value) => new Fixed64(Math.Abs(value.m_InternalValue), true);
+
+    #endregion
+    
+    #region Compare
+    
+    public bool Equals(Fixed64 other) => other.m_InternalValue == m_InternalValue;
+
+    public override bool Equals(object? obj) => obj is Fixed64 other && Equals(other);
+
+    public override int GetHashCode() => m_InternalValue.GetHashCode();
+
+    public int CompareTo(object? value)
+    {
+        if (value == null) return 1;
+        if (value is not Fixed64 other) throw new ArgumentException("Value Must Be Fixed64!");
+        return CompareTo(other);
+    }
+
+    public int CompareTo(Fixed64 other) => m_InternalValue.CompareTo(other.m_InternalValue);
+
+    public static bool operator >(Fixed64 left, Fixed64 right)
+        => left.m_InternalValue > right.m_InternalValue;
+
+    public static bool operator >=(Fixed64 left, Fixed64 right)
+        => left.m_InternalValue >= right.m_InternalValue;
+
+    public static bool operator <(Fixed64 left, Fixed64 right)
+        => left.m_InternalValue < right.m_InternalValue;
+    
+    public static bool operator <=(Fixed64 left, Fixed64 right)
+        => left.m_InternalValue <= right.m_InternalValue;
+    
+    public static bool operator ==(Fixed64 left, Fixed64 right)
+        => left.m_InternalValue == right.m_InternalValue;
+
+    public static bool operator !=(Fixed64 left, Fixed64 right)
+        => left.m_InternalValue != right.m_InternalValue;
+    
+    #endregion
+    
+    #region 显式/隐式转化
+    public static implicit operator Fixed64(int value)  => new Fixed64(value);
+    public static implicit operator Fixed64(long value) => new Fixed64(value);
+    public static implicit operator Fixed64(float value) => new Fixed64(value);
+    public static implicit operator Fixed64(double value) => new Fixed64(value);
+    public static explicit operator Fixed64(decimal value) => new Fixed64(value);
+    
+    public static explicit operator int(Fixed64 value) => (int)(value.m_InternalValue / Scale);
+    public static explicit operator long(Fixed64 value) => value.m_InternalValue / Scale;
+    public static implicit operator float(Fixed64 value) => (float)value.m_InternalValue / Scale;
+    public static implicit operator double(Fixed64 value) => (double)value.m_InternalValue / Scale;
+    public static implicit operator decimal(Fixed64 value) => (decimal)value.m_InternalValue / Scale;
+    #endregion 显式/隐式转化
+    
+    #region Format
+    
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+        => AsDecimal().TryFormat(destination, out charsWritten, format, provider);
+    
+    public static Fixed64 Parse(string s, IFormatProvider? provider)
+        => new Fixed64(double.Parse(s, NumberStyles.Float, provider));
+    
+    public static Fixed64 Parse(string s, NumberStyles style, IFormatProvider? provider)
+        => new Fixed64(double.Parse(s, style, provider));
+    
+    public static Fixed64 Parse(ReadOnlySpan<char> s, IFormatProvider? provider) 
+        => new Fixed64(double.Parse(s, NumberStyles.Float, provider));
+    
+    public static Fixed64 Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
+        => new Fixed64(double.Parse(s, style, provider));
+    
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out Fixed64 result)
+        => TryParse(s, NumberStyles.Float, provider, out result);
+    
+    public static bool TryParse([NotNullWhen(true)] string? s, NumberStyles style, IFormatProvider? provider, out Fixed64 result)
+    {
+        bool success = double.TryParse(s, style, provider, out double value);
+        result = new Fixed64(value);
+        return success;
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Fixed64 result)
+        => TryParse(s, NumberStyles.Float, provider, out result);
+    
+    public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out Fixed64 result)
+    {
+        bool success = double.TryParse(s, style, provider, out double value);
+        result = new Fixed64(value);
+        return success;
+    }
+    
+    #endregion Format
+    
+    #region Object
+    
+    public override string ToString() => AsDecimal().ToString(CultureInfo.CurrentCulture);
+
+    public string ToString(string? format, IFormatProvider? formatProvider) => AsDecimal().ToString(format, formatProvider);
+    
+    static bool INumberBase<Fixed64>.TryConvertFromChecked<TOther>(TOther value, out Fixed64 result)
+    {
+        bool success = TryConvert(value, out decimal temp);
+        result = new Fixed64(temp);
+        return success;
+
+        static bool TryConvert<TSelf>(TOther value, [MaybeNullWhen(false)] out TSelf result) where TSelf : INumberBase<TSelf>
+            => TSelf.TryConvertFromChecked(value, out result);
+    }
+
+    public static bool TryConvertFromSaturating<TOther>(TOther value, out Fixed64 result) where TOther : INumberBase<TOther>
+    {
+        bool success = TryConvert(value, out decimal temp);
+        result = new Fixed64(temp);
+        return success;
+
+        static bool TryConvert<TSelf>(TOther value, [MaybeNullWhen(false)] out TSelf result) where TSelf : INumberBase<TSelf>
+            => TSelf.TryConvertFromSaturating(value, out result);
+    }
+
+    public static bool TryConvertFromTruncating<TOther>(TOther value, out Fixed64 result) where TOther : INumberBase<TOther>
+    {
+        bool success = TryConvert(value, out decimal temp);
+        result = new Fixed64(temp);
+        return success;
+
+        static bool TryConvert<TSelf>(TOther value, [MaybeNullWhen(false)] out TSelf result) where TSelf : INumberBase<TSelf>
+            => TSelf.TryConvertFromTruncating(value, out result);
+    }
+
+    public static bool TryConvertToChecked<TOther>(Fixed64 value, [MaybeNullWhen(false)] out TOther result) where TOther : INumberBase<TOther>
+    {
+        return TryConvert((decimal)value, out result);
+        static bool TryConvert<TSelf>(TSelf value, [MaybeNullWhen(false)] out TOther result) where TSelf : INumberBase<TSelf>
+            => TSelf.TryConvertToChecked(value, out result);
+    }
+
+    public static bool TryConvertToSaturating<TOther>(Fixed64 value, [MaybeNullWhen(false)] out TOther result) where TOther : INumberBase<TOther>
+    {
+        return TryConvert((decimal)value, out result);
+        static bool TryConvert<TSelf>(TSelf value, [MaybeNullWhen(false)] out TOther result) where TSelf : INumberBase<TSelf>
+            => TSelf.TryConvertToSaturating(value, out result);
+    }
+
+    public static bool TryConvertToTruncating<TOther>(Fixed64 value, [MaybeNullWhen(false)] out TOther result) where TOther : INumberBase<TOther>
+    {
+        return TryConvert((decimal)value, out result);
+        static bool TryConvert<TSelf>(TSelf value, [MaybeNullWhen(false)] out TOther result) where TSelf : INumberBase<TSelf>
+            => TSelf.TryConvertToTruncating(value, out result);
+    }
+    
+    #endregion Object
+
+    #region NumberInterface
+    
+    public static bool IsCanonical(Fixed64 value) => true;
+
+    public static bool IsComplexNumber(Fixed64 value) => false;
+
+    public static bool IsEvenInteger(Fixed64 value)
+    {
+        long internalValue = value.m_InternalValue;
+        long integer = internalValue / Scale;
+        if (integer * Scale != internalValue) return false;
+        return (integer & 1) == 0;
+    }
+
+    public static bool IsFinite(Fixed64 value) => true;
+
+    public static bool IsImaginaryNumber(Fixed64 value) => false;
+
+    public static bool IsInfinity(Fixed64 value) => false;
+
+    public static bool IsInteger(Fixed64 value) 
+        => value.m_InternalValue / Scale * Scale == value.m_InternalValue;
+
+    public static bool IsNaN(Fixed64 value) => false;
+
+    public static bool IsNegative(Fixed64 value) => value.m_InternalValue < 0;
+
+    public static bool IsNegativeInfinity(Fixed64 value) => false;
+
+    public static bool IsNormal(Fixed64 value) => value.m_InternalValue != 0;
+
+    public static bool IsOddInteger(Fixed64 value)
+    {
+        long internalValue = value.m_InternalValue;
+        long integer = internalValue / Scale;
+        if (integer * Scale != internalValue) return false;
+        return (integer & 1) != 0;
+    }
+
+    public static bool IsPositive(Fixed64 value) => value.m_InternalValue > 0;
+
+    public static bool IsPositiveInfinity(Fixed64 value) => false;
+
+    public static bool IsRealNumber(Fixed64 value) => true;
+
+    public static bool IsSubnormal(Fixed64 value) => false;
+
+    public static bool IsZero(Fixed64 value) => value.m_InternalValue is 0;
+
+    public static Fixed64 MaxMagnitude(Fixed64 x, Fixed64 y)
+    {
+        Fixed64 ax = Abs(x);
+        Fixed64 ay = Abs(y);
+        if (ax > ay) return x;
+        if (ax == ay) return IsNegative(x) ? y : x;
+        return y;
+    }
+
+    static Fixed64 INumberBase<Fixed64>.MaxMagnitudeNumber(Fixed64 x, Fixed64 y) => MaxMagnitude(x, y);
+
+    public static Fixed64 MinMagnitude(Fixed64 x, Fixed64 y)
+    {
+        Fixed64 ax = Abs(x);
+        Fixed64 ay = Abs(y);
+        if (ax < ay) return x;
+        if (ax == ay) return IsNegative(x) ? x : y;
+        return y;
+    }
+
+    static Fixed64 INumberBase<Fixed64>.MinMagnitudeNumber(Fixed64 x, Fixed64 y) => MinMagnitude(x, y);
+
+    #endregion NumberInterface
+    
+}
