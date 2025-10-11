@@ -13,7 +13,7 @@ namespace MiHoMiao.Core.Numerics.Values;
 /// </summary>
 public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinMaxValue<Fixed64>
 {
-    private const long Scale = 1_0000_0000;
+    internal const long Scale = 1_0000_0000;
     private const long MaxLong = long.MaxValue / Scale;
     private const long MinLong = long.MinValue / Scale;
     private const double MaxFloat = (double)long.MaxValue / Scale;
@@ -27,15 +27,15 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
     /// <summary>
     /// 实际数值的 1e8 倍
     /// </summary>
-    private readonly long m_InternalValue;
+    internal readonly long InternalValue;
 
     #region 构造
-    public Fixed64(int value) => m_InternalValue = value * Scale;
+    public Fixed64(int value) => InternalValue = value * Scale;
     
     public Fixed64(long value)
     {
         if (value is > MaxLong or < MinLong) ThrowOverflow();
-        m_InternalValue = value * Scale;
+        InternalValue = value * Scale;
     }
     
     public Fixed64(float value) : this((double)value)
@@ -45,17 +45,17 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
     public Fixed64(double value) 
     {
         if (value is > MaxFloat or < MinFloat) ThrowOverflow();
-        m_InternalValue = (long)(value * Scale);
+        InternalValue = (long)(value * Scale);
     }
     
     public Fixed64(decimal value) 
     {
         if (value is > MaxDecimal or < MinDecimal) ThrowOverflow();
-        m_InternalValue = (long)(value * Scale);
+        InternalValue = (long)(value * Scale);
     }
         
     // ReSharper disable once UnusedParameter.Local
-    private Fixed64(long value, bool _) => m_InternalValue = value;
+    internal Fixed64(long value, bool _) => InternalValue = value;
     
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void ThrowOverflow() => throw new OverflowException("Fixed64 溢出");
@@ -64,23 +64,29 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
     
     #region NumberValue
 
-    public int AsInt32() => (int)(m_InternalValue / Scale);
+    public int AsInt32() => (int)(InternalValue / Scale);
     
-    public long AsInt64() => m_InternalValue / Scale;
+    public long AsInt64() => InternalValue / Scale;
     
-    public float AsFloat32() => (float)m_InternalValue / Scale;
+    public float AsFloat32() => (float)InternalValue / Scale;
     
-    public double AsFloat64() => (double)m_InternalValue / Scale;
+    public double AsFloat64() => (double)InternalValue / Scale;
     
-    public decimal AsDecimal() => (decimal)m_InternalValue / Scale;
+    public decimal AsDecimal() => (decimal)InternalValue / Scale;
     
     #endregion NumberValue
     
     #region Math
 
-    public static Fixed64 One => new Fixed64(1);
-    public static Fixed64 Zero => new Fixed64(0);
-    public static Fixed64 NegativeOne => new Fixed64(-1);
+    public static Fixed64 One => new Fixed64(Scale, true);
+    public static Fixed64 Zero => new Fixed64(0, true);
+    public static Fixed64 NegativeOne => new Fixed64(-Scale, true);
+    internal const long PiValue = (long)(Math.PI * Scale);
+    public static Fixed64 Pi => new Fixed64(314159265, true);
+    public static Fixed64 E => new Fixed64(271828183, true);
+    public static Fixed64 Ln2 => new Fixed64(69314718, true);
+    public static Fixed64 Ln10 => new Fixed64(230258509, true);
+    public static Fixed64 Ln2Rate => new Fixed64(144269504, true);
     public static Fixed64 MaxValue => new Fixed64(long.MaxValue, true);
     public static Fixed64 MinValue => new Fixed64(long.MinValue, true);
     public static int Radix => 10;
@@ -91,65 +97,74 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
     
     public static Fixed64 operator +(Fixed64 value) => value;
 
-    public static Fixed64 operator -(Fixed64 value) => new Fixed64(-value.m_InternalValue, true);
+    public static Fixed64 operator -(Fixed64 value) => new Fixed64(-value.InternalValue, true);
     
     public static Fixed64 operator ++(Fixed64 value) 
-        => new Fixed64(value.m_InternalValue + Scale, true);
+        => new Fixed64(value.InternalValue + Scale, true);
     
     public static Fixed64 operator --(Fixed64 value) 
-        => new Fixed64(value.m_InternalValue - Scale, true);
+        => new Fixed64(value.InternalValue - Scale, true);
     
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator +(Fixed64 left, Fixed64 right) 
-        => new Fixed64(left.m_InternalValue + right.m_InternalValue, true);
+        => new Fixed64(left.InternalValue + right.InternalValue, true);
 
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator -(Fixed64 left, Fixed64 right) 
-        => new Fixed64(left.m_InternalValue - right.m_InternalValue, true);
+        => new Fixed64(left.InternalValue - right.InternalValue, true);
 
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator *(Fixed64 left, Fixed64 right)
     {
-        ulong upper = Math.BigMul((ulong)left.m_InternalValue, (ulong)right.m_InternalValue, out ulong lower);
+        int sign = left.InternalValue.Sign() * right.InternalValue.Sign();
+        ulong upper = Math.BigMul((ulong)left.InternalValue.Abs(), (ulong)right.InternalValue.Abs(), out ulong lower);
         ulong result = MulFactor * upper + (MulRemain * upper + lower) / Scale;
-        return new Fixed64((long)result, true);
+        return new Fixed64(sign * (long)result, true);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    public static Fixed64 operator /(Fixed64 left, long right)
+    {
+        return new Fixed64(left.InternalValue / right, true);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator /(Fixed64 left, Fixed64 right)
     {
-        long rightValue = right.m_InternalValue;
+        long rightValue = right.InternalValue;
     
         if (rightValue is <= MaxLong and >= MinLong)
         {
-            long div = Math.DivRem(left.m_InternalValue, rightValue, out long rem);
+            long div = Math.DivRem(left.InternalValue, rightValue, out long rem);
             return new Fixed64(Scale * div + Scale * rem / rightValue, true);
         }
         else
         {
-            ulong upper = Math.BigMul((ulong)left.m_InternalValue, Scale, out ulong lower);
+            if (rightValue < 0) rightValue = -rightValue;
+            int sign = left.InternalValue.Sign() * rightValue.Sign();
+            ulong upper = Math.BigMul((ulong)left.InternalValue.Abs(), Scale, out ulong lower);
             ulong div = ulong.MaxValue / (ulong)rightValue;
             ulong rem = ulong.MaxValue - div * (ulong)rightValue + 1;
             ulong factor = Math.BigMul(rem, upper, out ulong remFactor);
-            return new Fixed64((long)(div * (upper + factor) + (remFactor + rem * factor + lower) / (ulong)rightValue), true);
+            return new Fixed64(sign * (long)(div * (upper + factor) + (remFactor + rem * factor + lower) / (ulong)rightValue), true);
         }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator %(Fixed64 left, Fixed64 right)
-        => new Fixed64(left.m_InternalValue % right.m_InternalValue, true);
+        => new Fixed64(left.InternalValue % right.InternalValue, true);
     
-    public static Fixed64 Abs(Fixed64 value) => new Fixed64(Math.Abs(value.m_InternalValue), true);
+    public static Fixed64 Abs(Fixed64 value) => new Fixed64(Math.Abs(value.InternalValue), true);
 
     #endregion
     
     #region Compare
     
-    public bool Equals(Fixed64 other) => other.m_InternalValue == m_InternalValue;
+    public bool Equals(Fixed64 other) => other.InternalValue == InternalValue;
 
     public override bool Equals(object? obj) => obj is Fixed64 other && Equals(other);
 
-    public override int GetHashCode() => m_InternalValue.GetHashCode();
+    public override int GetHashCode() => InternalValue.GetHashCode();
 
     public int CompareTo(object? value)
     {
@@ -158,25 +173,25 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
         return CompareTo(other);
     }
 
-    public int CompareTo(Fixed64 other) => m_InternalValue.CompareTo(other.m_InternalValue);
+    public int CompareTo(Fixed64 other) => InternalValue.CompareTo(other.InternalValue);
 
     public static bool operator >(Fixed64 left, Fixed64 right)
-        => left.m_InternalValue > right.m_InternalValue;
+        => left.InternalValue > right.InternalValue;
 
     public static bool operator >=(Fixed64 left, Fixed64 right)
-        => left.m_InternalValue >= right.m_InternalValue;
+        => left.InternalValue >= right.InternalValue;
 
     public static bool operator <(Fixed64 left, Fixed64 right)
-        => left.m_InternalValue < right.m_InternalValue;
+        => left.InternalValue < right.InternalValue;
     
     public static bool operator <=(Fixed64 left, Fixed64 right)
-        => left.m_InternalValue <= right.m_InternalValue;
+        => left.InternalValue <= right.InternalValue;
     
     public static bool operator ==(Fixed64 left, Fixed64 right)
-        => left.m_InternalValue == right.m_InternalValue;
+        => left.InternalValue == right.InternalValue;
 
     public static bool operator !=(Fixed64 left, Fixed64 right)
-        => left.m_InternalValue != right.m_InternalValue;
+        => left.InternalValue != right.InternalValue;
     
     #endregion
     
@@ -187,11 +202,11 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
     public static implicit operator Fixed64(double value) => new Fixed64(value);
     public static explicit operator Fixed64(decimal value) => new Fixed64(value);
     
-    public static explicit operator int(Fixed64 value) => (int)(value.m_InternalValue / Scale);
-    public static explicit operator long(Fixed64 value) => value.m_InternalValue / Scale;
-    public static implicit operator float(Fixed64 value) => (float)value.m_InternalValue / Scale;
-    public static implicit operator double(Fixed64 value) => (double)value.m_InternalValue / Scale;
-    public static implicit operator decimal(Fixed64 value) => (decimal)value.m_InternalValue / Scale;
+    public static explicit operator int(Fixed64 value) => (int)(value.InternalValue / Scale);
+    public static explicit operator long(Fixed64 value) => value.InternalValue / Scale;
+    public static implicit operator float(Fixed64 value) => (float)value.InternalValue / Scale;
+    public static implicit operator double(Fixed64 value) => (double)value.InternalValue / Scale;
+    public static implicit operator decimal(Fixed64 value) => (decimal)value.InternalValue / Scale;
     #endregion 显式/隐式转化
     
     #region Format
@@ -300,7 +315,7 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
 
     public static bool IsEvenInteger(Fixed64 value)
     {
-        long internalValue = value.m_InternalValue;
+        long internalValue = value.InternalValue;
         long integer = internalValue / Scale;
         if (integer * Scale != internalValue) return false;
         return (integer & 1) == 0;
@@ -313,25 +328,25 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
     public static bool IsInfinity(Fixed64 value) => false;
 
     public static bool IsInteger(Fixed64 value) 
-        => value.m_InternalValue / Scale * Scale == value.m_InternalValue;
+        => value.InternalValue / Scale * Scale == value.InternalValue;
 
     public static bool IsNaN(Fixed64 value) => false;
 
-    public static bool IsNegative(Fixed64 value) => value.m_InternalValue < 0;
+    public static bool IsNegative(Fixed64 value) => value.InternalValue < 0;
 
     public static bool IsNegativeInfinity(Fixed64 value) => false;
 
-    public static bool IsNormal(Fixed64 value) => value.m_InternalValue != 0;
+    public static bool IsNormal(Fixed64 value) => value.InternalValue != 0;
 
     public static bool IsOddInteger(Fixed64 value)
     {
-        long internalValue = value.m_InternalValue;
+        long internalValue = value.InternalValue;
         long integer = internalValue / Scale;
         if (integer * Scale != internalValue) return false;
         return (integer & 1) != 0;
     }
 
-    public static bool IsPositive(Fixed64 value) => value.m_InternalValue > 0;
+    public static bool IsPositive(Fixed64 value) => value.InternalValue > 0;
 
     public static bool IsPositiveInfinity(Fixed64 value) => false;
 
@@ -339,7 +354,7 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
 
     public static bool IsSubnormal(Fixed64 value) => false;
 
-    public static bool IsZero(Fixed64 value) => value.m_InternalValue is 0;
+    public static bool IsZero(Fixed64 value) => value.InternalValue is 0;
 
     public static Fixed64 MaxMagnitude(Fixed64 x, Fixed64 y)
     {

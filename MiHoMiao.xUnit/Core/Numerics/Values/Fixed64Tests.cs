@@ -41,6 +41,44 @@ public class Fixed64Tests
 
     #endregion
 
+    #region 构造 & 溢出 ---- 追加用例
+    [Theory]
+    [InlineData(0)]                       // 0
+    [InlineData(int.MinValue)]            // 最小 32 位
+    [InlineData(int.MaxValue)]
+    public void Ctor_Int32_Edge(int v)
+    {
+        Fixed64 f = new Fixed64(v);
+        Assert.Equal(v, f.AsInt32());
+    }
+
+    [Theory]
+    [InlineData(0.0)]
+    [InlineData(double.Epsilon)]          // 最小正浮点数
+    [InlineData(-double.Epsilon)]
+    [InlineData(1e-8)]                    // 低于分辨率
+    [InlineData(-1e-8)]
+    [InlineData(9223372036854775807.0)]   // long.MaxValue
+    [InlineData(-9223372036854775808.0)]  // long.MinValue
+    public void Ctor_Double_Edge(double v)
+    {
+        if (v > Fixed64.MaxValue.AsFloat64() || v < Fixed64.MinValue.AsFloat64())
+            Assert.Throws<OverflowException>(() => new Fixed64(v));
+        else
+        {
+            Fixed64 f = new Fixed64(v);
+            Assert.Equal(v, f.AsFloat64(), 8);
+        }
+    }
+
+    [Fact]
+    public void Ctor_Long_NegativeOverflow()
+    {
+        long small = Fixed64.MinValue.AsInt64() - 1;
+        Assert.Throws<OverflowException>(() => new Fixed64(small));
+    }
+    #endregion
+    
     #region 转换
 
     [Theory]
@@ -63,6 +101,19 @@ public class Fixed64Tests
 
     #endregion
 
+    #region 转换 ---- 追加用例
+    [Theory]
+    [InlineData(-0.0)]
+    [InlineData(-3.14159265)]
+    [InlineData(-1e-10)]
+    public void Implicit_From_Double_Negative(double v)
+    {
+        Fixed64 f = v;
+        Assert.Equal(v, f.AsFloat64(), 8);
+    }
+    
+    #endregion
+    
     #region 运算符
 
     [Fact]
@@ -107,6 +158,51 @@ public class Fixed64Tests
 
     #endregion
 
+    #region 运算符 ---- 追加用例
+    [Fact]
+    public void Add_Sub_Mul_Div_NegativeZero()
+    {
+        Fixed64 a = 0.0;
+        Fixed64 b = -0.0;
+        Assert.Equal(0.0, (a + b).AsFloat64(), 8);
+        Assert.Equal(0.0, (a - b).AsFloat64(), 8);
+        Assert.Equal(-0.0, (b - a).AsFloat64(), 8);
+    }
+
+    [Theory]
+    [InlineData(-3.5, -2.0, -5.5)]   // 负 + 负
+    [InlineData(-3.5,  2.0, -1.5)]   // 负 + 正
+    [InlineData( 3.5, -2.0,  1.5)]   // 正 + 负
+    public void Add_Sub_Basic(double x, double y, double expectedAdd)
+    {
+        Fixed64 fx = x, fy = y;
+        Assert.Equal(expectedAdd, (fx + fy).AsFloat64(), 8);
+        Assert.Equal(expectedAdd, (fy + fx).AsFloat64(), 8); // 交换律
+        Assert.Equal(x - y, (fx - fy).AsFloat64(), 8);
+    }
+
+    [Theory]
+    [InlineData(0.1)]
+    [InlineData(-0.1)]
+    [InlineData(0.00000001)]
+    [InlineData(-0.00000001)]
+    public void Mul_Div_SmallNumbers(double v)
+    {
+        Fixed64 f = v;
+        Assert.Equal(v * v, (f * f).AsFloat64(), 8);
+        Assert.Equal(1.0, (f / f).AsFloat64(), 8);
+    }
+
+    [Fact]
+    public void Div_ByZero_Throws()
+    {
+        Fixed64 a = 1.0;
+        Fixed64 zero = 0.0;
+        Assert.Throws<DivideByZeroException>(() => a / zero);
+    }
+
+    #endregion
+    
     #region 比较
 
     [Theory]
@@ -137,6 +233,18 @@ public class Fixed64Tests
 
     #endregion
 
+    #region 比较 ---- 追加用例
+
+    [Fact]
+    public void Equality_NegativeZero()
+    {
+        Fixed64 nzero = -0.0;
+        Fixed64 pzero = 0.0;
+        Assert.True(nzero == pzero);
+        Assert.Equal(0, nzero.CompareTo(pzero));
+    }
+    #endregion
+    
     #region 边界 & 常量
 
     [Fact]
@@ -157,6 +265,15 @@ public class Fixed64Tests
 
     #endregion
 
+    #region 边界 & 常量 ---- 追加用例
+
+    [Fact]
+    public void NegativeOne_Abs_IsOne()
+    {
+        Assert.Equal(Fixed64.One, Fixed64.Abs(Fixed64.NegativeOne));
+    }
+    #endregion
+    
     #region 格式化 & 解析
 
     [Theory]
@@ -179,6 +296,19 @@ public class Fixed64Tests
 
     #endregion
 
+    #region 格式化 & 解析 ---- 追加用例
+
+    [Theory]
+    [InlineData("abc")]
+    [InlineData("123.456.789")]
+    [InlineData("--123")]
+    [InlineData("")]
+    public void TryParse_Fails_OnGarbage(string garbage)
+    {
+        Assert.False(Fixed64.TryParse(garbage, CultureInfo.InvariantCulture, out _));
+    }
+    #endregion
+    
     #region NumberInterface 辅助
 
     [Theory]
@@ -207,4 +337,38 @@ public class Fixed64Tests
     }
 
     #endregion
+    
+    #region NumberInterface 辅助 ---- 追加用例
+    [Theory]
+    [InlineData(-4, true)]
+    [InlineData(-3, false)]
+    [InlineData(0, true)]
+    public void IsEvenInteger_Negative(int v, bool expected)
+    {
+        Fixed64 f = v;
+        Assert.Equal(expected, Fixed64.IsEvenInteger(f));
+    }
+
+    [Theory]
+    [InlineData(-1.0, true)]
+    [InlineData(-1.00000001, false)]
+    [InlineData(-0.99999999, false)]
+    public void IsInteger_Negative(decimal v, bool expected)
+    {
+        Fixed64 f = new Fixed64(v);
+        Assert.Equal(expected, Fixed64.IsInteger(f));
+    }
+
+    [Theory]
+    [InlineData(0.0)]
+    [InlineData(-123.456)]
+    public void Abs_Negative(double v)
+    {
+        Fixed64 f = v;
+        Assert.True(Fixed64.Abs(f) >= Fixed64.Zero);
+        if (v != 0.0)
+            Assert.Equal(Math.Abs(v), Fixed64.Abs(f).AsFloat64(), 8);
+    }
+    #endregion
+    
 }
