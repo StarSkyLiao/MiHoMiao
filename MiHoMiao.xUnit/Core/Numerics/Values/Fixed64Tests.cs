@@ -75,6 +75,18 @@ public class Fixed64Tests
         Assert.Equal(7.0, (a * b).AsFloat64(), 8);
         Assert.Equal(1.75, (a / b).AsFloat64(), 8);
     }
+    
+    [Fact]
+    public void Big_Add_Sub_Mul_Div()
+    {
+        decimal decimalA = 92133710360.54775807M;
+        decimal decimalB = 12312532;
+        Fixed64 a = new Fixed64(decimalA);
+        Fixed64 b = new Fixed64(decimalB);
+        Assert.Equal((double)(decimalA + decimalB), (a + b).AsFloat64(), 8);
+        Assert.Equal((double)(decimalA - decimalB), (a - b).AsFloat64(), 8);
+        Assert.Equal(Math.Round(decimalA / decimalB, 8, MidpointRounding.ToZero) , (a / b).AsDecimal(), 8);
+    }
 
     [Fact]
     public void Increment_Decrement()

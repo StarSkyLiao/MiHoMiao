@@ -97,12 +97,15 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
     public static Fixed64 operator --(Fixed64 value) 
         => new Fixed64(value.m_InternalValue - Scale, true);
     
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator +(Fixed64 left, Fixed64 right) 
         => new Fixed64(left.m_InternalValue + right.m_InternalValue, true);
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator -(Fixed64 left, Fixed64 right) 
         => new Fixed64(left.m_InternalValue - right.m_InternalValue, true);
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator *(Fixed64 left, Fixed64 right)
     {
         ulong upper = Math.BigMul((ulong)left.m_InternalValue, (ulong)right.m_InternalValue, out ulong lower);
@@ -110,14 +113,27 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
         return new Fixed64((long)result, true);
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator /(Fixed64 left, Fixed64 right)
     {
         long rightValue = right.m_InternalValue;
-        long div = Math.DivRem(left.m_InternalValue, rightValue, out long rem);
-        long other = (rightValue is > MaxLong or < MinLong) ? (long)((double)Scale * rem / rightValue) : (Scale * rem / rightValue);
-        return new Fixed64(Scale * div + other, true);
+    
+        if (rightValue is <= MaxLong and >= MinLong)
+        {
+            long div = Math.DivRem(left.m_InternalValue, rightValue, out long rem);
+            return new Fixed64(Scale * div + Scale * rem / rightValue, true);
+        }
+        else
+        {
+            ulong upper = Math.BigMul((ulong)left.m_InternalValue, Scale, out ulong lower);
+            ulong div = ulong.MaxValue / (ulong)rightValue;
+            ulong rem = ulong.MaxValue - div * (ulong)rightValue + 1;
+            ulong factor = Math.BigMul(rem, upper, out ulong remFactor);
+            return new Fixed64((long)(div * (upper + factor) + (remFactor + rem * factor + lower) / (ulong)rightValue), true);
+        }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Fixed64 operator %(Fixed64 left, Fixed64 right)
         => new Fixed64(left.m_InternalValue % right.m_InternalValue, true);
     
@@ -182,23 +198,23 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
         => AsDecimal().TryFormat(destination, out charsWritten, format, provider);
     
     public static Fixed64 Parse(string s, IFormatProvider? provider)
-        => new Fixed64(double.Parse(s, NumberStyles.Float, provider));
+        => new Fixed64(decimal.Parse(s, NumberStyles.Float, provider));
     
     public static Fixed64 Parse(string s, NumberStyles style, IFormatProvider? provider)
-        => new Fixed64(double.Parse(s, style, provider));
+        => new Fixed64(decimal.Parse(s, style, provider));
     
     public static Fixed64 Parse(ReadOnlySpan<char> s, IFormatProvider? provider) 
-        => new Fixed64(double.Parse(s, NumberStyles.Float, provider));
+        => new Fixed64(decimal.Parse(s, NumberStyles.Float, provider));
     
     public static Fixed64 Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
-        => new Fixed64(double.Parse(s, style, provider));
+        => new Fixed64(decimal.Parse(s, style, provider));
     
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out Fixed64 result)
         => TryParse(s, NumberStyles.Float, provider, out result);
     
     public static bool TryParse([NotNullWhen(true)] string? s, NumberStyles style, IFormatProvider? provider, out Fixed64 result)
     {
-        bool success = double.TryParse(s, style, provider, out double value);
+        bool success = decimal.TryParse(s, style, provider, out decimal value);
         result = new Fixed64(value);
         return success;
     }
@@ -208,7 +224,7 @@ public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinM
     
     public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out Fixed64 result)
     {
-        bool success = double.TryParse(s, style, provider, out double value);
+        bool success = decimal.TryParse(s, style, provider, out decimal value);
         result = new Fixed64(value);
         return success;
     }
