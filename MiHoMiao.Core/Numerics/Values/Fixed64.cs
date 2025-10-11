@@ -6,8 +6,10 @@ using System.Runtime.CompilerServices;
 namespace MiHoMiao.Core.Numerics.Values;
 
 /// <summary>
-/// 64-bit 定点数, 8 位小数.
-/// 底层: long, 十进制的后 8 位是代表小数部分
+/// 一个 64-bit 定点数, 能够精确地表示 8 位十进制小数.
+/// 数值范围大约为 -92233720368.54776d ~ 92233720368.54776d, 数量级为 1e10(九百亿).
+/// 发生溢出时, 不会进行过多检查, 因此需要调用者来处理溢出情况.
+/// 用于某些对小鼠的精度有较高要求的场合.
 /// </summary>
 public readonly struct Fixed64 : INumber<Fixed64>, ISignedNumber<Fixed64>, IMinMaxValue<Fixed64>
 {
