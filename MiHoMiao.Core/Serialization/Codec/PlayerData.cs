@@ -1,16 +1,40 @@
-using SelfCodec = MiHoMiao.Core.Serialization.Codec.Composite.IComplexCodec<
-    System.Span<byte>, MiHoMiao.Core.Serialization.Codec.PlayerData, 
-    MiHoMiao.Core.Serialization.Codec.Internal.GuidCodec, System.Guid, 
-    MiHoMiao.Core.Serialization.Codec.Internal.Int32Codec, int
->;
+using System.Text;
+using MiHoMiao.Core.Collections.Tool;
 
 namespace MiHoMiao.Core.Serialization.Codec;
 
-public record PlayerData(Guid Id, int Level) : SelfCodec
+[AutoComplexCodec]
+internal partial record PlayerData(Guid Id, int Level, string Name, int[] Items)
 {
-    static PlayerData SelfCodec.CreateSelf(Guid param1, int param2) => new PlayerData(param1, param2);
-
-    static Guid SelfCodec.LoadT1(PlayerData self) => self.Id;
-
-    static int SelfCodec.LoadT2(PlayerData self) => self.Level;
+    public override string ToString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append("PlayerData");
+        builder.Append(" { ");
+        if (PrintMembers(builder)) builder.Append(' ');
+        builder.Append($"Items={Items.GenericViewer()}");
+        builder.Append('}');
+        return builder.ToString();
+    }
+    
 }
+
+[AutoComplexCodec]
+internal partial record PlayerGroup(PlayerData PlayerData, int Count, string[] Friends, string[][] CrossArray) 
+{
+    public override string ToString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append("PlayerGroup");
+        builder.Append(" { ");
+        if (PrintMembers(builder)) builder.Append(' ');
+        builder.Append($"Friends={Friends.GenericViewer()}");
+        builder.Append($"CrossArray={CrossArray.GenericViewer()}");
+        builder.Append('}');
+        return builder.ToString();
+    }
+    
+}
+
+[AutoComplexCodec]
+internal partial record struct CrossArray(int[][] Values);
