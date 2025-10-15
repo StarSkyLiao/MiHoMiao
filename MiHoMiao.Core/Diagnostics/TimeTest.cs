@@ -5,8 +5,8 @@
 //------------------------------------------------------------
 
 using System.Diagnostics;
-using System.Reflection;
 using System.Text;
+using MiHoMiao.Core.Numerics.Values;
 
 namespace MiHoMiao.Core.Diagnostics;
 
@@ -33,23 +33,36 @@ public static class TimeTest
 
         if ((option & RunTestOption.Sequence) != 0)
         {
-            stringBuilder.Append($"Time Cost Sequence({iterations} Times): ");
+            double[] eachTicks = new double[iterations];
+
             for (int i = 0; i < iterations; i++)
             {
                 long old = s_Stopwatch.ElapsedTicks;
                 s_Stopwatch.Start();
                 testAction();
                 s_Stopwatch.Stop();
-                stringBuilder.Append($"{0.1 * (s_Stopwatch.ElapsedTicks - old):F1}ns ");
+                eachTicks[i] = s_Stopwatch.ElapsedTicks - old;
             }
+            
+            Array.Sort(eachTicks);
+            int takeCount = (iterations - (iterations >> 2)).Min(1);
+            double fast75Ticks = 0;
+            for (int i = 0; i < takeCount; i++) fast75Ticks += eachTicks[i];
 
+            stringBuilder.Append($"Time Cost Sequence({iterations} Times, fastest 75%): ");
+            for (int i = 0; i < takeCount; i++) stringBuilder.Append($"{0.1 * eachTicks[i]:F1}ns ");
             stringBuilder.AppendLine();
+            stringBuilder.AppendLine($"75%({takeCount}) total : {0.1 * fast75Ticks:F1}ns");
+            stringBuilder.AppendLine($"75%({takeCount}) average: {0.1 * fast75Ticks / takeCount:F3}ns");
         }
         else
         {
             s_Stopwatch.Restart();
             for (int i = 0; i < iterations; i++) testAction();
             s_Stopwatch.Stop();
+
+            stringBuilder.AppendLine($"{iterations} Times Costs: {0.1 * s_Stopwatch.ElapsedTicks:F1}ns");
+            stringBuilder.AppendLine($"Each Cost: {0.1 * s_Stopwatch.ElapsedTicks / iterations:F3}ns");
         }
 
         stringBuilder.AppendLine($"{iterations} Times Costs: {0.1 * s_Stopwatch.ElapsedTicks:F1}ns");
