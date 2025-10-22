@@ -167,6 +167,11 @@ public ref struct InterpolatedString : IDisposable
     }
     
     /// <summary>
+    /// 将新的一行追加到字符跨度
+    /// </summary>
+    public void AppendLine() => Append('\n');
+
+    /// <summary>
     /// 将指定字符串追加到字符跨度
     /// </summary>
     public void AppendLine(string value)

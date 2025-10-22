@@ -6,6 +6,7 @@
 
 using System.Collections;
 using System.Text;
+using MiHoMiao.Core.Collections.Unsafe;
 
 namespace MiHoMiao.Core.Collections.Tool;
 
@@ -14,6 +15,40 @@ namespace MiHoMiao.Core.Collections.Tool;
 /// </summary>
 public static class Viewer
 {
+    /// <summary>
+    /// 将任意泛型集合 IEnumerable 格式化为易读的字符串。
+    /// </summary>
+    /// <typeparam name="T">集合元素类型，必须是非可空引用类型或值类型。</typeparam>
+    /// <param name="enumerable">要格式化的集合。</param>
+    /// <param name="left">整体左边界符，默认“[”。</param>
+    /// <param name="right">整体右边界符，默认“]”。</param>
+    /// <param name="split">元素之间的分隔符，默认“,”。</param>
+    /// <param name="toString">可选的自定义元素转字符串委托；为 null 时使用元素自身的 ToString()。</param>
+    /// <returns>格式化后的字符串。</returns>
+    /// <exception cref="ArgumentNullException">当 enumerable 为 null 时抛出。</exception>
+    public static string EnumerableViewer<T>(this IEnumerable<T> enumerable,
+        string left = "[", string right = "]", string split = ",", Func<T, string>? toString = null
+    ) where T : notnull
+    {
+        ArgumentNullException.ThrowIfNull(enumerable);
+
+        using InterpolatedString interpolated = new InterpolatedString(64);
+        interpolated.Append(left);
+
+        bool isFirst = true;
+        foreach (T item in enumerable)
+        {
+            if (!isFirst) interpolated.Append(split);
+            interpolated.Append(toString != null ? toString(item) : item.ToString() ?? string.Empty);
+            isFirst = false;
+        }
+
+        interpolated.Append(right);
+        return interpolated.ToString();
+    }
+
+
+
     /// <summary>
     /// 将非泛型集合的内容输出为字符串
     /// </summary>
