@@ -75,17 +75,6 @@ public class MutableStringCreateAndOut
     );
     
     /*
-        ------------------------------StringFormatAction------------------------------
-        Time Cost Sequence(20 Times): 10188.9ns 6684.2ns 7073.6ns 6170.4ns 6430.8ns 7807.4ns 6931.5ns 6265.6ns 6286.6ns 6240.1ns 6181.0ns 6466.9ns 6170.1ns 6449.2ns 6194.5ns 6433.9ns 6471.3ns 6114.0ns 6370.9ns 6466.0ns 
-        20 Times Costs: 133396.9ns
-        Each Cost: 6484.632ns
-    */
-    public static void TestStringFormatActionSpeed() => TimeTest.RunTest(
-        StringFormatAction, nameof(StringFormatAction), 20,
-        TimeTest.RunTestOption.Warm | TimeTest.RunTestOption.Sequence
-    );
-        
-    /*
         ------------------------------MutableString------------------------------
         Memory Usage Sequence(5 Times): 0.20 KB 0.20 KB 0.20 KB 0.20 KB 0.20 KB 
         5 Times Memory Usage: 0.98 KB
@@ -151,25 +140,9 @@ public class MutableStringCreateAndOut
         MemoryTest.RunTestOption.Warm | MemoryTest.RunTestOption.Sequence
     );
     
-    /*
-        ------------------------------StringFormatAction------------------------------
-        Memory Usage Sequence(5 Times): 9296.88 KB 9296.88 KB 9296.88 KB 9296.88 KB 9296.88 KB 
-        5 Times Memory Usage: 46484.38 KB
-        Each Memory Usage: 9296.875 KB
-    */
-    public static void TestStringFormatActionMemory() => MemoryTest.RunTest(
-        StringFormatAction, nameof(StringFormatAction), 5,
-        MemoryTest.RunTestOption.Warm | MemoryTest.RunTestOption.Sequence
-    );
-    
     private static void StringConcatAction()
     {
         for (int i = 0; i < 100000; i++) string.Concat('A', i, "test").CopyTo(s_Buffer);
-    }
-    
-    private static void StringFormatAction()
-    {
-        for (int i = 0; i < 100000; i++) string.Format("{0}{1}{2}", 'A', i, "test").CopyTo(s_Buffer);
     }
 
     private const string TestString = "test";

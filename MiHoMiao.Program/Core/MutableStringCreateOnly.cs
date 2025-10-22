@@ -103,22 +103,11 @@ public class MutableStringCreateOnly
         StringConcatAction, nameof(string.Concat), 5,
         MemoryTest.RunTestOption.Warm | MemoryTest.RunTestOption.Sequence
     );
-    
-    public static void TestStringFormatMemory() => MemoryTest.RunTest(
-        StringFormatAction, nameof(string.Format), 5,
-        MemoryTest.RunTestOption.Warm | MemoryTest.RunTestOption.Sequence
-    );
 
     private static void StringConcatAction()
     {
         string ms = "";
         for (int i = 0; i < 100000; i++) ms = string.Concat(ms, 'A', i, "test");
-    }
-    
-    private static void StringFormatAction()
-    {
-        string ms = "";
-        for (int i = 0; i < 100000; i++) ms = string.Format("{0}{1}{2}{3}", ms, 'A', i, "test");
     }
     
     private static void MutableStringAction()
