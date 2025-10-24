@@ -11,4 +11,8 @@
       <ProjectReference Include="..\MiHoMiao.Core\MiHoMiao.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
+    </ItemGroup>
+
 </Project>

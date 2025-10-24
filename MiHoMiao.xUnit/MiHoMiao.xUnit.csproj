@@ -22,6 +22,7 @@
     <ItemGroup>
       <ProjectReference Include="..\MiHoMiao.Core\MiHoMiao.Core.csproj" />
       <ProjectReference Include="..\MiHoMiao.Jarfter\MiHoMiao.Jarfter.csproj" />
+      <ProjectReference Include="..\MiHoMiao.Migxn\MiHoMiao.Migxn.csproj" />
     </ItemGroup>
 
 </Project>
