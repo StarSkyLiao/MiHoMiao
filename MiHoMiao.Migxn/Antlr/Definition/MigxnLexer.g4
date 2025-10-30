@@ -11,6 +11,7 @@ WhiteSpace                  : (Whitespace | NewLine)+  -> channel(HIDDEN);
 Import:    'import';
 Export:    'export';
 From:      'from';
+In:        'in';
 With:      'with';
 
 Public:    'public';
@@ -30,50 +31,59 @@ Feature:   'feature';
 Var:       'var';
 Val:       'val';
 Let:       'let';
+Ref:       'ref';
 Fun:       'fun';
 Get:       'get';
 Set:       'set';
+Using:     'using';
 
-If:        'if';
-Else:      'else';
 
 And:       'and';
 Or:        'or';
+Xor:       'xor';
 Not:       'not';
 Is:        'is';
 As:        'as';
 
+If:        'if';
+Else:      'else';
 Goto:      'goto';
 Label:     'label::';
 Loop:      'loop';
+Do:        'do';
 While:     'while';
+When:      'when';
+End:       'end';
 Pass:      'pass';
 Break:     'break';
 Return:    'ret';
+Throw:     'throw';
+Yield:     'yield';
+
+Try:       'try';
+Catch:     'catch';
+Finally:   'finally';
 
 Bool:      'bool';
 Char:      'char';
 I32:       'i32';
 I64:       'i64';
-R32:       'r32';
-R64:       'r64';
+R32:       'f32';
+R64:       'f64';
 String:    'string';
-Any:       'any';
+Object:    'object';
 
 Identifier: '@'? IdentifierOrKeyword;
 
 // Literals
-// 0.Equals() would be parsed as an invalid real (1. branch) causing a lexer error
-LITERAL_ACCESS      : [0-9] ('_'* [0-9])* 'L'? '.' '@'? IdentifierOrKeyword;
+CharLiteral       : '\'' (~['\\\r\n\u0085\u2028\u2029] | CommonCharacter) '\'';
 IntegerLiteral      : [0-9] ('_'* [0-9])* 'L'?;
 HexIntegerLiteral   : '0' [xX] ('_'* HexDigit)+ 'L'?;
 BinIntegerLiteral   : '0' [bB] ('_'* [01])+ 'L'?;
-RealNumberLiteal:
-    ([0-9] ('_'* [0-9])*)? '.' [0-9] ('_'* [0-9])* ExponentPart? [FfDdMm]?
-    | [0-9] ('_'* [0-9])* ([FfDdMm] | ExponentPart [FfDdMm]?)
-;
 
-CharLiteral       : '\'' (~['\\\r\n\u0085\u2028\u2029] | CommonCharacter) '\'';
+FloatNumberLiteal   : [0-9] [_0-9]* ('.' [0-9]+)? [FfDdMm]?;
+ExponentFloatLiteal : [0-9] [_0-9]* ('.' [0-9]+)? ExponentPart [FfDdMm]?;
+
 StringLiteral     : '"' (~["\\\r\n\u0085\u2028\u2029] | CommonCharacter)* '"';
 VerbatimString    : '@"' (~'"' | '""')* '"';
 
@@ -85,6 +95,7 @@ CloseBracket    : ']';
 OpenParens      : '(';
 CloseParens     : ')';
 Dot             : '.';
+Infinity        : '..';
 Comma           : ',';
 Colon           : ':';
 SemiColon       : ';';
@@ -93,6 +104,7 @@ Sub             : '-';
 Mul             : '*';
 Div             : '/';
 Rem             : '%';
+Pow             : '**';
 LogicAnd        : '&';
 LogicOr         : '|';
 LogicXor        : '^';
@@ -100,10 +112,10 @@ Bang            : '!';
 Tilde           : '~';
 Assign          : '=';
 Interr          : '?';
-DoubleColon     : '::';
 Inc             : '++';
 Dec             : '--';
 Arrow           : '->';
+Pip             : '|>';
 Ceq             : '==';
 Cneq            : '!=';
 Cle             : '<=';
@@ -120,13 +132,16 @@ OrAssign        : '|=';
 XorAssign       : '^=';
 Shl             : '<<';
 Shr             : '>>';
+MetaField       : '::';
+NullField       : '?.';
+NullTest        : '??';
 NullAssign      : '??=';
 
 // Fragments
 
 fragment InputCharacter: ~[\r\n\u0085\u2028\u2029];
 
-fragment ExponentPart      : [eE] ('+' | '-')? [0-9] ('_'* [0-9])*;
+fragment ExponentPart  : [eE] ('+' | '-')? [0-9] ('_'* [0-9])*;
 
 fragment CommonCharacter: SimpleEscapeSequence | HexEscapeSequence | UnicodeEscapeSequence;
 

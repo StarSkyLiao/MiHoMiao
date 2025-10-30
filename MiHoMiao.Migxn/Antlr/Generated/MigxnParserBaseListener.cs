@@ -39,6 +39,706 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class MigxnParserBaseListener : IMigxnParserListener {
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.root"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRoot([NotNull] MigxnParser.RootContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.root"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRoot([NotNull] MigxnParser.RootContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.typeDefinition"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTypeDefinition([NotNull] MigxnParser.TypeDefinitionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.typeDefinition"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTypeDefinition([NotNull] MigxnParser.TypeDefinitionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.typeKeywords"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTypeKeywords([NotNull] MigxnParser.TypeKeywordsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.typeKeywords"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTypeKeywords([NotNull] MigxnParser.TypeKeywordsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.featureList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFeatureList([NotNull] MigxnParser.FeatureListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.featureList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFeatureList([NotNull] MigxnParser.FeatureListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.memberDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMemberDeclaration([NotNull] MigxnParser.MemberDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.memberDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMemberDeclaration([NotNull] MigxnParser.MemberDeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FieldMember</c>
+	/// labeled alternative in <see cref="MigxnParser.memberBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFieldMember([NotNull] MigxnParser.FieldMemberContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FieldMember</c>
+	/// labeled alternative in <see cref="MigxnParser.memberBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFieldMember([NotNull] MigxnParser.FieldMemberContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>GetOrSetMember</c>
+	/// labeled alternative in <see cref="MigxnParser.memberBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGetOrSetMember([NotNull] MigxnParser.GetOrSetMemberContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>GetOrSetMember</c>
+	/// labeled alternative in <see cref="MigxnParser.memberBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGetOrSetMember([NotNull] MigxnParser.GetOrSetMemberContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>PropertyMember</c>
+	/// labeled alternative in <see cref="MigxnParser.memberBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPropertyMember([NotNull] MigxnParser.PropertyMemberContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>PropertyMember</c>
+	/// labeled alternative in <see cref="MigxnParser.memberBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPropertyMember([NotNull] MigxnParser.PropertyMemberContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>MethodMember</c>
+	/// labeled alternative in <see cref="MigxnParser.memberBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMethodMember([NotNull] MigxnParser.MethodMemberContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MethodMember</c>
+	/// labeled alternative in <see cref="MigxnParser.memberBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMethodMember([NotNull] MigxnParser.MethodMemberContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.accessAbility"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAccessAbility([NotNull] MigxnParser.AccessAbilityContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.accessAbility"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAccessAbility([NotNull] MigxnParser.AccessAbilityContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.memberKeyword"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMemberKeyword([NotNull] MigxnParser.MemberKeywordContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.memberKeyword"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMemberKeyword([NotNull] MigxnParser.MemberKeywordContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.lambdaBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLambdaBody([NotNull] MigxnParser.LambdaBodyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.lambdaBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLambdaBody([NotNull] MigxnParser.LambdaBodyContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.paramList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParamList([NotNull] MigxnParser.ParamListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.paramList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParamList([NotNull] MigxnParser.ParamListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.param"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParam([NotNull] MigxnParser.ParamContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.param"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParam([NotNull] MigxnParser.ParamContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.memberAttribute"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMemberAttribute([NotNull] MigxnParser.MemberAttributeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.memberAttribute"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMemberAttribute([NotNull] MigxnParser.MemberAttributeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>PipStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPipStatement([NotNull] MigxnParser.PipStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>PipStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPipStatement([NotNull] MigxnParser.PipStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>CallStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCallStatement([NotNull] MigxnParser.CallStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>CallStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCallStatement([NotNull] MigxnParser.CallStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>BlockStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBlockStmt([NotNull] MigxnParser.BlockStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BlockStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBlockStmt([NotNull] MigxnParser.BlockStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>SingleStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSingleStmt([NotNull] MigxnParser.SingleStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>SingleStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSingleStmt([NotNull] MigxnParser.SingleStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>DeclStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDeclStmt([NotNull] MigxnParser.DeclStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>DeclStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDeclStmt([NotNull] MigxnParser.DeclStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignStmt([NotNull] MigxnParser.AssignStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AssignStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignStmt([NotNull] MigxnParser.AssignStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>LabelStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLabelStmt([NotNull] MigxnParser.LabelStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>LabelStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLabelStmt([NotNull] MigxnParser.LabelStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>VarStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVarStmt([NotNull] MigxnParser.VarStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>VarStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVarStmt([NotNull] MigxnParser.VarStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ValStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterValStmt([NotNull] MigxnParser.ValStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ValStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitValStmt([NotNull] MigxnParser.ValStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>GetStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGetStmt([NotNull] MigxnParser.GetStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>GetStmt</c>
+	/// labeled alternative in <see cref="MigxnParser.declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGetStmt([NotNull] MigxnParser.GetStmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignment([NotNull] MigxnParser.AssignmentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignment([NotNull] MigxnParser.AssignmentContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.assignOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignOp([NotNull] MigxnParser.AssignOpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.assignOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignOp([NotNull] MigxnParser.AssignOpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>IfStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfStatement([NotNull] MigxnParser.IfStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IfStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfStatement([NotNull] MigxnParser.IfStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>WhenStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhenStatement([NotNull] MigxnParser.WhenStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>WhenStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhenStatement([NotNull] MigxnParser.WhenStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>WhileStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileStatement([NotNull] MigxnParser.WhileStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>WhileStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileStatement([NotNull] MigxnParser.WhileStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>DoStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDoStatement([NotNull] MigxnParser.DoStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>DoStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDoStatement([NotNull] MigxnParser.DoStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>LoopStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLoopStatement([NotNull] MigxnParser.LoopStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>LoopStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLoopStatement([NotNull] MigxnParser.LoopStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>BreakStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBreakStatement([NotNull] MigxnParser.BreakStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BreakStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBreakStatement([NotNull] MigxnParser.BreakStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ContinueStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterContinueStatement([NotNull] MigxnParser.ContinueStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ContinueStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitContinueStatement([NotNull] MigxnParser.ContinueStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>GotoStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGotoStatement([NotNull] MigxnParser.GotoStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>GotoStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGotoStatement([NotNull] MigxnParser.GotoStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ReturnStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterReturnStatement([NotNull] MigxnParser.ReturnStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ReturnStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitReturnStatement([NotNull] MigxnParser.ReturnStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ReturnEmptyStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterReturnEmptyStatement([NotNull] MigxnParser.ReturnEmptyStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ReturnEmptyStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitReturnEmptyStatement([NotNull] MigxnParser.ReturnEmptyStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ThrowStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterThrowStatement([NotNull] MigxnParser.ThrowStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ThrowStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitThrowStatement([NotNull] MigxnParser.ThrowStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>YieldStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterYieldStatement([NotNull] MigxnParser.YieldStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>YieldStatement</c>
+	/// labeled alternative in <see cref="MigxnParser.simpleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitYieldStatement([NotNull] MigxnParser.YieldStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.when_case"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhen_case([NotNull] MigxnParser.When_caseContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.when_case"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhen_case([NotNull] MigxnParser.When_caseContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>MetaExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMetaExpr([NotNull] MigxnParser.MetaExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MetaExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMetaExpr([NotNull] MigxnParser.MetaExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AndExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAndExpr([NotNull] MigxnParser.AndExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AndExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAndExpr([NotNull] MigxnParser.AndExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>BinaryExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBinaryExpr([NotNull] MigxnParser.BinaryExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>BinaryExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBinaryExpr([NotNull] MigxnParser.BinaryExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ConditionalExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterConditionalExpr([NotNull] MigxnParser.ConditionalExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ConditionalExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitConditionalExpr([NotNull] MigxnParser.ConditionalExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>TupleExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTupleExpr([NotNull] MigxnParser.TupleExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>TupleExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTupleExpr([NotNull] MigxnParser.TupleExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>OrExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOrExpr([NotNull] MigxnParser.OrExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>OrExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOrExpr([NotNull] MigxnParser.OrExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>IndexExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIndexExpr([NotNull] MigxnParser.IndexExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IndexExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIndexExpr([NotNull] MigxnParser.IndexExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NullTestExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNullTestExpr([NotNull] MigxnParser.NullTestExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NullTestExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNullTestExpr([NotNull] MigxnParser.NullTestExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ParenthesesExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParenthesesExpr([NotNull] MigxnParser.ParenthesesExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ParenthesesExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParenthesesExpr([NotNull] MigxnParser.ParenthesesExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>CallExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCallExpr([NotNull] MigxnParser.CallExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>CallExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCallExpr([NotNull] MigxnParser.CallExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NotExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNotExpr([NotNull] MigxnParser.NotExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NotExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNotExpr([NotNull] MigxnParser.NotExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>FieldExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFieldExpr([NotNull] MigxnParser.FieldExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>FieldExpr</c>
+	/// labeled alternative in <see cref="MigxnParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFieldExpr([NotNull] MigxnParser.FieldExprContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>SingleExpr</c>
 	/// labeled alternative in <see cref="MigxnParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -52,6 +752,142 @@ public partial class MigxnParserBaseListener : IMigxnParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSingleExpr([NotNull] MigxnParser.SingleExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.arguments"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArguments([NotNull] MigxnParser.ArgumentsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.arguments"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArguments([NotNull] MigxnParser.ArgumentsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.tuple"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTuple([NotNull] MigxnParser.TupleContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.tuple"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTuple([NotNull] MigxnParser.TupleContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.integer"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInteger([NotNull] MigxnParser.IntegerContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.integer"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInteger([NotNull] MigxnParser.IntegerContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.float"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFloat([NotNull] MigxnParser.FloatContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.float"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFloat([NotNull] MigxnParser.FloatContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.string"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterString([NotNull] MigxnParser.StringContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.string"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitString([NotNull] MigxnParser.StringContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.basePattern"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBasePattern([NotNull] MigxnParser.BasePatternContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.basePattern"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBasePattern([NotNull] MigxnParser.BasePatternContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.namespace"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNamespace([NotNull] MigxnParser.NamespaceContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.namespace"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNamespace([NotNull] MigxnParser.NamespaceContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.fullType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFullType([NotNull] MigxnParser.FullTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.fullType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFullType([NotNull] MigxnParser.FullTypeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MigxnParser.genericName"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGenericName([NotNull] MigxnParser.GenericNameContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MigxnParser.genericName"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGenericName([NotNull] MigxnParser.GenericNameContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>KeywordType</c>
+	/// labeled alternative in <see cref="MigxnParser.baseType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterKeywordType([NotNull] MigxnParser.KeywordTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>KeywordType</c>
+	/// labeled alternative in <see cref="MigxnParser.baseType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitKeywordType([NotNull] MigxnParser.KeywordTypeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NamedType</c>
+	/// labeled alternative in <see cref="MigxnParser.baseType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNamedType([NotNull] MigxnParser.NamedTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NamedType</c>
+	/// labeled alternative in <see cref="MigxnParser.baseType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNamedType([NotNull] MigxnParser.NamedTypeContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

@@ -9,91 +9,127 @@ options {
     tokenVocab = MigxnLexer;
 }
 
-compilationUnit
-    : importDirectives memberDeclarations+
-    ;
+root : simpleStatement;
 
-namespace_or_typeName
-    : (Identifier type_argument_list?) ('.' Identifier type_argument_list?)*
-    ;
-    
-type_argument_list
-    : '<' fullType (',' fullType)* '>'
-    ;
-    
-fullType : baseType ('?' | arraySuffix | '*')*;
+// ============================================================Type============================================================//
+typeDefinition : accessAbility typeKeywords? TypeName = genericName              // 类型定义
+                 ('in' Namespace = namespace)?                                   // 命名空间
+                 (From BaseType = fullType)?                                     // 基类型
+                 (With featureList)?                                             // 实现的特性
+                 memberDeclaration*                                              // 成员
+               ;
+typeKeywords: ValType | Secured | Virtual | Concept | Toolset | Feature;
+featureList : fullType (',' fullType)*;
+// ------------------------------------------------------------Type------------------------------------------------------------//
 
-baseType
-    : namespace_or_typeName                                               #NamedType
-    | '(' tupleElement (',' tupleElement)+ ')'                            #TupleType
-    | Keyword = (Bool | Char | I32 | I64 | R32 | R64 | String | Any)      #KeywordType
-    ;
+// ============================================================Member============================================================//
+memberDeclaration : memberAttribute? accessAbility memberKeyword MemberName = Identifier memberBody;
+memberBody : ':' fullType ('=' expression)?                                   #FieldMember
+           | ':' fullType '->' (statement | expression)                       #GetOrSetMember
+           | ':' fullType '{' accessAbility? 'set''}' ('=' expression)?       #PropertyMember
+           | lambdaBody                                                       #MethodMember
+           ;
+accessAbility : Public | Global | Asmbly | Family | Intern | Native;
+memberKeyword : Val | Var | Fun | Get | Set | Ref | Let;
+// ------------------------------------------------------------Member------------------------------------------------------------//
 
-tupleElement: fullType Identifier?;
+// ============================================================Lambda============================================================//
+lambdaBody : '(' paramList? ')' (':' ReturnType = fullType)? '->' (statement | expression);
+paramList : param (',' param)*;
+param : (Val | Var)? ParamName = Identifier ':' ParamType = fullType;
+// ------------------------------------------------------------Member------------------------------------------------------------//
 
-arraySuffix: '[' ','* ']';
+// ============================================================Attribute============================================================//
+memberAttribute : As (Identifier | Virtual | Concept | Secured)+ ':';
+// ------------------------------------------------------------Attribute------------------------------------------------------------//
 
-attributes: '[' attribute_list (',' attribute_list)* ','? ']';
-    
-attribute_list: attribute (',' attribute)*;
-    
-attribute: namespace_or_typeName (OpenParens (attribute_argument (',' attribute_argument)*)? CloseParens)?;
+// ============================================================Statement============================================================//
+statement : tuple '|>' expression #PipStatement
+          | expression arguments  #CallStatement
+          | '{' statement* '}'    #BlockStmt
+          
+          | simpleStatement       #SingleStmt
+          | declaration           #DeclStmt
+          | assignment            #AssignStmt
+          | Label Identifier      #LabelStmt
+          ;
+declaration : Using? Var VarName = Identifier                          assignOp Expression = expression     #VarStmt
+            | Using? Var VarName = Identifier  Colon Type = fullType  (assignOp Expression = expression)?   #VarStmt
+            | Using? Val VarName = Identifier (Colon Type = fullType)? assignOp Expression = expression     #ValStmt
+            | Using? Get VarName = Identifier (Colon Type = fullType)?  Arrow   Expression = expression     #GetStmt
+            ;
+assignment  : (tuple | VarName = Identifier)  (Colon Type = fullType)?  assignOp  Expression = expression;
+assignOp : Assign | AddAssign | SubAssign | MulAssign | DivAssign | RemAssign | AndAssign | OrAssign | XorAssign;
+simpleStatement : If '(' expression ')' statement ('else' statement)?            #IfStatement
+                | When '(' expression ')' whenStmtCase* End                      #WhenStatement
 
-attribute_argument: (Identifier ':')? expression;
+                | While '(' expression ')' statement                             #WhileStatement
+                | Do statement While '(' expression ')'                          #DoStatement
+                | Loop '(' expression ')' statement                              #LoopStatement
 
-expression
-    : LRound expression RRound                             #ParenthesesExpr
-    
-    | Left = expression
-      op = (Mul | Div | Rem)   
-      Right = expression                                   #BinaryExpr
-      
-    | <assoc=right> Left = expression
-      op = Pow
-      Right = expression                                   #BinaryExpr
-      
-    | Left = expression
-      op = (Add | Sub)
-      Right = expression                                   #BinaryExpr
+                | Break                                                          #BreakStatement
+                | Pass                                                           #ContinueStatement
+                | Goto Identifier                                                #GotoStatement
+                | Return expression                                              #ReturnStatement
+                | Return                                                         #ReturnEmptyStatement
+                | Throw expression?                                              #ThrowStatement
+                | Yield (Return expression | Break)                              #YieldStatement
+                ;
+whenStmtCase: '::' basePattern (Arrow statement)?;
+// ------------------------------------------------------------Statement------------------------------------------------------------//
 
-    | Left = expression
-      op = (Cgt | Cge | Clt | Cle)
-      Right = expression                                   #BinaryExpr
-      
-    | Left = expression
-          op = (Eql | Ueql)
-      Right = expression                                   #BinaryExpr
-             
-    | Left = expression
-          op = (And | Or)
-      Right = expression                                   #AndOrExpr      
-     
-    | Value = (Integer | Float | String | Char | Name)     #SingleExpr
-    ;
+// ============================================================Expression============================================================//
+expression : OpenParens expression CloseParens                                        #ParenthesesExpr
+           | expression '[' expression (',' expression)* ']'                          #IndexExpr
+           | expression op = ( '?.' |'.' ) Identifier                                 #FieldExpr
+           | Identifier '::' Identifier                                               #MetaExpr
+           | expression When whenExprCase* End                                        #WhenExpr
+           | Not expression                                                           #NotExpr
+           | expression arguments                                                     #CallExpr
+           | tuple '|>' expression                                                    #CallExpr
+           | Left = expression op = (Mul | Div | Rem) Right = expression              #BinaryExpr
+           | <assoc=right> Left = expression op = Pow Right = expression              #BinaryExpr
+           | Left = expression op = (Add | Sub) Right = expression                    #BinaryExpr
+           | Left = expression op = (Cgt | Cge | Clt | Cle) Right = expression        #BinaryExpr
+           | Left = expression op = (Ceq | Cneq) Right = expression                   #BinaryExpr      
+           | Left = expression 'and' Right = expression                               #AndExpr    
+           | Left = expression 'or' Right = expression                                #OrExpr
+           | Left = expression '??' Right = expression                                #NullTestExpr      
+           | Left = expression '?' Then = expression ':' Else = expression            #ConditionalExpr
+           | tuple                                                                    #TupleExpr
+           | (number | string | genericName | lambdaBody)                             #SingleExpr
+           ;
+whenExprCase: '::' basePattern (Arrow expression)?;
+arguments : '(' (expression (',' expression)*)? ')';
+tuple : '{' (expression (',' expression)*)? '}';
+number : integer | float;
+integer : IntegerLiteral | HexIntegerLiteral | BinIntegerLiteral | CharLiteral;
+float : FloatNumberLiteal | ExponentFloatLiteal;
+string : StringLiteral | VerbatimString;
+// ------------------------------------------------------------Expression------------------------------------------------------------//
 
-assignment_operator : AddAssign | SubAssign | MulAssign | DivAssign | RemAssign | AndAssign | OrAssign | XorAssign;
+// ============================================================Pattern============================================================//
+basePattern : fullType
+            | '(' basePattern ')'
+            | 'not' basePattern
+            | basePattern 'and' basePattern
+            | basePattern 'or' basePattern
+            | basePattern 'xor' basePattern
+            | number
+            | string
+            | In range
+            | op = (Cgt | Cge | Clt | Cle) basePattern
+            ;
+range: ('(' Infinity | ('[' | '(')  expression) ',' (Infinity ')' | expression (']' | ')')) ;
+// ------------------------------------------------------------Pattern------------------------------------------------------------//
 
-importDirectives: importDirective+;
-    
-importDirective
-    : Import namespace_or_typeName ';'
-    | Import Identifier From namespace_or_typeName ';'
-    ;
 
-memberDeclarations
-    : (Export namespace_or_typeName)?                                 // 命名空间
-      accessAbilityToken typeDeinition? Identifier                    // 类型定义
-      (':' namespace_or_typeName)?                                    // 基类型
-      (With namespace_or_typeName (',' namespace_or_typeName)*)?      // 实现的特性
-      memberDeclaration+                                              // 成员
-    ;
-
-accessAbilityToken: Public | Global | Asmbly | Family | Intern | Native;
-
-typeDeinition: ValType | Secured | Virtual | Concept | Toolset | Feature;
-
-memberDeclaration
-    : fieldMember
-    ;
-
-fieldMember: attributes? accessAbilityToken Type = (Val | Var) Identifier ':' namespace_or_typeName ('=' expression);
+// ============================================================NameExpr============================================================//
+//namespace_or_typeName : genericName ('.' genericName)*;
+namespace : Identifier ('.' Identifier)*;
+fullType : baseType ('?' | '['']' | '*')*;
+genericName : Identifier ('<' Generic = fullType (',' Generic = fullType)* '>')?;
+baseType : Keyword = (Bool | Char | I32 | I64 | R32 | R64 | String | Object)   #KeywordType
+         | genericName                                                         #NamedType
+         ;
+// ------------------------------------------------------------NameExpr------------------------------------------------------------//
