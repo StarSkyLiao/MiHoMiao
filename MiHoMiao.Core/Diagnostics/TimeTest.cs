@@ -15,6 +15,8 @@ namespace MiHoMiao.Core.Diagnostics;
 /// </summary>
 public static class TimeTest
 {
+    private static readonly StringBuilder s_StringBuilder = new StringBuilder(4096);
+    
     private static readonly Stopwatch s_Stopwatch = new Stopwatch();
     
     /// <summary>
@@ -22,53 +24,49 @@ public static class TimeTest
     /// </summary>
     public static void RunTest(Action testAction, string? name = null, int iterations = 1, RunTestOption option = 0)
     {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append("------------------------------");
-        stringBuilder.Append($"{name ?? testAction.ToString()}");
-        stringBuilder.AppendLine("------------------------------");
+        s_StringBuilder.Clear();
+        s_StringBuilder.Append("------------------------------");
+        s_StringBuilder.Append($"{name ?? testAction.ToString()}");
+        s_StringBuilder.AppendLine("------------------------------");
         
         if ((option & RunTestOption.Warm) != 0) testAction();
         
         s_Stopwatch.Reset();
+        
+        Span<double> eachTicks = iterations > 512 ? new double[iterations] : stackalloc double[iterations];
+        for (int i = 0; i < iterations; i++)
+        {
+            double old = s_Stopwatch.Elapsed.TotalSeconds;
+            s_Stopwatch.Start();
+            testAction();
+            s_Stopwatch.Stop();
+            eachTicks[i] = s_Stopwatch.Elapsed.TotalSeconds - old;
+        }
 
+        s_StringBuilder.AppendLine("Perf Result:");
+        s_StringBuilder.AppendLine($"--{iterations} Times Costs: {s_Stopwatch.Elapsed.TotalSeconds.NumberString("G5")}s");
+        s_StringBuilder.AppendLine($"--Each Cost: {(s_Stopwatch.Elapsed.TotalSeconds / iterations).NumberString("G5")}s");
+        
+        if ((option & RunTestOption.Best75) != 0)
+        {
+            int takeCount = (iterations - (iterations >> 2)).Min(1);
+            eachTicks.Sort();
+            eachTicks = eachTicks[..takeCount];
+            double fast75Time = 0;
+            foreach (double item in eachTicks) fast75Time += item;
+            
+            s_StringBuilder.AppendLine("As for the fastest 75%:");
+            s_StringBuilder.AppendLine($"--(75%){takeCount} Times Costs: {fast75Time.NumberString("G5")}s");
+            s_StringBuilder.AppendLine($"--(75%)Each Cost: {(fast75Time / takeCount).NumberString("G5")}s");
+        }
+        
         if ((option & RunTestOption.Sequence) != 0)
         {
-            double[] eachTicks = new double[iterations];
-
-            for (int i = 0; i < iterations; i++)
-            {
-                long old = s_Stopwatch.ElapsedTicks;
-                s_Stopwatch.Start();
-                testAction();
-                s_Stopwatch.Stop();
-                eachTicks[i] = s_Stopwatch.ElapsedTicks - old;
-            }
-            
-            Array.Sort(eachTicks);
-            int takeCount = (iterations - (iterations >> 2)).Min(1);
-            double fast75Ticks = 0;
-            for (int i = 0; i < takeCount; i++) fast75Ticks += eachTicks[i];
-
-            stringBuilder.Append($"Time Cost Sequence({iterations} Times, fastest 75%): ");
-            for (int i = 0; i < takeCount; i++) stringBuilder.Append($"{0.1 * eachTicks[i]:F1}ns ");
-            stringBuilder.AppendLine();
-            stringBuilder.AppendLine($"75%({takeCount}) total : {0.1 * fast75Ticks:F1}ns");
-            stringBuilder.AppendLine($"75%({takeCount}) average: {0.1 * fast75Ticks / takeCount:F3}ns");
-        }
-        else
-        {
-            s_Stopwatch.Restart();
-            for (int i = 0; i < iterations; i++) testAction();
-            s_Stopwatch.Stop();
-
-            stringBuilder.AppendLine($"{iterations} Times Costs: {0.1 * s_Stopwatch.ElapsedTicks:F1}ns");
-            stringBuilder.AppendLine($"Each Cost: {0.1 * s_Stopwatch.ElapsedTicks / iterations:F3}ns");
+            foreach (double item in eachTicks) s_StringBuilder.Append($"{item.NumberString("F1")}s ");
         }
 
-        stringBuilder.AppendLine($"{iterations} Times Costs: {0.1 * s_Stopwatch.ElapsedTicks:F1}ns");
-        stringBuilder.AppendLine($"Each Cost: {0.1 * s_Stopwatch.ElapsedTicks / iterations:F3}ns");
-        
-        Console.WriteLine(stringBuilder.ToString());
+        s_StringBuilder.AppendLine("-----------------------------------------------------------------");
+        Console.WriteLine(s_StringBuilder.ToString());
     }
     
     [Flags]
@@ -76,6 +74,22 @@ public static class TimeTest
     {
         Warm         = 0b0000_0001,
         Sequence     = 0b0000_0010,
+        Best75       = 0b0000_0100,
     }
-    
+
+    private static string NumberString(this double value, string? format = null) => value switch
+    {
+        >= 1e+15 => $"{(value / 1e+15).ToString(format)}T",
+        >= 1e+12 and < 1e+15 => $"{(value / 1e+12).ToString(format)}T",
+        >= 1e+9 and < 1e+12 => $"{(value / 1e+9).ToString(format)}G",
+        >= 1e+6 and < 1e+9 => $"{(value / 1e+6).ToString(format)}M",
+        >= 1e+3 and < 1e+6 => $"{(value / 1e+3).ToString(format)}K",
+        >= 1e+0 and < 1e+3 => $"{(value / 1).ToString(format)}",
+        >= 1e-3 and < 1e+0 => $"{(value / 1e-3).ToString(format)}m",
+        >= 1e-6 and < 1e-3 => $"{(value / 1e-6).ToString(format)}μ",
+        >= 1e-9 and < 1e-6 => $"{(value / 1e-9).ToString(format)}n",
+        < 1e-9 => $"{(value / 1e-12).ToString(format)}n",
+        _ => value.ToString(format)
+    };
+
 }
