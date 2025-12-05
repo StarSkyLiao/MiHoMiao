@@ -62,7 +62,9 @@ public static class TimeTest
         
         if ((option & RunTestOption.Sequence) != 0)
         {
+            s_StringBuilder.AppendLine("Sequence Result:");
             foreach (double item in eachTicks) s_StringBuilder.Append($"{item.NumberString("F1")}s ");
+            s_StringBuilder.AppendLine();
         }
 
         s_StringBuilder.AppendLine("-----------------------------------------------------------------");
