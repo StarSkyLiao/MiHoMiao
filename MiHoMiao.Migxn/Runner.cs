@@ -76,43 +76,6 @@ public static class Runner
         
         native valType List<T>.Enumerator with IEnumerable<T>
         
-        
-        
-        
-        internal class List<T> : System.Collections.Generic.IList<T>
-        {
-        private int m_InmultableValue;
-        private double m_FloatVariable = 1.5;
-        private string m_ConstValue = "12345";
-        
-        internal int InmultableValue => 1;
-        internal int MultableVariable => m_MultableVariable;
-        internal int MultableVariable => m_MultableVariable = value;
-        
-        internal double NormalProperty  { get; private set; } = 1.5;
-        internal double RefProperty { get; set; } = m_FloatVariable;
-        
-        internal void Mul() => 1;
-        internal void Mul(int a, double b) => 1;
-        
-        internal fun Mul(int a, double b) {
-            int item() => Math.Pow(2, 3);
-            Pow();
-            Pow(1);
-            Mul(Mul(2, 3), 0);
-            FloatVariable *= self[0];
-            MultableVariable *= a
-            ( 2, 3 ) *= 1;
-            ( FloatVariable, MultableVariable ) *= ( MultableVariable, FloatVariable );
-            // var func = () : int -> 1
-        }
-        
-        public Action GetEnumerator = () => { return 1; };
-        
-        public Action GetEnumerator = () => 2;
-        
-        }
-        
         """;
     
     public static void Run()
@@ -122,7 +85,7 @@ public static class Runner
             var lexer = new MigxnLexer(new AntlrInputStream(Input));
             var tokens = new CommonTokenStream(lexer);
             tokens.Fill();
-        }, nameof(AntlrInputStream), 20, TimeTest.RunTestOption.Warm | TimeTest.RunTestOption.Sequence);
+        }, nameof(AntlrInputStream), 20, TimeTest.RunTestOption.Best75 | TimeTest.RunTestOption.Sequence);
 
     }
     
