@@ -89,4 +89,15 @@ public static class Runner
 
     }
     
+    public static void RunMemory()
+    {
+        MemoryTest.RunTest(() =>
+        {
+            var lexer = new MigxnLexer(new AntlrInputStream(Input));
+            var tokens = new CommonTokenStream(lexer);
+            tokens.Fill();
+        }, nameof(MigxnLexer), 10, MemoryTest.RunTestOption.Best75 | MemoryTest.RunTestOption.Sequence);
+
+    }
+    
 }
