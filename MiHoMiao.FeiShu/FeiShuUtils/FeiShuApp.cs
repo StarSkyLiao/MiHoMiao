@@ -106,7 +106,8 @@ public sealed class FeiShuApp(string appId, string appSecret) : IDisposable
     public async Task SendCardMessageAsync(CardMessage card, string receiveId)
     {
         string accessToken = await GetAccessTokenAsync();
-        card.EmailAddress = receiveId;
+        if (receiveId.Contains('@')) card.EmailAddress = receiveId;
+        else card.OpenChatId = receiveId;
         
         string json = JsonSerializer.Serialize(card);
         StringContent content = new StringContent(json, Encoding.UTF8, "application/json");

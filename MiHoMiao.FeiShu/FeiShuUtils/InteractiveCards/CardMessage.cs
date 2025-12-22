@@ -7,6 +7,7 @@ namespace MiHoMiao.FeiShu.FeiShuUtils.InteractiveCards;
 public class CardMessage(string title, string? subTitle = null, string? template = null)
 {
     public string? EmailAddress { get; set; }
+    public string? OpenChatId { get; set; }
     public static string MsgType => "interactive";
     public string Title { get; set; } = title;
     public string? SubTitle { get; set; } = subTitle;
@@ -21,7 +22,8 @@ public sealed class CardMessageConverter : JsonConverter<CardMessage>
     public override void Write(Utf8JsonWriter writer, CardMessage value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();
-        writer.WriteString("email", value.EmailAddress);
+        if (value.EmailAddress != null) writer.WriteString("email", value.EmailAddress);
+        if (value.OpenChatId != null) writer.WriteString("open_chat_id", value.OpenChatId);
         writer.WriteString("msg_type", CardMessage.MsgType);
         writer.WritePropertyName("card");
         WriteCard(writer, value, options);
