@@ -88,7 +88,13 @@ public sealed class FeiShuApp(string appId, string appSecret) : IDisposable
         string accessToken = await GetAccessTokenAsync();
 
         RichTextReq richText = NetHelper.WrapRichMsg(title, [[content]], emailAddress);
-        StringContent stringContent = new StringContent(JsonSerializer.Serialize(richText), Encoding.UTF8, "application/json");
+        string json = JsonSerializer.Serialize(richText);
+        if (emailAddress.StartsWith("https://open.larkoffice.com/open-apis/bot/v2/hook/"))
+        {
+            await FeiShuWebhookBot.SendMessageAsync(emailAddress, json);
+            return;
+        }
+        StringContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
         
         const string Address = "https://fsopen.bytedance.net/open-apis/message/v4/send/";
         // 创建 HttpRequestMessage
@@ -110,6 +116,11 @@ public sealed class FeiShuApp(string appId, string appSecret) : IDisposable
         else card.OpenChatId = receiveId;
         
         string json = JsonSerializer.Serialize(card);
+        if (receiveId.StartsWith("https://open.larkoffice.com/open-apis/bot/v2/hook/"))
+        {
+            await FeiShuWebhookBot.SendMessageAsync(receiveId, json);
+            return;
+        }
         StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
         const string Address = "https://fsopen.bytedance.net/open-apis/message/v4/send/";

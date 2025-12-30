@@ -5,7 +5,7 @@ using MiHoMiao.FeiShu.FeiShuUtils.Structs;
 
 namespace MiHoMiao.FeiShu.FeiShuUtils;
 
-internal static class NetHelper
+public static class NetHelper
 {
     extension(FeiShuApp feiShuApp)
     {
