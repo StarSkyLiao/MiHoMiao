@@ -62,6 +62,8 @@ public static class MemoryTest
             s_StringBuilder.AppendLine("As for the best 75%:");
             s_StringBuilder.AppendLine($"--(75%){takeCount} Times Costs: {fast75Time.NumberString("G5")} Bytes");
             s_StringBuilder.AppendLine($"--(75%)Each Cost: {(fast75Time / takeCount).NumberString("G5")} Bytes");
+            double warmup = totalMemoryBytes - fast75Time / takeCount * iterations;
+            s_StringBuilder.AppendLine($"Warmup Cost: {warmup.NumberString("G5")} Bytes");
         }
         
         if ((option & RunTestOption.Sequence) != 0)

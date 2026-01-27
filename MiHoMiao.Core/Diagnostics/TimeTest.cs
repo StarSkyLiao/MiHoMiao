@@ -58,6 +58,8 @@ public static class TimeTest
             s_StringBuilder.AppendLine("As for the fastest 75%:");
             s_StringBuilder.AppendLine($"--(75%){takeCount} Times Costs: {fast75Time.NumberString("G5")}s");
             s_StringBuilder.AppendLine($"--(75%)Each Cost: {(fast75Time / takeCount).NumberString("G5")}s");
+            double warmup = s_Stopwatch.Elapsed.TotalSeconds - fast75Time / takeCount * iterations;
+            s_StringBuilder.AppendLine($"Warmup Cost: {warmup.NumberString("G5")}s");
         }
         
         if ((option & RunTestOption.Sequence) != 0)
