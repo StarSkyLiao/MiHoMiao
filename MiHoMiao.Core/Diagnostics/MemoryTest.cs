@@ -13,7 +13,7 @@ public static class MemoryTest
     /// <summary>
     /// 运行时间使用测试，测量指定方法的时间消耗量。
     /// </summary>
-    public static void RunTest(Action testAction, string? name = null, int iterations = 1, RunTestOption option = 0)
+    public static void RunTest(Action testAction, string? name = null, int iterations = 1, PerfTestOption option = 0)
     {
         s_StringBuilder.Clear();
         s_StringBuilder.Append("------------------------------");
@@ -26,7 +26,7 @@ public static class MemoryTest
         GC.Collect();
 
         // 预热运行
-        if ((option & RunTestOption.Warm) != 0) testAction();
+        if ((option & PerfTestOption.Warm) != 0) testAction();
         
         GC.Collect();
         GC.WaitForPendingFinalizers();
@@ -51,7 +51,7 @@ public static class MemoryTest
         s_StringBuilder.AppendLine($"--{iterations} Times Costs: {totalMemoryBytes.NumberString("G5")} Bytes");
         s_StringBuilder.AppendLine($"--Each Cost: {(totalMemoryBytes / iterations).NumberString("G5")} Bytes");
         
-        if ((option & RunTestOption.Best75) != 0)
+        if ((option & PerfTestOption.Best75) != 0)
         {
             int takeCount = (iterations - (iterations >> 2)).Min(1);
             eachMemory.Sort();
@@ -66,7 +66,7 @@ public static class MemoryTest
             s_StringBuilder.AppendLine($"Warmup Cost: {warmup.NumberString("G5")} Bytes");
         }
         
-        if ((option & RunTestOption.Sequence) != 0)
+        if ((option & PerfTestOption.Sequence) != 0)
         {
             s_StringBuilder.AppendLine("Sequence Result:");
             foreach (double item in eachMemory) s_StringBuilder.Append($"{item.NumberString("F1")} Bytes ");
@@ -75,14 +75,6 @@ public static class MemoryTest
 
         s_StringBuilder.AppendLine("-----------------------------------------------------------------");
         Console.WriteLine(s_StringBuilder.ToString());
-    }
-    
-    [Flags]
-    public enum RunTestOption: byte
-    {
-        Warm         = 0b0000_0001,
-        Sequence     = 0b0000_0010,
-        Best75       = 0b0000_0100,
     }
     
     private static string NumberString(this double value, string? format = null) => value switch
