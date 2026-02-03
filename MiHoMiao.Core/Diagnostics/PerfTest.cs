@@ -1,5 +1,5 @@
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace MiHoMiao.Core.Diagnostics;
 
@@ -7,11 +7,11 @@ public static class PerfTest
 {
     public static TextWriter Output { get; set; } = Console.Out;
 
-    public static unsafe void RunTest<TResult>(Func<TResult> testAction,
+    public static void RunTest<TResult>(Func<TResult> testAction,
         PerfTestSetting option, [CallerArgumentExpression(nameof(testAction))] string? name = null
     ) => RunTestInternal(testAction, option, name?.Replace('\n', ' ').Replace('\r', ' ') ?? "null");
     
-    public static unsafe void RunTest<TResult, T1>(Func<T1, TResult> testAction,
+    public static void RunTest<TResult, T1>(Func<T1, TResult> testAction,
         T1 arg1,
         PerfTestSetting option, [CallerArgumentExpression(nameof(testAction))] string? name = null
     ) => RunTestInternal(() => testAction(arg1), option, name?.Replace('\n', ' ').Replace('\r', ' ') ?? "null");
@@ -26,7 +26,7 @@ public static class PerfTest
         PerfTestSetting option, [CallerArgumentExpression(nameof(testAction))] string? name = null
     ) => RunTestInternal(() => testAction(arg1, arg2, arg3), option, name?.Replace('\n', ' ').Replace('\r', ' ') ?? "null");
 
-    private static unsafe void RunTestInternal<TResult>(Func<TResult> testAction, PerfTestSetting option, string testMethodName)
+    private static void RunTestInternal<TResult>(Func<TResult> testAction, PerfTestSetting option, string testMethodName)
     {
         ConsoleColor defaultColor = Console.ForegroundColor; 
         Console.ForegroundColor = ConsoleColor.Cyan;
@@ -40,14 +40,22 @@ public static class PerfTest
             testAction();
             GcCollect(option.Option);
         }
-        Output.WriteLine($"Method: {testMethodName}, Iterations:{option.Iterations}, TestOption:{option}");
+        Output.WriteLine($"Method: {testMethodName}, Iterations: {option.Iterations}, TestOption: {option}");
+        Output.Write($"{"MeasureType",12}");
+        Output.Write($"{"Summary",12} ");
+        Output.Write($"{"Average",12} ");
+        Output.Write($"{"Error",12} ");
+        Output.Write($"{"可信度",9}");
+        Output.Write($"{' ',6}");
+        Output.WriteLine("方法返回值");
         RunMemory(testAction, option);
+        RunTime(testAction, option);
         Console.ForegroundColor = ConsoleColor.Cyan;
         Output.WriteLine(new string('-', 50));
         Console.ForegroundColor = defaultColor;
     }
 
-    public static unsafe void RunMemory<TResult>(Func<TResult> testAction, PerfTestSetting option)
+    public static void RunMemory<TResult>(Func<TResult> testAction, PerfTestSetting option)
     {
         if (option.LoopCount < 1) option = option with { LoopCount = 1 };
         uint iterations = option.Iterations;
@@ -70,13 +78,51 @@ public static class PerfTest
         
         double variance = Math.Sqrt(eachTest.VariancePopulation()) / option.LoopCount;
         double summary = eachTest.Summation() / option.LoopCount;
-        double average = summary / iterations / option.LoopCount;
+        double average = summary / iterations;
 
-        Output.Write("Memory:\t");
-        Output.Write($"{summary.NumberString("F2"),12}");
-        Output.Write($"{average.NumberString("F2"),12}");
-        Output.Write($"{summary.NumberString("F2"),12}");
+        Output.Write($"{"Memory",12}");
+        Output.Write($"{summary.NumberString("F2"),12}B");
+        Output.Write($"{average.NumberString("F2"),12}B");
+        Output.Write($"{variance.NumberString("F2"),12}B");
         Output.Write($"{((average is not 0) ? (1 - variance / average) : 1),12:P2}");
+        Output.Write($"{' ',6}");
+        Output.Write($"{testAction()?.ToString()}");
+        Output.WriteLine();
+    }
+    
+    public static void RunTime<TResult>(Func<TResult> testAction, PerfTestSetting option)
+    {
+        Stopwatch stopwatch = new Stopwatch();
+        if (option.LoopCount < 1) option = option with { LoopCount = 1 };
+        uint iterations = option.Iterations;
+        Span<double> eachTest = iterations > 512 ? new double[iterations] : stackalloc double[(int)iterations];
+        for (int i = 0; i < iterations; i++)
+        {
+            GcCollect(PerfTestOption.None);
+            TimeSpan old = stopwatch.Elapsed;
+            stopwatch.Start();
+            for (int index = (int)option.LoopCount; index > 0; index--) testAction();
+            stopwatch.Stop();
+            eachTest[i] = stopwatch.Elapsed.Ticks - old.Ticks;
+            GcCollect(PerfTestOption.None);
+        }
+        if ((option.Option & PerfTestOption.Best75) != 0)
+        {
+            uint takeCount = Math.Max(iterations - (iterations >> 2), 1);
+            eachTest.Sort();
+            eachTest = eachTest[..(int)takeCount];
+        }
+        
+        double variance = Math.Sqrt(eachTest.VariancePopulation()) / option.LoopCount / TimeSpan.TicksPerSecond;
+        double summary = (double)stopwatch.Elapsed.Ticks / option.LoopCount / TimeSpan.TicksPerSecond;
+        double average = summary / iterations;
+
+        Output.Write($"{"Time",12}");
+        Output.Write($"{summary.NumberString("F2"),12}s");
+        Output.Write($"{average.NumberString("F2"),12}s");
+        Output.Write($"{variance.NumberString("F2"),12}s");
+        Output.Write($"{((average is not 0) ? (1 - variance / average) : 1),12:P2}");
+        Output.Write($"{' ',6}");
         Output.Write($"{testAction()?.ToString()}");
         Output.WriteLine();
     }
@@ -88,6 +134,7 @@ public static class PerfTest
         GC.Collect();
         GC.WaitForPendingFinalizers();
         GC.Collect();
+        GC.WaitForPendingFinalizers();
     }
     
     private static string NumberString(this double value, string? format = null) => value switch
@@ -135,6 +182,36 @@ public static class PerfTest
         {
             double sum = 0;
             foreach (double item in span) sum += item;
+            return sum;
+        }
+    }
+    
+    extension(ReadOnlySpan<TimeSpan> span)
+    {
+        private double VariancePopulation()
+        {
+            double mean = 0;
+            double m2 = 0;
+        
+            for (int i = 0; i < span.Length; i++)
+            {
+                double x = span[i].Ticks;
+                double delta = x - mean;
+                mean += delta / (i + 1);
+                double delta2 = x - mean;
+                m2 += delta * delta2;
+            }
+
+            return m2 / span.Length;
+        }
+
+        /// <summary>
+        /// 计算数据总和
+        /// </summary>
+        private double Summation()
+        {
+            double sum = 0;
+            foreach (TimeSpan item in span) sum += item.Ticks;
             return sum;
         }
     }
