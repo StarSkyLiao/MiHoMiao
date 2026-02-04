@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace MiHoMiao.Core.Diagnostics.Benchmarks;
 
-public record MethodWrapper<TResult>(Func<TResult> Method, [CallerArgumentExpression(nameof(Method))] string MethodName = null!)
+public record MethodWrapper<TResult>(Func<TResult> Method, [CallerArgumentExpression(nameof(Method))] string? MethodName = null)
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal TResult Execute() => Method.Invoke();
