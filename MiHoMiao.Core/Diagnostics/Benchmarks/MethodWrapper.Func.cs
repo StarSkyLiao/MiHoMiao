@@ -27,7 +27,5 @@ public record MethodWrapper<TResult>(Func<TResult> Method, [CallerArgumentExpres
 
         return new BenchmarkResult<TResult>.MathInfo(summary, mean, variance, Method());
     }
-
-
     
 }
